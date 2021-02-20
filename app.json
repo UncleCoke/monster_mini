@@ -1,0 +1,15 @@
+{
+  "pages":[
+    "pages/home/index"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "怪兽乐园",
+    "navigationBarTextStyle":"black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "cu-custom":"colorUI/components/cu-custom"
+  }
+}
