@@ -157,7 +157,7 @@ App({
    * data：上传数据
    * method：上传方法GET/POST，默认为GET
    * loadingTitle：setLoading的提示语，默认为加载中
-   * isCloseLoading：接口调用成功时是否立即取消Loading加载
+   * isCloseLoading：接口调用成功时是否立即取消Loading加载 (预防接口返回后的大量处理)
    * loading：是否加载loading，默认为true
    */
   request: function ({url,data,method = 'GET',loadingTitle = '加载中',isCloseLoading = true,loading = true} = {}) {
@@ -193,6 +193,7 @@ App({
         fail: err => {
           this.closeLoading(loading);
           reject(err)
+          console.log(err);
         }
       });
     });
