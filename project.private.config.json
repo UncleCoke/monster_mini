@@ -1,0 +1,24 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "班级主页",
+          "pathName": "pages/classes/list",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

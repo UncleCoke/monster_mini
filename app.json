@@ -1,15 +1,55 @@
 {
-  "pages":[
-    "pages/home/index"
+  "pages": [
+    "pages/recruit/index",
+    "pages/classes/classIndex",
+    "pages/classes/list",
+    "pages/classes/create",
+    "pages/classes/setTextbook",
+    "pages/classes/setting",
+    "pages/classes/evalList",
+    "pages/student/index",
+    "pages/my/index"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#fff",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "怪兽乐园",
-    "navigationBarTextStyle":"black"
+    "navigationBarTitleText": "小优复习-老师端",
+    "navigationStyle": "default",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/recruit/index",
+        "text": "招生工具"
+      },
+      {
+        "pagePath": "pages/student/index",
+        "text": "学员"
+      },
+      {
+        "pagePath": "pages/classes/list",
+        "text": "班级"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
   },
   "sitemapLocation": "sitemap.json",
   "usingComponents": {
-    "cu-custom":"colorUI/components/cu-custom"
-  }
+    "cu-custom": "components/cu-custom",
+    "empty": "components/empty"
+  },
+  "debug": true
 }

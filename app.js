@@ -1,61 +1,55 @@
+import GlobalConfig from './config'
+const globalConfig = new GlobalConfig()
+
+let fromUserId, orgId, wxSceneId;
 App({
-  onLaunch: function () {
-    this.getIsIPhoneX();
+  onLaunch: function (options) {
+    console.log("onLaunch", options);
+    wxSceneId = options.scene
+    fromUserId = options.query.fromUserId || 0
+    orgId = options.query.orgId || 0
     this.update();
-    try {
-      const res = wx.getSystemInfoSync()
-      this.globalData.windowWidth = res.windowWidth
-      this.globalData.windowHeight = res.windowHeight
-    } catch (e) {}
     wx.getSystemInfo({
       success: e => {
         this.globalData.StatusBar = e.statusBarHeight;
         let custom = wx.getMenuButtonBoundingClientRect();
-        this.globalData.Custom = custom;  
+        this.globalData.Custom = custom;
         this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
       }
     })
   },
 
-  globalData: {
-    windowWidth: 0,
-    windowHeight: 0,
-    longScreen: 0,
-    token: '',
-    userId: '',
-    nickName: '',
-    unionId: '',
-    session_key: '',
-    avatar: '',
-    apiUrl: 'https://fxb2api.uelink.com.cn/fxbapi',
-    fileUrl: 'https://fxb2api.uelink.com.cn/upload',
-    loadingNum:0
+  onShow: function (options) {
+    console.log("onShow", options);
+    let newOrgId = options.query.orgId || 0
+    console.log(newOrgId, orgId);
+    if (newOrgId !== orgId) {
+      orgId = newOrgId
+      this.login()
+    }
+    this.update();
   },
 
-  //判断是否为IPhoneX
-  getIsIPhoneX: function () {
-    let that = this
-    return new Promise(function (resolve, reject) {
-      if (that.globalData.isIPhoneX !== null) {
-        resolve(that.globalData.isIPhoneX);
-      } else {
-        wx.getSystemInfo({
-          success: function success(_ref) {
-            let model = _ref.model,
-              screenHeight = _ref.screenHeight,
-              screenWidth = _ref.screenWidth;
-            let screenRatio = screenHeight / screenWidth
-            let longScreen = screenRatio > (17 / 9) ? 1 : 0
-            let iphoneX = /iphone x/i.test(model);
-            let iphoneNew = /iPhone11/i.test(model) && screenHeight === 812;
-            that.globalData.isIPhoneX = iphoneX || iphoneNew;
-            that.globalData.longScreen = longScreen;
-            resolve(that.globalData.isIPhoneX);
-          },
-          fail: reject
-        });
-      }
-    });
+  globalData: {
+    userInfo: null,
+    productName: globalConfig.productName,
+    product: globalConfig.product,
+    isIPhoneX: null,
+    verText: '1.0.19',
+    token: '',
+    apiUrl: globalConfig.apiUrl,
+    fileUrl: globalConfig.fileUrl,
+    wxSceneId: 0,
+    fromUserId: 0,
+    fromChildUserId: 0,
+    auditStatus: 1,
+    config: globalConfig,
+    isVip: 0,
+    session_key: '',
+    unionId: '',
+    appId: globalConfig.appId,
+    secret: globalConfig.secret,
+    loadingNum:0
   },
 
   //版本更新
@@ -82,51 +76,66 @@ App({
   //登录
   login: function (callback) {
     wx.showLoading({
-      title: '加载中',
+      title: '加载数据',
       mask: true
     })
+    let url = this.globalData.apiUrl + '/public/teacher/mplogin'
     wx.login({
       success: res => {
+        let jsCode = res.code
+        let data = {
+          jsCode: jsCode,
+          wxSceneId: wxSceneId
+        }
+        if (orgId) {
+          data.orgId = orgId
+        }
+        if (fromUserId) {
+          data.fromUserId = fromUserId
+        }
         wx.request({
-          url: this.globalData.apiUrl + '/public/mplogin',
-          data: {
-            jsCode: res.code
-          },
+          url: url,
+          method: "POST",
+          data: data,
           success: res => {
             wx.hideLoading()
             if (res.data.code == 0) {
-              this.globalData.token = res.data.data.token;
-              this.globalData.uid = res.data.data.uid;
-              this.globalData.unionId = res.data.data.unionid;
-              this.globalData.avatar = res.data.data.lastAvatar;
-              this.globalData.session_key = res.data.data.session_key;
+              this.globalData.userInfo = res.data.data
+              this.globalData.token = res.data.data.token
+              this.globalData.uid = res.data.data.uid
+              this.globalData.session_key = res.data.data.session_key
+              this.globalData.unionId = res.data.data.unionid
+              this.globalData.avatarUrl = res.data.data.avatarUrl
+              this.globalData.parentId = res.data.data.parentId
+              this.globalData.parentToken = res.data.data.parentToken
+              this.globalData.nickName = res.data.data.nickName
+              this.globalData.trueName = res.data.data.trueName
+              this.globalData.phone = res.data.data.phone
+              this.globalData.isAdmin = res.data.data.isAdmin || 0
+              this.globalData.orgAdmin = res.data.data.orgAdmin || 0
+              this.globalData.orgId = res.data.data.orgId
+              this.globalData.orgName = res.data.data.orgName
+              this.globalData.orgInviteCode = res.data.data.orgInviteCode
+              wx.setStorage({
+                key: 'token',
+                data: res.data.data.token
+              })
               if (callback) {
-                callback(res.data.data)
+                callback()
               }
             } else {
-              wx.showModal({
-                title: '提示',
-                content: '网络出了点问题，加载超时！',
-                showCancel: false,
-                confirmText: '重试',
-                confirmColor: '#3BBE79',
-                success: (result) => {
-                  if (result.confirm) {
-                    this.login(callback);
-                  }
-                }
-              });
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 2000,
+                mask: true
+              })
             }
           },
-          fail: err => {
-            console.log(err);
+          fail() {
             wx.hideLoading()
           }
         })
-      },
-      fail: err => {
-        console.log(err);
-        wx.hideLoading()
       }
     })
   },
@@ -141,15 +150,45 @@ App({
   },
 
   //判断是否关闭loading
-  closeLoading:function(loading){
-    if(!loading || this.globalData.loadingNum === 0){
+  closeLoading: function (loading) {
+    if (!loading || this.globalData.loadingNum === 0) {
       return;
     }
-    if(this.globalData.loadingNum === 1){
+    if (this.globalData.loadingNum === 1) {
       wx.hideLoading();
       this.globalData.loadingNum = 0
     }
     this.globalData.loadingNum -= 1;
+  },
+
+  setUserData: function (encryptedData,iv,rawData, phone, trueName, callback) {
+    let data = {
+      session_key:this.globalData.session_key
+    }
+    if (encryptedData) {
+      data.encryptedData = encryptedData
+    }
+    if (iv) {
+      data.iv = iv
+    }
+    if (rawData) {
+      data.rawData = rawData
+    }
+    if (phone) {
+      data.phone = phone
+    }
+    if (trueName) {
+      data.trueName = trueName
+    }
+    this.request({
+      url:this.globalData.apiUrl + '/public/teacher/setUserData2',
+      data,
+      method:'POST'
+    }).then(() => {
+      if(callback){
+        callback();
+      }
+    })
   },
 
   /**
@@ -157,16 +196,26 @@ App({
    * data：上传数据
    * method：上传方法GET/POST，默认为GET
    * loadingTitle：setLoading的提示语，默认为加载中
-   * isCloseLoading：接口调用成功时是否立即取消Loading加载 (预防接口返回后的大量处理)
-   * loading：是否加载loading，默认为true
+   * loading：是否加载loading，默认为false
+   * barLoading:是否调用wx.showNavigationBarLoading()，默认为false
    */
-  request: function ({url,data,method = 'GET',loadingTitle = '加载中',isCloseLoading = true,loading = true} = {}) {
-    if(loading){
+  request: function ({
+    url,
+    data,
+    method = 'GET',
+    loadingTitle = '加载中',
+    loading = false,
+    barLoading = false,
+  } = {}) {
+    if (loading) {
       wx.showLoading({
-        title:loadingTitle,
+        title: loadingTitle,
         mask: true,
       });
-      this.globalData.loadingNum += 1; 
+      this.globalData.loadingNum += 1;
+    }
+    if(barLoading){
+      wx.showNavigationBarLoading();
     }
     data['token'] = this.globalData.token;
     return new Promise((resolve, reject) => {
@@ -175,11 +224,12 @@ App({
         data,
         method,
         success: res => {
+          if(barLoading){
+            wx.hideNavigationBarLoading();
+          }
           if (res.data.code === 0) {
-            if(isCloseLoading){
-              this.closeLoading(loading);
-            }
-            resolve(res.data.data)
+            this.closeLoading(loading);
+            resolve(res.data.data);
           } else {
             wx.showToast({
               title: res.data.msg,
@@ -192,6 +242,9 @@ App({
         },
         fail: err => {
           this.closeLoading(loading);
+          if(barLoading){
+            wx.hideNavigationBarLoading();
+          }
           reject(err)
           console.log(err);
         }

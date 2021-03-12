@@ -5,13 +5,13 @@ page {
 	/* Color 可以自定义相关配色 */
 	/* var属性兼容性 --> https://www.caniuse.com/#feat=css-variables */
 	/* 标准色 */
-	--red: #e54d42;
+	--red: #F56C6C;
 	--orange: #f37b1d;
-	--yellow: #fbbd08;
+	--yellow: #FFB341;
 	--olive: #8dc63f;
-	--green: #39b54a;
+	--green: #4CBBB9;
 	--cyan: #1cbbb4;
-	--blue: #0081ff;
+	--blue: #0779E4;
 	--purple: #6739b6;
 	--mauve: #9c26b0;
 	--pink: #e03997;
@@ -19,7 +19,7 @@ page {
 	--grey: #8799a3;
 	--black: #333333;
 	--darkGray: #666666;
-	--gray: #aaaaaa;
+	--gray: #969799;
 	--ghostWhite: #f1f1f1;
 	--white: #ffffff;
 	/* 浅色 */

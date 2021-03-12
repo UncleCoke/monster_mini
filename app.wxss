@@ -1,3 +1,7 @@
 @import 'colorUI/icon.wxss';
 @import 'colorUI/main.wxss';
 @import 'colorUI/animation.wxss';
+
+page{
+    background-color:white;
+}
