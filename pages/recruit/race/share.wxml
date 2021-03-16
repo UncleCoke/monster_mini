@@ -1,0 +1,10 @@
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white margin-lr">
+            保存
+        </button>
+        <button class="cu-btn lg bg-blue submit sp margin-right" open-type="share">
+            转发
+        </button>
+    </view>
+</view>

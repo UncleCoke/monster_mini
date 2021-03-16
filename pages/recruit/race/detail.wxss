@@ -1,0 +1,11 @@
+page{
+    background-color:#f8f8f8;
+}
+
+.user:not(:last-of-type){
+    border-bottom:1rpx solid #eee;
+}
+
+.cu-tag{
+    padding:0 22rpx !important;
+}

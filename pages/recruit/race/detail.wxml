@@ -1,0 +1,62 @@
+<view class="padding-sp">
+    <view class="bg-white padding-tb-lg borderRadius margin-bottom-sm">
+        <view class="padding-lr-lg text-bold text-sp margin-bottom-sm">{{race.name}}</view>
+        <view class="flex align-center justify-between padding-lr-lg padding-tb solid-bottom">
+            <view class="text-gray text-sp">活动时间</view>
+            <view class="cu-tag bg-blue light radius" style="font-size:23rpx;">
+                {{race.startTime}} - {{race.endTime}}
+            </view>
+        </view>
+        <view class="flex align-center justify-between padding-lr-lg padding-tb solid-bottom text-sp">
+            <view class="text-gray">状态</view>
+            <view class="text-black">
+                {{race.status == 0?'未开始':(race.status == 1?'进行中':'已结束')}}
+            </view>
+        </view>
+        <view class="padding-lr-lg padding-top text-sp">
+            <view class="text-gray margin-bottom-sm">活动效果</view>
+            <view class="flex align-center">
+                <view class="cu-capsule margin-right-xs radius">
+                    <view class="cu-tag bg-olive ">打开人数</view>
+                    <view class="cu-tag line-olive">{{race.openPeople}}</view>
+                </view>
+                <view class="cu-capsule margin-right-xs radius">
+                    <view class="cu-tag bg-greenSecond ">打开次数</view>
+                    <view class="cu-tag line-greenSecond">{{race.openNum}}</view>
+                </view>
+                <view class="cu-capsule radius">
+                    <view class="cu-tag bg-greenThird ">完成人数</view>
+                    <view class="cu-tag line-greenThird">{{race.finishNum}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="bg-white padding-top-lg borderRadius">
+        <view class="flex align-center text-sp margin-bottom-sm padding-lr-lg">
+            <view class="title-shape"></view>
+            <view class="text-bold">活动参与情况</view>
+        </view>
+        <view wx:for="{{race.users}}" wx:key="userId" class="flex align-center justify-between padding-tb padding-lr-lg user">
+            <view class="flex align-center">
+                <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                <view class="padding-left-sm">
+                    <view class="text-black-sp text-sp margin-bottom-sm">{{item.name}}</view>
+                    <block wx:if="{{race.type === 0}}">
+                        <view class="cu-tag bg-red light round">分数: {{item.score}}</view>
+                        <view class="cu-tag bg-olive light round">答题次数: {{item.answerNum}}</view>
+                    </block>
+                    <block wx:else>
+                        <view class="cu-tag bg-red light round">抽奖次数: {{item.answerNum}}</view>
+                    </block>
+                </view>
+            </view>
+            <text class="cuIcon-right text-gray text-lg"></text>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white margin-lr">返回</button>
+        <button class="cu-btn lg bg-blue submit sp margin-right" open-type="share">分享活动</button>
+    </view>
+</view>

@@ -1,0 +1,32 @@
+<view class="cu-card">
+    <view class="cu-item shadow">
+        <view class="margin margin-bottom-xs">
+            <view class='text-center text-grey'>邀请使用小优评测</view>
+        </view>
+        <view class="image text-center margin-lg">
+            <image src="{{myQrCode}}" mode="widthFix"></image>
+        </view>
+    </view>
+</view>
+<!--<view class="page">
+    <swiper class="swiper" circular previous-margin="40rpx" next-margin="40rpx" indicator-dots="{{true}}" autoplay="{{false}}" interval="{{5000}}" duration="{{500}}" current="{{posterIndex}}" bindchange="posterChange">
+        <block wx:for="{{posters}}" wx:key="posters">
+            <swiper-item>
+                <view class="posterBlock" >
+                    <image class="poster" src="{{eventImgUrl+item}}" />
+                    <image class="qrCode" src="{{myQrCode}}" />
+                </view>
+            </swiper-item>
+        </block>
+    </swiper>
+    <canvas class="canvas" canvas-id="myQrCode"></canvas>
+</view>-->
+<view class="cu-bar bg-white tabbar border shop bottom">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="downloadImg">保存分享码</button>
+        <button class="cu-btn bg-blue round submit margin-xs" data-id="{{eval.id}}" open-type="share">
+            直接转发
+        </button>
+    </view>
+</view>

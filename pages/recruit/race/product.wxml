@@ -1,0 +1,89 @@
+<view class="padding-sp">
+    <view class="flex align-center justify-between margin-bottom-lg">
+        <view wx:for="{{tabs}}" wx:key="*this" wx:for-item="tab" class="tab {{index == activeTab?'active-tab':''}}" bindtap="tabChange" data-index="{{index}}">
+            {{tab}}
+        </view>
+    </view>
+    <block wx:if="{{activeTab === 0}}">
+        <view class="margin-bottom-lg bg-white borderRadius padding-top padding-bottom-xs">
+            <view class="flex align-center justify-between padding-lr-lg padding-top-xs padding-bottom-lg">
+                <view class="text-sp text-bold">活动基本信息</view>
+                <view class="text-sm text-black-sp ">
+                    <text class="text-red">*</text>
+                    号为必填项目
+                </view>
+            </view>
+            <form>
+                <view class="cu-form-group">
+                    <view class="title">
+                        <text class="text-red">*</text>
+                        活动名称
+                    </view>
+                    <input placeholder="请输入活动名称" class="text-right" bindinput="setRaceData" data-type="input" value="{{raceData.name}}"></input>
+                </view>
+                <view class="cu-form-group">
+                    <view class="title">
+                        <text class="text-red">*</text>
+                        活动开始时间
+                    </view>
+                    <date-time-picker value="{{raceData.startTime}}" bind:change="setRaceData" class="picker" data-field="startTime" data-type="picker">
+                        <view class="picker">
+                            {{raceData.startTime?raceData.startTime:'请选择时间'}}
+                        </view>
+                    </date-time-picker>
+                </view>
+                <view class="cu-form-group">
+                    <view class="title">
+                        <text class="text-red">*</text>
+                        活动结束时间
+                    </view>
+                    <date-time-picker value="{{raceData.endTime}}" bind:change="setRaceData" class="picker" data-field="endTime" data-type="picker">
+                        <view class="picker">{{raceData.endTime?raceData.endTime:'请选择时间'}}</view>
+                    </date-time-picker>
+                </view>
+            </form>
+        </view>
+        <view class="bg-white padding-lg borderRadius">
+            <view class="flex align-center text-sp margin-bottom-sm">
+                <view class="title-shape"></view>
+                <view>活动规则</view>
+            </view>
+            <view class="text-sp text-black-sp line-height-sp">{{race.rule}}</view>
+        </view>
+    </block>
+    <block wx:else>
+        <view class="bg-white padding-tb-lg borderRadius text-sp">
+            <view class="padding-bottom padding-lr">排名奖品设置</view>
+            <form>
+                <block wx:for="{{awards}}" wx:key="*this" wx:for-index="awardIndex" wx:for-item="award">
+                    <view class="cu-form-group">
+                        <view class="title flex align-center" bindtap="clearAward" data-index="{{awardIndex}}">
+                            <text class="cuIcon-move text-red text-xl margin-right-sm"></text>
+                            第{{awardIndex + 1}}名
+                        </view>
+                        <input placeholder="输入奖品内容" class="text-right" value="{{award.name}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="name" />
+                    </view>
+                    <view class="flex align-center justify-between num-set" wx:if="{{race.type === 1}}">
+                        <view>数量</view>
+                        <view class="flex align-center">
+                            <text class="cuIcon-move text-blue text-xl margin-right-sm text-bold" data-type="reduce" data-index="{{awardIndex}}" bindtap="setAward"></text>
+                            <input type="number" class="input" value="{{award.num}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="num" />
+                            <text class="cuIcon-add text-blue text-xl margin-left-sm text-bold" data-type="add" data-index="{{awardIndex}}" bindtap="setAward"></text>
+                        </view>
+                    </view>
+                </block>
+            </form>
+            <view class="padding-top padding-lr flex align-center text-blue" bindtap="addAward">
+                <text class="cuIcon-add text-xl margin-right-sm"></text>
+                添加排名奖品
+            </view>
+        </view>
+    </block>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp" bindtap="product">
+            发布活动
+        </button>
+    </view>
+</view>

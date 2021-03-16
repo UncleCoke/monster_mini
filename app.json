@@ -1,6 +1,13 @@
 {
   "pages": [
     "pages/recruit/index",
+    "pages/recruit/race/index",
+    "pages/recruit/race/create",
+    "pages/recruit/race/detail",
+    "pages/recruit/race/introduce",
+    "pages/recruit/race/product",
+    "pages/recruit/race/share",
+    "pages/recruit/eval/index",
     "pages/classes/classIndex",
     "pages/classes/list",
     "pages/classes/create",
@@ -8,7 +15,17 @@
     "pages/classes/setting",
     "pages/classes/evalList",
     "pages/student/index",
-    "pages/my/index"
+    "pages/my/index",
+    "pages/evaluates/list",
+    "pages/evaluates/create",
+    "pages/evaluates/preview",
+    "pages/evaluates/share",
+    "pages/evaluates/detail",
+    "pages/evaluates/report",
+    "pages/evaluates/reportList",
+    "pages/evaluates/allReportList",
+    "pages/evaluates/topics",
+    "pages/evaluates/doEval"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,22 +36,31 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "custom": true,
+    "color":"#A0A0A0",
+    "selectedColor": "#0779E4",
     "borderStyle": "white",
     "list": [
       {
+        "selectedIconPath": "images/tabbar/recruit_active.png",
+        "iconPath": "images/tabbar/recruit.png",
         "pagePath": "pages/recruit/index",
         "text": "招生工具"
       },
       {
+        "selectedIconPath": "images/tabbar/student_active.png",
+        "iconPath": "images/tabbar/student.png",
         "pagePath": "pages/student/index",
         "text": "学员"
       },
       {
+        "selectedIconPath": "images/tabbar/class_active.png",
+        "iconPath": "images/tabbar/class.png",
         "pagePath": "pages/classes/list",
         "text": "班级"
       },
       {
+        "selectedIconPath": "images/tabbar/my_active.png",
+        "iconPath": "images/tabbar/my.png",
         "pagePath": "pages/my/index",
         "text": "我的"
       }
@@ -49,7 +75,8 @@
   "sitemapLocation": "sitemap.json",
   "usingComponents": {
     "cu-custom": "components/cu-custom",
-    "empty": "components/empty"
+    "empty": "components/empty",
+    "date-time-picker":"components/date-time-picker"
   },
   "debug": true
 }

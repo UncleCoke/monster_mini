@@ -1,0 +1,29 @@
+<image src="{{race.imgUrl}}" mode="widthFix"/>
+<view class="padding-sp">
+    <view class="text-black text-xxl margin-bottom-sm">{{race.name}}</view>
+    <view class="flex align-center text-xl text-black margin-top-lg margin-bottom-sm">
+        <view class="title-shape"></view>
+        <view>活动介绍</view>
+    </view>
+    <view class="text-sp text-black-sp line-height-sp">{{race.introduce}}</view>
+    <view class="flex align-center text-xl text-black margin-top-lg margin-bottom-sm">
+        <view class="title-shape"></view>
+        <view>推广效果</view>
+    </view>
+    <view class="text-sp text-black-sp line-height-sp">{{race.result}}</view>
+    <view class="flex align-center text-xl text-black margin-top-lg margin-bottom-sm">
+        <view class="title-shape"></view>
+        <view>活动所需奖品</view>
+    </view>
+    <view class="text-sp text-black-sp line-height-sp">{{race.award}}</view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white margin-lr" bindtap="showTemplate">
+            查看样例
+        </button>
+        <button class="cu-btn lg bg-blue submit sp margin-right" bindtap="raceProduct">
+            立即制作活动
+        </button>
+    </view>
+</view>

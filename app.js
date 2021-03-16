@@ -200,8 +200,8 @@ App({
    * barLoading:是否调用wx.showNavigationBarLoading()，默认为false
    */
   request: function ({
-    url,
-    data,
+    url = '',
+    data = {},
     method = 'GET',
     loadingTitle = '加载中',
     loading = false,

@@ -17,6 +17,48 @@
           "pathName": "pages/classes/list",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "活动招生",
+          "pathName": "pages/recruit/race/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "创建新活动",
+          "pathName": "pages/recruit/race/create",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "活动介绍",
+          "pathName": "pages/recruit/race/introduce",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "制作活动",
+          "pathName": "pages/recruit/race/product",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "活动详情",
+          "pathName": "pages/recruit/race/detail",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "评测招生",
+          "pathName": "pages/recruit/eval/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "评测详情",
+          "pathName": "pages/evaluates/detail",
+          "query": "id=132",
+          "scene": null
         }
       ]
     }

@@ -5,10 +5,10 @@ page {
 	/* Color 可以自定义相关配色 */
 	/* var属性兼容性 --> https://www.caniuse.com/#feat=css-variables */
 	/* 标准色 */
-	--red: #F56C6C;
+	--red: #ED1C24;
 	--orange: #f37b1d;
 	--yellow: #FFB341;
-	--olive: #8dc63f;
+	--olive: #66CE41;
 	--green: #4CBBB9;
 	--cyan: #1cbbb4;
 	--blue: #0779E4;
@@ -17,7 +17,7 @@ page {
 	--pink: #e03997;
 	--brown: #a5673f;
 	--grey: #8799a3;
-	--black: #333333;
+	--black: #3B3E3F;
 	--darkGray: #666666;
 	--gray: #969799;
 	--ghostWhite: #f1f1f1;
@@ -47,7 +47,7 @@ page {
 	--redShadow: rgba(204, 69, 59, 0.2);
 	--orangeShadow: rgba(217, 109, 26, 0.2);
 	--yellowShadow: rgba(224, 170, 7, 0.2);
-	--oliveShadow: rgba(124, 173, 55, 0.2);
+	--oliveShadow: rgba(102, 206, 65, 0.2);
 	--greenShadow: rgba(48, 156, 63, 0.2);
 	--cyanShadow: rgba(28, 187, 180, 0.2);
 	--blueShadow: rgba(0, 102, 204, 0.2);
@@ -754,6 +754,12 @@ radio.white[checked] .wx-radio-input {
 	padding: 0;
 }
 
+.cu-btn.sp{
+	border-radius:20rpx;
+	font-size:30rpx;
+	min-width:420rpx;
+}
+
 button.icon.lg {
 	width: 80rpx;
 	height: 80rpx;
@@ -796,7 +802,7 @@ button.icon.lg {
 	justify-content: center;
 	box-sizing: border-box;
 	padding: 0rpx 16rpx;
-	height: 48rpx;
+	height: 40rpx;
 	font-family: Helvetica Neue, Helvetica, sans-serif;
 	white-space: nowrap;
 }
@@ -1533,7 +1539,7 @@ button.icon.lg {
 	display: flex;
 	position: relative;
 	align-items: center;
-	min-height: 100rpx;
+	min-height: 120rpx;
 	justify-content: space-between;
 }
 
@@ -3789,7 +3795,7 @@ scroll-view.cu-steps .cu-item {
 }
 
 .text-xxl {
-	font-size: 44rpx;
+	font-size: 48rpx;
 }
 
 .text-sl {

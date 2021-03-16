@@ -1,0 +1,18 @@
+<view class="padding-lg">
+    <view class="flex flex-wrap justify-between">
+        <view class="cu-card case" wx:for="{{races}}" wx:key="name" bindtap="raceIntroduce">
+            <view class="cu-item shadow card-item">
+                <view class="image">
+                    <image src="{{item.imgUrl}}" mode="widthFix"></image>
+                </view>
+                <view class="padding-sm">
+                    <view class="text-sp margin-bottom-sm">{{item.name}}</view>
+                    <view class="flex align-center justify-between">
+                        <view class="text-bold text-red text-sp">{{item.price}}元</view>
+                        <button class="cu-btn bg-blue sm round">立即创建</button>
+                    </view> 
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

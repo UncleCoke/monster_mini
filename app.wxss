@@ -2,6 +2,79 @@
 @import 'colorUI/main.wxss';
 @import 'colorUI/animation.wxss';
 
-page{
-    background-color:white;
+page {
+    background-color: white;
+    color:#464849;
+}
+
+button::after {
+    border: 0;
+}
+
+/*常用样式*/
+.padding-sp{
+	padding:40rpx 40rpx 160rpx 40rpx;
+}
+
+.text-sp{
+	font-size:30rpx;
+}
+
+.text-black-sp{
+    color:rgba(0,0,0,0.5)
+}
+
+.line-height-sp{
+    line-height:50rpx;
+}
+
+.title-shape {
+    width: 8rpx;
+    height: 42rpx;
+    background: #0779E4;
+    border-radius: 20rpx;
+    margin-right:20rpx;
+}
+
+.content-shape{
+    width: 140rpx;
+    height: 64rpx;
+    line-height:64rpx;
+    text-align:center;
+    font-size:36rpx;
+    font-weight:bold;
+    border-radius: 40rpx; 
+    margin-bottom:10rpx;
+}
+
+.line-greenSecond{
+    color:#2AD5BE;
+}
+
+.bg-greenSecond{
+    background-color:#2AD5BE;
+    color:#fff;
+}
+
+.bg-greenSecond.light{
+    color:#2AD5BE !important;
+    background-color: rgba(42, 213, 190, 0.2);
+}
+
+.line-greenThird{
+    color:#A0DF4A;
+}
+
+.bg-greenThird{
+    background-color:#A0DF4A;
+    color:#fff;
+}
+
+.bg-greenThird.light{
+    color:#A0DF4A !important;
+    background-color: rgba(160, 223, 74, 0.2);
+}
+
+.borderRadius{
+    border-radius:20rpx;
 }

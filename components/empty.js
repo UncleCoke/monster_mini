@@ -2,7 +2,7 @@ Component({
     properties: {
         title: {
             type: String,
-            default: ''
+            default: '暂无数据'
         }
     }
 })

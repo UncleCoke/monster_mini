@@ -1,0 +1,7 @@
+page{
+    background-color:#f8f8f8;
+}
+
+.text-time{
+    color:rgba(0, 0, 0, 0.3)
+}

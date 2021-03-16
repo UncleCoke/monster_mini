@@ -1,0 +1,302 @@
+<view style="padding-bottom:150rpx;">
+    <view class="cu-card dynamic">
+        <view class="cu-item shadow">
+            <view class="cu-list menu-avatar">
+                <view class="cu-item">
+                    <view wx:if="{{user.avatarUrl}}" class="cu-avatar round lg" style="background-image:url({{user.avatarUrl}});"></view>
+                <view wx:else class="cu-avatar round lg {{user.level?'bg-gradual-orange':'bg-blue'}}">
+                    {{user.nickName[0]}}
+                </view>
+                    <view class="content">
+                        <view>{{user.nickName}}</view>
+                        <view class="text-gray text-sm flex justify-between">{{user.phone}}</view>
+                    </view>
+                    <view class='action call' wx:if="{{user.phone}}" data-phone="{{user.phone}}" bind:tap="call">
+                        <text class="cuIcon-phone text-green margin-right "></text>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    评测分数分析
+                </view>
+            </view>
+            <view class="text-center margin-xl">
+                <view class="cu-avatar round xl bg-{{report.myScore.score>=60?'green':'red'}} shadow-blur ">
+                    {{report.myScore.score}}
+                </view>
+            </view>
+            <view class="padding bg-white">
+                <view class="flex align-center margin-bottom-sm">
+                    <view class="text-sm" style="width:120rpx">得分</view>
+                    <view class="cu-progress round  striped active">
+                        <view class="bg-{{report.myScore.score>=60?'green':'red'}}" style="width:{{report.myScore.score>10?report.myScore.score:10}}%;">
+                            {{report.myScore.score}}分
+                        </view>
+                    </view>
+                </view>
+                <view class="flex align-center margin-bottom-sm">
+                    <view class="text-sm" style="width:120rpx">平均</view>
+                    <view class="cu-progress round  striped active">
+                        <view class="bg-{{report.allScore.score>=60?'green':'red'}}" style="width:{{report.allScore.score>10?report.allScore.score:10}}%;">
+                            全国平均：{{report.allScore.score}}分
+                        </view>
+                    </view>
+                </view>
+                <view class="flex align-center margin-bottom-sm">
+                    <view class="text-sm" style="width:120rpx">对比</view>
+                    <view class="cu-progress round  striped active">
+                        <view wx:if="{{report.myScore.scoreGranThen>=40}}" class="bg-{{report.myScore.scoreGranThen>=50?'cyan':'blue'}}" style="width:{{loading?report.myScore.scoreGranThen+'%':''}};">
+                            超过了全国{{report.myScore.scoreGranThen}}%同学
+                        </view>
+                        <view wx:else class="bg-blue" style="width:{{loading?report.myScore.scoreGranThen+'%':''}};">
+                            {{report.myScore.scoreGranThen}}%
+                        </view>
+                    </view>
+                </view>
+                <view class="flex align-center margin-bottom-sm" wx:if="{{report.myScore.scoreGranThen<40}}">
+                    <view class="text-sm" style="width:100rpx"></view>
+                    <view class="text-xs">超过了全国{{report.myScore.scoreGranThen}}%同学</view>
+                </view>
+                <view class="bg-{{report.myScore.score>=report.allScore.score?'green':'orange'}} light radius padding">
+                    <rich-text class="text-sm text-content" nodes="{{report.scoreTips}}"></rich-text>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    用时分析
+                </view>
+            </view>
+            <view class="grid col-2 padding-left padding-right">
+                <view class="padding-right-xs">
+                    <view class="bg-gradual-{{report.myScore.spendTime<=report.allScore.spendTime?'green':'red'}} padding radius text-center shadow-blur">
+                        <view class="text-lg">{{func.showTime(report.myScore.spendTime)}}</view>
+                        <view class="margin-top-sm text-sm">我的用时</view>
+                    </view>
+                </view>
+                <view class="padding-left-xs">
+                    <view class="bg-gradual-blue padding radius text-center shadow-blur">
+                        <view class="text-lg">{{func.showTime(report.allScore.spendTime)}}</view>
+                        <view class="margin-top-sm text-sm">全国平均</view>
+                    </view>
+                </view>
+            </view>
+            <view class="padding bg-white">
+                <view class="bg-{{report.myScore.spendTime<=report.allScore.spendTime?'green':'orange'}} light radius padding">
+                    <rich-text class="text-sm text-content" nodes="{{report.spendTimeTips}}"></rich-text>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    难度分析
+                </view>
+            </view>
+            <view class="grid col-3 padding-left padding-right">
+                <view class="padding-right-sm flex flex-direction justify-end align-center">
+                    <view class="bg-white text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        <text class='cuIcon-creative text-blue margin-right-xs '></text>
+                        低档难度题
+                    </view>
+                    <view class="bg-gradual-blue padding radius text-center shadow-blur" style="height:150rpx;width:100%;">
+                        <view class="text-lg">{{report.difficultData[0].my}}分</view>
+                        <view class="margin-top-sm text-sm">我的得分</view>
+                    </view>
+                    <view class="bg-blue light text-sm radius padding-xs margin-top-sm" style="width:100%;">
+                        满分：{{report.difficultData[0].full}}
+                    </view>
+                    <view class="bg-cyan light text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        平均：{{report.difficultData[0].all}}
+                    </view>
+                    <view class="bg-{{report.difficultData[0].tips == '待提高'?'red':'green'}} text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        评定：{{report.difficultData[0].tips}}
+                    </view>
+                </view>
+                <view class="flex flex-direction justify-end align-center">
+                    <view class="bg-white text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        <text class='cuIcon-creative text-green margin-right-xs'></text>
+                        中档难度题
+                    </view>
+                    <view class="bg-gradual-green padding radius text-center shadow-blur" style="height:200rpx;width:100%;">
+                        <view class="text-lg">{{report.difficultData[1].my}}分</view>
+                        <view class="margin-top-sm text-sm">我的得分</view>
+                    </view>
+                    <view class="bg-green light text-sm radius padding-xs margin-top-sm" style="width:100%;">
+                        满分：{{report.difficultData[1].full}}
+                    </view>
+                    <view class="bg-olive light text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        平均：{{report.difficultData[1].all}}
+                    </view>
+                    <view class="bg-{{report.difficultData[1].tips == '待提高'?'red':'green'}} text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        评定：{{report.difficultData[1].tips}}
+                    </view>
+                </view>
+                <view class="padding-left-sm flex flex-direction justify-end align-center">
+                    <view class="bg-white text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        <text class='cuIcon-creative text-orange margin-right-xs'></text>
+                        高档难度题
+                    </view>
+                    <view class="bg-gradual-orange padding radius text-center shadow-blur" style="height:250rpx;width:100%;">
+                        <view class="text-lg">{{report.difficultData[2].my}}分</view>
+                        <view class="margin-top-sm text-sm">我的得分</view>
+                    </view>
+                    <view class="bg-orange light text-sm radius padding-xs margin-top-sm" style="width:100%;">
+                        满分：{{report.difficultData[2].full}}
+                    </view>
+                    <view class="bg-yellow light text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        平均：{{report.difficultData[2].all}}
+                    </view>
+                    <view class="bg-{{report.difficultData[2].tips == '待提高'?'red':'green'}} text-sm radius padding-xs  margin-top-sm" style="width:100%;">
+                        评定：{{report.difficultData[2].tips}}
+                    </view>
+                </view>
+            </view>
+            <view class="padding bg-white">
+                <view class="bg-{{report.myScore.score>=report.allScore.score?'green':'orange'}} light radius padding">
+                    <rich-text class="text-sm text-content" nodes="{{report.difficultTips}}"></rich-text>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    知识点分析
+                </view>
+            </view>
+            <view class="padding bg-white">
+                <block wx:for="{{report.knowledgeData}}" wx:key="knowledgeData">
+                    <view class="flex align-center justify-between margin-bottom-sm">
+                        <view class="text-sm">{{item.title}}</view>
+                        <view class="text-xs text-grey padding-xs margin-left-sm text-center" style="width:220rpx">
+                            得分：{{item.myScore}} / 总分：{{item.totalScore}}
+                        </view>
+                    </view>
+                    <view class="flex align-center padding-bottom margin-bottom solid-bottom">
+                        <view class="cu-progress round striped active">
+                            <view class="bg-{{item.passPer>=60?'green':'red'}}" style="width:{{loading?item.passPer+'%':''}};">
+                                {{item.passPer}}
+                            </view>
+                        </view>
+                        <view class="text-xs bg-{{item.passPer>=60?'green':'red'}} padding-xs margin-left-sm text-center radius light" style="width:100rpx">
+                            {{item.tips}}
+                        </view>
+                    </view>
+                </block>
+                <view class="bg-{{report.myScore.score>=report.allScore.score?'green':'orange'}} light radius padding">
+                    <rich-text class="text-sm text-content" nodes="{{report.difficultTips}}"></rich-text>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    能力分析
+                </view>
+            </view>
+            <view class="padding bg-white">
+                <block wx:for="{{report.abilityData}}" wx:key="knowledgeData">
+                    <view class="flex align-center justify-between margin-bottom-sm">
+                        <view class="text-sm">{{item.title}}</view>
+                        <view class="text-xs text-grey padding-xs margin-left-sm text-center" style="width:220rpx">
+                            得分：{{item.myScore}} / 总分：{{item.totalScore}}
+                        </view>
+                    </view>
+                    <view class="flex align-center padding-bottom margin-bottom solid-bottom">
+                        <view class="cu-progress round striped active">
+                            <view class="bg-{{item.passPer>=60?'green':'red'}}" style="width:{{loading?item.passPer+'%':''}};">
+                                {{item.passPer}}
+                            </view>
+                        </view>
+                        <view class="text-xs bg-{{item.passPer>=60?'green':'red'}} padding-xs margin-left-sm text-center radius light" style="width:100rpx">
+                            {{item.tips}}
+                        </view>
+                    </view>
+                </block>
+                <view class="bg-{{report.myScore.score>=report.allScore.score?'green':'orange'}} light radius padding">
+                    <rich-text class="text-sm text-content" nodes="{{report.abilityTips}}"></rich-text>
+                </view>
+            </view>
+            <!-- <view class="cu-list menu-avatar comment">
+                <view class="cu-item">
+                    <view class="cu-avatar round" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Morgana.png);"></view>
+                    <view class="content">
+                        <view class="text-grey margin-bottom-sm">能力掌握程度评定</view>
+                        <view class="bg-{{report.myScore.score>=report.allScore.score?'green':'orange'}} light radius padding">
+                    <rich-text class="text-sm text-content" nodes="{{report.abilityTips}}"></rich-text>
+                </view>
+                    </view>
+                </view>
+            </view> -->
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white solid-bottom">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    答题记录
+                </view>
+                <view class='action'></view>
+                <view class="action text-xs">点击可查看答题详情</view>
+            </view>
+            <view class="padding-sm flex flex-wrap">
+                <view class="padding-xs" wx:for="{{report.questionList}}" wx:key="topic">
+                    <view class="cu-capsule round" data-index="{{index}}" bind:tap="viewTopic">
+                        <view class="cu-tag bg-{{item.isCorrect?'green':'red'}}">
+                            <text class="cuIcon-{{item.isCorrect?'check':'close'}}"></text>
+                        </view>
+                        <view class="cu-tag line-{{item.isCorrect?'green':'red'}}" style="width:90rpx;">
+                            第{{index+1}}题
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop bottom">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <!-- <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="add">写评语</button> -->
+    </view>
+</view>
+<wxs module="func">
+    var showTime = function(time) {
+        time = time*1
+        var showTime =''
+        var minute = Math.floor(time / 60)
+        var second = time % 60
+        if(minute >0){
+            second = second<10?'0'+second:second
+            showTime=minute+'分'+second+'秒'
+        }else{
+            showTime=second+'秒'
+        }
+        return showTime
+    }
+    var random = function(number) {
+        number = number*1
+        var randomNumber = number*Math.random()
+        randomNumber = Math.floor(randomNumber)
+        
+        return randomNumber
+    }
+
+    var floor = function(number) {
+        number = number*1
+        number = Math.floor(number)
+        
+        return number
+    }
+    module.exports.showTime = showTime
+    module.exports.random = random
+    module.exports.floor = floor
+</wxs>

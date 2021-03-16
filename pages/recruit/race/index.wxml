@@ -1,0 +1,38 @@
+<empty wx:if="{{list.length == 0}}" title="暂无活动"></empty>
+<view class="padding-sp" wx:else>
+    <view class="text-sp margin-bottom-xl text-black-sp">
+        共
+        <text class="text-blue">{{list.length}}</text>
+        次活动
+    </view>
+    <block wx:for="{{list}}" wx:key="name">
+        <view class="panel padding-lg">
+            <view class="margin-bottom-lg text-bold text-lg">{{item.name}}</view>
+            <view class="flex align-center">
+                <view class="cu-capsule margin-right-xs radius">
+                    <view class="cu-tag bg-olive ">打开人数</view>
+                    <view class="cu-tag line-olive">{{item.openPeople}}</view>
+                </view>
+                <view class="cu-capsule margin-right-xs radius">
+                    <view class="cu-tag bg-greenSecond ">打开次数</view>
+                    <view class="cu-tag line-greenSecond">{{item.openNum}}</view>
+                </view>
+                <view class="cu-capsule radius">
+                    <view class="cu-tag bg-greenThird ">完成人数</view>
+                    <view class="cu-tag line-greenThird">{{item.finishNum}}</view>
+                </view>
+            </view>
+        </view>
+        <view class="panel-two padding-lr-lg flex justify-between align-center text-sm">
+            <view>{{item.created_at}}</view>
+            <text class="cuIcon-right lg"></text>
+        </view>
+    </block>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp"  open-type="getUserInfo" bindgetuserinfo="setUserData">
+            发布新的活动
+        </button>
+    </view>
+</view>
