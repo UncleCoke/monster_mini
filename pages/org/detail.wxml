@@ -1,0 +1,129 @@
+<view style="padding-bottom:150rpx">
+    <view class="cu-card ">
+        <view class="cu-item shadow">
+            <view class="cu-list menu-avatar">
+                <view class="cu-item">
+                    <view wx:if="{{org.classLogo}}" class="cu-avatar radius lg" style="background-image:url({{org.classLogo}});"></view>
+                    <view wx:else class="cu-avatar radius lg {{org.vipLevel?'bg-gradual-orange':'bg-grey'}}">
+                        {{org.orgName[0]}}
+                    </view>
+                    <view class="content flex-sub">
+                        <view class="flex justify-between">
+                            <view class=" flex align-center">
+                                <view class="text-cut {{org.vipLevel?'text-yellow':'text-grey'}}">
+                                    {{org.orgName}}
+                                </view>
+                                <view wx:if="{{org.vipLevel}}" class="cu-tag round bg-orange sm">
+                                    VIP
+                                </view>
+                            </view>
+                            <view class="text-grey text-sm">
+                                <text class="cuIcon-group_fill margin-right-xs"></text>
+                                班级 {{org.classesCount}}
+                                <text class="cuIcon-friendfill margin-left-sm margin-right-xs"></text>
+                                老师 {{org.teacherCount}}
+                            </view>
+                        </view>
+                        <view class="flex justify-between">
+                            <view class="text-xs text-gray">
+                                {{org.province?org.province+org.city+org.area:''}}
+                            </view>
+                            <view class="text-xs text-cyan">
+                                负责人：{{org.adminId?org.adminName:'未指定'}}
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="padding flex justify-between align-center bg-white solid-top">
+                <view class="text-xs text-gray">
+                    <view wx:if="{{org.vipLevel}}">VIP有效期：{{org.vipEndTime}}</view>
+                </view>
+                <view class="flex justify-end" wx:if="{{globalData.isAdmin == 1}}">
+                    <button class="cu-btn sm bg-orange margin-lr-sm" data-id="{{org.id}}" bind:tap="edit">
+                        <view class="text-sm">{{org.vipLevel?'延期':'升级'}}</view>
+                        <text class='cuIcon-right  margin-left-xs'></text>
+                    </button>
+                    <button class="cu-btn sm bg-cyan " data-id="{{org.id}}" bind:tap="edit">
+                        <view class="text-sm">设置</view>
+                        <text class='cuIcon-right  margin-left-xs'></text>
+                    </button>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class='cu-bar solid-bottom bg-white'>
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    老师列表
+                </view>
+            </view>
+            <view class="cu-list menu-avatar comment">
+                <block wx:for="{{teachers}}" wx:key="user">
+                    <view class="cu-item">
+                        <view class="cu-avatar round" style="background-image:url({{item.avatarUrl}});"></view>
+                        <view class="content">
+                            <view class="flex justify-between">
+                                <view class="text-grey">
+                                    {{item.trueName?item.trueName:item.nickName}}
+                                </view>
+                                    <view class="text-sm text-grey">
+                                        {{item.phone?item.phone:''}}
+                                    </view>
+                            </view>
+                            <view class="text-gray text-content text-sm">
+                                创建了{{item.classes.length}}个班级,发布了{{item.evalCount}}份评测。
+                            </view>
+                            <view class="bg-blue light padding-sm radius margin-top-sm  text-sm" wx:for="{{item.classes}}" wx:key="class" wx:for-item="class"  data-id="{{class.id}}" bind:tap="classDetail">
+                                <view class="flex">
+                                    <view class="flex-sub padding-bottom-sm">{{class.name}}</view>
+                                </view>
+                                <view class="grid col-4" data-id="{{class.id}}" bind:tap="classDetail">
+                                    <view class="padding-right-sm flex flex-direction justify-end align-center">
+                                        <view class="bg-blue round flex  justify-center align-center" style="height:80rpx;width:80rpx;">
+                                            <view class="text-sm">{{class.teacherCount}}位</view>
+                                        </view>
+                                        <view class="margin-top-xs text-xs">老师</view>
+                                    </view>
+                                    <view class="flex flex-direction justify-end align-center">
+                                        <view class="bg-blue round flex  justify-center align-center" style="height:80rpx;width:80rpx;">
+                                            <view class="text-sm">{{class.studentCount}}位</view>
+                                        </view>
+                                        <view class="margin-top-xs text-xs">学生</view>
+                                    </view>
+                                    <view class="padding-left-sm flex flex-direction justify-end align-center">
+                                        <view class="bg-blue plain round flex  justify-center align-center" style="height:80rpx;width:80rpx;">
+                                            <view class="text-sm">{{class.homeworkCount}}次</view>
+                                        </view>
+                                        <view class="margin-top-xs text-xs">作业</view>
+                                    </view>
+                                    <view class="padding-left-sm flex flex-direction justify-end align-center">
+                                        <view class="bg-blue round flex  justify-center align-center" style="height:80rpx;width:80rpx;">
+                                            <view class="text-sm">{{class.classEvalCount}}份</view>
+                                        </view>
+                                        <view class="margin-top-xs text-xs">班级评测</view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="margin-top-sm flex justify-between">
+                                <view class="text-grey text-xs">上次登录：{{item.lastLoginTime}}</view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+            <view  class="padding flex justify-between align-center bg-white" wx:if="{{org.teacherCount == 0}}">
+            <view class='text-gray text-sm'>暂无老师加入</view>
+
+        </view>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <button class="cu-btn bg-blue round submit margin-xs" data-org="{{org.id}}" data-name="{{org.orgName}}" open-type="share">
+            邀请老师加入
+        </button>
+    </view>
+</view>

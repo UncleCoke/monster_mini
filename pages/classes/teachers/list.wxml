@@ -1,0 +1,53 @@
+<view class="margin  margin-bottom-xs  flex justify-between align-center">
+    <view class="text-darkGray">
+        <text class='cuIcon-group_fill margin-right-xs'></text>
+        共{{teachers.length}}个老师
+    </view>
+    <!-- <view >筛选</view> -->
+</view>
+<view style="padding-bottom:150rpx">
+    <view class="cu-card">
+    <view class="cu-item shadow">
+        <view class='cu-bar solid-bottom bg-white'>
+            <view class='action'>
+                <text class='cuIcon-titles text-orange '></text>
+                    老师列表
+            </view>
+        </view>
+        <view class="cu-list menu-avatar">
+            <block wx:for="{{teachers}}" wx:key="user">
+                <view class="cu-item solid-bottom">
+                <view wx:if="{{item.avatarUrl}}" class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                <view wx:else class="cu-avatar round lg bg-blue}}">{{item.nickName[0]}}</view>
+                <view class="content">
+                    <view class="text-grey text-sm">{{item.nickName?item.nickName:'匿名'}}</view>
+                    <view class="text-grey">
+                        
+                        <view class="text-grey text-xs">{{item.phone}}</view>
+                    </view>
+                </view>
+                <view class="action">
+                    <view class="text-gray" wx:if="{{item.isOwner}}">班主任</view>
+                    <block wx:elif="{{masterId == teacherId}}">
+                        <view class="text-green" wx:if="{{item.status == 0}}" data-id="{{item.teacherId}}"  bind:tap="check">审核</view>
+                    <view class="text-red" wx:elif="{{item.status == 1}}" data-id="{{item.teacherId}}"  bind:tap="remove">移除</view>
+                    </block>
+                    
+                </view>
+            </view>
+
+            </block>
+            
+            
+        </view>
+
+    </view>
+</view>
+</view>
+
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>        
+        <button wx:if="{{masterId == teacherId}}" class="cu-btn bg-blue round submit margin-xs"  open-type="share">邀请老师加入</button>
+    </view>
+</view>

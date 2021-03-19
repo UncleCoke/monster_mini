@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "答题记录",
+  "navigationBarBackgroundColor":"#f8f8f8",
   "usingComponents": {}
 }

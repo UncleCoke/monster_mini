@@ -1,0 +1,137 @@
+<view class="page-sp">
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">*号为必填项</view>
+    <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
+        <view class="text-bold padding-top padding-bottom-sm">*选择科目</view>
+        <view class="flex align-center justify-between flex-wrap padding-bottom-lg solid-bottom">
+            <view wx:for="{{textbooks}}" wx:key="*this" class="picker-shape {{formData.subjectindex == index?'hover':''}} margin-top-sm" bindtap="formInputChange" data-field="subjectindex" data-value="{{index}}">
+                {{item.subject}}
+            </view>
+        </view>
+        <view class="text-bold padding-top-lg padding-bottom-sm">*选择类型</view>
+        <view class="flex align-center justify-between flex-wrap padding-bottom-lg solid-bottom">
+            <view wx:for="{{types}}" wx:key="*this" class="picker-shape {{formData.type == item.type?'hover':''}} margin-top-sm" bindtap="formInputChange" data-field="type" data-value="{{item.type}}">
+                {{item.name}}
+            </view>
+        </view>
+        <view class="padding-top-lg" >
+            <view class="flex justify-between align-center {{formData.unit?'margin-bottom-sm':''}}" bindtap="showModal" data-target="units">
+                <view class="text-sp text-bold">*选择单元</view>
+                <view class="text-lg colorT-sp cuIcon-right"></view>
+            </view>
+            <view class="flex align-center justify-between flex-wrap" wx:if="{{formData.unit}}" bindtap="showModal" data-target="units">
+                <view class="picker-shape hover margin-top-sm" style="width:100%;">{{formData.unit}}</view>
+            </view>
+            <view class="flex align-center margin-top padding-top solid-top" wx:if="{{formData.type==2 && formData.unitId}}">
+                <view>{{formData.questionIds.length>0?'已选题目':'选择题目'}}：</view>
+                <view class="picker-shape hover margin-lr-sm "> 已选择{{formData.questionIds.length}}题</view>
+                <button class="cu-btn bg-cyan  round" bindtap="pickTopic" wx:if="{{formData.type == 2}}">{{formData.questionIds.length>0?'重新选择题目':'请选择题目'}}</button>
+            </view>
+        </view>
+    </view>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">布置选项</view>
+    <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
+        <view class="text-bold padding-top padding-bottom-sm">*范围</view>
+        <view class="flex align-center flex-wrap padding-bottom-lg solid-bottom">
+            <view wx:for="{{ranges}}" wx:key="*this" class="picker-shape {{formData.range == item.range?'hover':''}} margin-top-sm margin-right-sm" bindtap="formInputChange" data-field="range" data-value="{{item.range}}">
+                {{item.name}}
+            </view>
+        </view>
+        <view class="padding-top-lg text-sp">布置对象：{{ranger}}</view>
+    </view>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">提交日期设置</view>
+    <view class="bg-white padding-lr-lg text-sp">
+        <picker bindchange="formInputChange" data-field="endDate" data-type="picker" value="{{formData.endDate}}" mode="date" start="{{today}}">
+            <view class="flex ailg-center justify-between padding-top solid-bottom">
+                <view>
+                    <view class="text-bold">*日期</view>
+                    <view class="height-sp colorF-sp text-sp">
+                        {{formData.endDate?formData.endDate:'请设置提交日期'}}
+                    </view>
+                </view>
+                <view class="cuIcon-right flex align-center" style="color:#ccc;"></view>
+            </view>
+        </picker>
+        <picker bindchange="formInputChange" data-field="endTime" data-type="picker" value="{{formData.endTime}}" mode="time">
+            <view class="flex ailg-center justify-between padding-top">
+                <view>
+                    <view class="text-bold">*时间</view>
+                    <view class="height-sp colorF-sp text-sp">
+                        {{formData.endTime?formData.endTime:'请设置提交时间'}}
+                    </view>
+                </view>
+                <view class="cuIcon-right flex align-center" style="color:#ccc;"></view>
+            </view>
+        </picker>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white flex-sub" bindtap="back">返回</button>
+        <button class="cu-btn lg bg-blue sp margin-right" bind:tap="create">发布</button>
+    </view>
+</view>
+<view class="cu-modal {{groupModal?'show':''}}">
+    <view class="cu-dialog" catchtap>
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">选择分组</view>
+        </view>
+        <scroll-view scroll-y="{{true}}" style="max-height:800rpx;">
+            <radio-group class="block">
+                <view class="cu-list menu text-left">
+                    <view class="cu-item" wx:for="{{groupList}}" wx:key bindtap="getGroup" data-group="{{item}}">
+                        <label class="flex justify-between align-center flex-sub">
+                            <view class="flex-sub">
+                                {{item.name}}({{item.studentList.length}}人)
+                            </view>
+                            <radio class="round"></radio>
+                        </label>
+                    </view>
+                </view>
+            </radio-group>
+        </scroll-view>
+    </view>
+</view>
+<view class="cu-modal {{modalName=='units'?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">请选择单元或课时</view>
+            <view class="action" bindtap="hideModal">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <scroll-view scroll-y="{{true}}" style="max-height:600rpx;">
+            <radio-group class="block" data-field="unitId" bindchange="formInputChange">
+                <view class="cu-list menu text-left">
+                    <block wx:for="{{units}}" wx:key="units">
+                        <block wx:if="{{item.children.length>0}}">
+                            <view class="cu-item">
+                                <label class="flex justify-between align-center flex-sub">
+                                    <view class="flex-sub text-sm">{{item.name}}</view>
+                                </label>
+                            </view>
+                            <view class="cu-item" wx:for="{{item.children}}" wx:key="child" wx:for-item="child" wx:for-index="childIndex">
+                                <label class="flex justify-between align-center flex-sub">
+                                    <view class="flex-sub text-sm margin-left-xl">
+                                        {{child.name}}
+                                    </view>
+                                    <radio class="radius blue" value="{{index+'_'+childIndex}}"></radio>
+                                </label>
+                            </view>
+                        </block>
+                        <block wx:else>
+                            <view class="cu-item">
+                                <label class="flex justify-between align-center flex-sub">
+                                    <view class="flex-sub text-sm">{{item.name}}</view>
+                                    <radio class="radius blue" value="{{index}}"></radio>
+                                </label>
+                            </view>
+                        </block>
+                    </block>
+                </view>
+            </radio-group>
+        </scroll-view>
+        <view class="cu-bar bg-white btn-group padding-sm">
+            <button class="cu-btn bg-blue margin round lg" bindtap="hideModal">确定</button>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,122 @@
+<scroll-view scroll-x class="bg-white nav">
+    <view class="flex text-center">
+        <view wx:for="{{tabs}}" wx:key="*this" class="flex-sub">
+            <view class="cu-item  {{index == activeIndex?'text-orange cur':''}}" bindtap="tabSelect" data-index="{{index}}">
+                {{item}}
+            </view>
+        </view>
+    </view>
+</scroll-view>
+<!-- 学生 -->
+<block wx:if="{{activeIndex == 0}}">
+    <view class="margin  margin-bottom-xs  flex justify-between align-center">
+        <view class="text-darkGray">
+            <text class='cuIcon-group_fill margin-right-xs'></text>
+            共{{studentList.length}}个学生
+        </view>
+        <!-- <view >筛选</view> -->
+    </view>
+    <view style="padding-bottom:150rpx">
+        <view class="cu-card">
+            <view class="cu-item shadow">
+                <view class='cu-bar solid-bottom bg-white'>
+                    <view class='action'>
+                        <text class='cuIcon-titles text-orange '></text>
+                        学生列表
+                    </view>
+                </view>
+                <view class="cu-list menu-avatar">
+                    <block wx:for="{{studentList}}" wx:key="user">
+                        <view class="cu-item solid-bottom" data-id="{{item.id}}" data-token="{{item.token}}" data-index="{{index}}" bind:tap="{{item.status>0?'report':(item.status==0?'check':'')}}">
+                            <view wx:if="{{item.avatarUrl}}" class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                            <view wx:else class="cu-avatar round lg {{item.level?'bg-gradual-orange':'bg-blue'}}">
+                                {{item.nickName[0]}}
+                            </view>
+                            <view class="content">
+                                <view class="text-grey text-sm">{{item.nickName}}</view>
+                                <view class="text-grey">
+                                    <view class="text-grey text-xs">
+                                        上次登录：{{item.lastLoginTime}}
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="action">
+                                <!-- <view class="text-gray" >班主任</view> -->
+                                <block wx:if="{{masterId == teacherId}}">
+                                    <view class="text-green text-xs" wx:if="{{item.status == 0}}">
+                                        待审核
+                                    </view>
+                                    <view class="text-red text-xs" wx:elif="{{item.status == -2}}">
+                                        待付费
+                                    </view>
+                                    <view wx:else class="cuIcon-right text-gray"></view>
+                                </block>
+                                <view wx:else class="cuIcon-right text-gray"></view>
+                            </view>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="cu-bar bg-white tabbar border shop foot">
+        <view class="btn-group">
+            <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+            <button wx:if="{{masterId == teacherId}}" class="cu-btn bg-blue round submit margin-xs" open-type="share">
+                邀请学生加入
+            </button>
+        </view>
+    </view>
+</block>
+<!-- 分组 -->
+<block wx:else>
+    <view class="margin  margin-bottom-xs  flex justify-between align-center">
+        <view class="text-darkGray">
+            <text class='cuIcon-group_fill margin-right-xs'></text>
+            共{{groupList.length}}个小组
+        </view>
+    </view>
+    <view style="padding-bottom:150rpx">
+        <view class="cu-card ">
+            <view class="cu-item shadow">
+                <view class='cu-bar solid-bottom bg-white'>
+                    <view class='action'>
+                        <text class='cuIcon-titles text-orange '></text>
+                        小组列表
+                    </view>
+                </view>
+                <view class="cu-list menu-avatar">
+                    <block wx:for="{{groupList}}" wx:key="user">
+                        <view class="cu-item solid-bottom" bindtap="gotoGroup" data-type="edit" data-group="{{item}}">
+                            <view class="cu-avatar round lg bg-gradual-orange">
+                                {{item.name[0]}}
+                            </view>
+                            <view class="content">
+                                <view class="margin-bottom-xs text text-grey">{{item.name}}</view>
+                                <view class="flex align-center" wx:if="{{item.studentList.length>0}}">
+                                    <view class="cu-avatar-group" style="padding-left:18rpx;">
+                                        <view class="cu-avatar round sm" wx:for="{{item.studentList}}" wx:key="id" wx:for-item="student" style="background-image:url({{student.avatarUrl}});" wx:if="{{index < 5}}"></view>
+                                    </view>
+                                    <view class="text-sm text-grey">
+                                        {{item.studentList[0].nickName}}等{{item.studentList.length}}人
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="action">
+                                <view class="cuIcon-right text-gray"></view>
+                            </view>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="cu-bar bg-white tabbar border shop foot">
+        <view class="btn-group">
+            <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+            <button class="cu-btn bg-blue round submit margin-xs" bindtap="gotoGroup" data-type="add" wx:if="{{masterId == teacherId}}">
+                新增小组
+            </button>
+        </view>
+    </view>
+</block>

@@ -1,50 +1,19 @@
-page {
-    background-color: #f8f8f8;
+.nav .cu-item{
+    padding:0;
+    margin:0 40rpx;
 }
 
-.tab {
-    width: 320rpx;
+.height-sp1 {
     height: 80rpx;
     line-height: 80rpx;
-    background: #fff;
-    color: #000;
+}
+
+.input {
+    width: 120rpx;
+    height: 56rpx;
+    line-height: 56rpx;
+    background-color: rgba(7, 121, 228, 0.1);
     border-radius: 32rpx;
+    color: #0779E4;
     text-align: center;
-    font-size: 30rpx;
-}
-
-.active-tab {
-    background-color: #0779E4;
-    color: #fff;
-}
-
-.cu-form-group {
-    padding: 0 40rpx !important;
-}
-
-.num-set {
-    min-height: 100rpx;
-    padding: 0 40rpx 0 90rpx;
-}
-
-.num-set .input {
-    width:120rpx;
-    height:50rpx;
-    line-height:50rpx;
-    background-color:rgba(7, 121, 228, 0.1);
-    border-radius: 32rpx;
-    color:#0779E4;
-    text-align:center;
-}
-
-.num-set:not(:last-of-type) {
-    border-bottom: 1rpx solid #eee;
-}
-
-.cu-form-group .picker {
-    overflow: hidden;
-    position: relative;
-    min-width: 200rpx;
-    height: 100rpx;
-    line-height: 100rpx;
 }

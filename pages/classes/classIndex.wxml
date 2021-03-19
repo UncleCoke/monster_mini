@@ -1,1 +1,121 @@
-
+<view wx:if="{{!userInfo.wxPubOpenId}}" class="bg-red light round margin flex align-center justify-between">
+    <view class="flex align-center margin-left-sm">
+        <text class="cuIcon-infofill text-orange text-lg margin-right-xs"></text>
+        <text class="text-xs">您还未关注小优科教公众号，无法及时收到作业通知！</text>
+    </view>
+    <button class="cu-btn bg-red sm round margin-sm">关注</button>
+</view>
+<official-account></official-account>
+<view class="bg-white text-sm panel">
+    <view class="padding-top-lg padding-lr-lg">
+        <view class="flex align-center justify-between">
+            <view class="flex align-center">
+                <view wx:if="{{classDetail.classLogo}}" class="cu-avatar avatar-radius lg" style="background-image:url({{classDetail.classLogo}});"></view>
+                <view wx:else class="cu-avatar avatar-radius lg {{classDetail.level && classDetail.isFollowOrgVip?'bg-gradual-orange':'bg-blue'}}">
+                    {{classDetail.name[0]}}
+                </view>
+                <view class="margin-left-sm flex-sub">
+                    <view class="flex align-center margin-bottom-sm">
+                        <view class="text-sp text-bold margin-right-sm">{{classDetail.name}}</view>
+                        <view class="cu-tag bg-red sm round" wx:if="{{classDetail.level && classDetail.isFollowOrgVip}}" style="width:60rpx;">
+                            VIP
+                        </view>
+                    </view>
+                    <view class="flex align-center">
+                        <view class="colorF-sp padding-right-sm">{{classDetail.grade}}</view>
+                        <view class="solid" wx:if="{{classDetail.orgName}}"></view>
+                        <view wx:if="{{classDetail.orgName}}" class="text-blue padding-left-sm">
+                            {{classDetail.orgName}}
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="flex align-center justify-between" style="padding:32rpx 118rpx;">
+            <view class="flex align-center justify-center flex-direction">
+                <view style="position:relative">
+                    <view class="content-shape bg-olive light">{{classDetail.studentCount}}</view>
+                    <view wx:if="{{classDetail.toBeStudentCount && master}}" class="badge">
+                        {{classDetail.toBeStudentCount}}
+                    </view>
+                </view>
+                <view class="text-sm">学生</view>
+            </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view style="position:relative">
+                    <view class="content-shape bg-greenSecond light">
+                        {{classDetail.teacherCount}}
+                    </view>
+                    <view wx:if="{{classDetail.toBeTeacherCount && master}}" class="badge">
+                        {{classDetail.toBeTeacherCount && master}}
+                    </view>
+                </view>
+                <view class="text-sm">老师</view>
+            </view>
+        </view>
+    </view>
+    <view class="padding-tb padding-lr-lg flex align-center justify-between solid-top">
+        <view class="flex align-center">
+            <image mode="widthFix" src="{{imgUrl}}icon_user.png" style="width:30rpx" />
+            <block wx:if="{{hasJoin == 1}}">
+                <view class="text-greenSecond margin-left-sm margin-right-lg">
+                    我是{{classDetail.teacherId == teacherId?'班主任':'老师'}}
+                </view>
+            </block>
+            <block wx:elif="{{classDetail.masterName}}">
+                <view class="text-greenSecond margin-left-sm margin-right-lg">
+                    班主任：{{classDetail.masterName}}
+                </view>
+            </block>
+            <block wx:if="{{classDetail.price>0}}">
+                <image mode="widthFix" src="{{imgUrl}}icon_price.png" style="width:35rpx" />
+                <view style="color:#ffb341" class="margin-left-sm">
+                    收费{{classDetail.price/100}}元
+                </view>
+            </block>
+        </view>
+    </view>
+</view>
+<view class="padding-sp padidng-top">
+    <view class="bg-white padding-lg radius-sp">
+        <view class="flex align-center padding-bottom-lg">
+            <image src="{{imgUrl}}icon_action.png" style="width:36rpx;" mode="widthFix" />
+            <view class="margin-left-sm text-sp text-bold">班级功能</view>
+        </view>
+        <view class="flex align-center justify-between flex-wrap">
+            <view class="action-panel radius-sp flex flex-direction align-center justify-center" wx:for="{{iconList}}" wx:key="icon" data-type="{{item.type}}" data-master="{{item.master}}" data-url="{{item.url}}" wx:if="{{item.open && master >= item.master}}" bind:tap="action">
+                <image src="{{imgUrl + item.icon}}.png" mode="widthFix" style="width:72rpx;" />
+                <view class="text-sm margin-top-xs">{{item.name}}</view>
+            </view>
+            <view class="action-panel radius-sp flex flex-direction align-center justify-center" wx:if="{{master}}" data-type="page" data-master="1" data-url="setting" bind:tap="action">
+                <image src="{{imgUrl}}icon/setting.png" mode="widthFix" style="width:72rpx;" />
+                <view class="text-sm margin-top-xs">设置</view>
+            </view>
+            <view wx:elif="{{hasJoin == 1}}" class="action-panel radius-sp flex flex-direction align-center justify-center" bind:tap="quit">
+                <image src="{{imgUrl}}icon/quit.png" mode="widthFix" style="width:72rpx;" />
+                <view class="text-sm margin-top-xs">退出班级</view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white flex-sub" bindtap="back">返回</button>
+        <button wx:if="{{hasJoin == -2 && !phone}}" class="cu-btn lg bg-blue sp margin-right" open-type="getUserInfo" bindgetuserinfo="setUserData">
+            申请加入
+        </button>
+        <button wx:elif="{{hasJoin == -2 && phone}}" class="cu-btn lg bg-blue sp margin-right" data-id="{{classDetail.id}}" bind:tap="join">
+            申请加入
+        </button>
+        <button wx:elif="{{hasJoin == 1}}" class="cu-btn lg bg-blue sp margin-right" data-id="{{classDetail.id}}" bind:tap="enterClass">
+            进入班级
+        </button>
+        <button wx:elif="{{hasJoin == 0}}" class="cu-btn lg bg-blue sp margin-right" disabled="{{true}}">
+            等待审核
+        </button>
+        <button wx:elif="{{hasJoin == -1}}" class="cu-btn lg bg-blue sp margin-right" disabled="{{true}}">
+            已退出
+        </button>
+    </view>
+</view>
+<get-phone bgColor="bg-gradual-pink" show-modal="{{showModal}}" bindcustomevent="reload"></get-phone>

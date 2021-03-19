@@ -15,91 +15,54 @@ Page({
       topicsCount: 20,
     },
     list: [],
-
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
   },
+
   onLoad: function (options) {
     var evalId = options.id
     this.setData({
       evalId
     })
-    wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
-  },
-  inti() {
-    this.getEvalList()
-  },
-
-  evalDetail: function (e) {
-    console.log(e);
-    var id = e.currentTarget.id
-
-    wx.navigateTo({
-      url: `detail?id=${id}`
-    });
+    app.checkLogin(() => {
+      this.getEvalList()
+    })
   },
 
   getEvalList: function () {
-
-    var url = app.globalData.apiUrl + '/public/teacher/eval/reportUserList'
-    var data = {
-      token: app.globalData.token,
-      evalId:this.data.evalId
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-          let evalData = res.data.data.eval
-          let users = res.data.data.users
-          this.setData({
-            eval: evalData,
-            users
-          })
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:app.globalData.apiUrl + '/public/teacher/eval/reportUserList',
+      data:{
+        evalId: this.data.evalId
       },
-      fail: (res) => {
-        wx.stopPullDownRefresh()
-        wx.hideNavigationBarLoading();
-      }
+      barLoading:true
+    }).then(res => {
+      let evalData = res.eval
+      let users = res.users
+      this.setData({
+        eval: evalData,
+        users
+      })
     })
   },
+
   onPullDownRefresh: function () {
     this.getEvalList()
-
+    wx.stopPullDownRefresh();
   },
+
   back: function (e) {
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 1) {
       wx.navigateBack({
         delta: 1
       });
     } else {
-
       wx.switchTab({
-        url: 'list'
+        url: '/pages/recruit/index'
       });
     }
-
   },
+
   report: function (e) {
     const {
       user,
@@ -107,14 +70,13 @@ Page({
       id,
       index
     } = e.currentTarget.dataset
-    var userInfo = this.data.users[index]
-  wx.setStorage({
-    key: 'userInfo',
-    data: userInfo
-  })
+    let userInfo = this.data.users[index]
+    wx.setStorage({
+      key: 'userInfo',
+      data: userInfo
+    })
     wx.navigateTo({
       url: `report?id=${id}&token=${token}&user=${user}`
     });
-  
   },
 })

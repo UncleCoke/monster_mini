@@ -1,91 +1,70 @@
-const app = getApp();
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    showModal:false
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/classes/'
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    wx.hideShareMenu();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onPullDownRefresh: function () {
+    this.getClassList()
+    wx.stopPullDownRefresh();
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
     app.checkLogin(()=>{
       this.inti();
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    this.getClassList();
-    wx.stopPullDownRefresh();
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  inti:function(){
+  inti: function () {
     this.setData({
       teacherId:app.globalData.uid,
-      phone:app.globalData.phone
+      phone:app.globalData.phone,
+      showModal:false
     })
     this.getClassList()
   },
 
-  getClassList:function(){
+  classDetail:function(e){
+    let id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: `classIndex?id=${id}`
+    });
+  },
+
+  createClass:function(e){
+    wx.navigateTo({
+      url: 'create'
+    });
+  },
+
+  getClassList: function () {
     app.request({
       url:app.globalData.apiUrl + '/class/list',
       data:{
-        teacherId:app.globalData.uid
+        teacherId: app.globalData.uid
       },
       barLoading:true
     }).then(res => {
+      let classList = res.list
+      let allStudentCount = res.allStudentCount
       this.setData({
-        classList:res.list
+        classList,allStudentCount
       })
     })
   },
 
   setUserData:function(e){
-    let rawData = e.detail.rawData;
-    let encryptedData = e.detail.encryptedData;
-    let iv = e.detail.iv;
+    let rawData = e.detail.rawData
+    let encryptedData = e.detail.encryptedData
+    let iv = e.detail.iv
     app.setUserData(encryptedData,iv,rawData,'','',()=>{
       this.setData({
         showModal:true
@@ -94,21 +73,8 @@ Page({
   },
 
   reload:function(){
-    app.login(() => {
-      this.inti();
+    app.login((res) => {
+      this.inti()
     })
-  },
-
-  classDetail:function(e){
-    let id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: `classIndex?id=${id}`
-    });
-  },
-
-  createClass:function(){
-    wx.navigateTo({
-      url: 'create'
-    });
   }
 })

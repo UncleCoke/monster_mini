@@ -1,0 +1,160 @@
+<scroll-view scroll-x class="bg-white nav">
+    <view class="flex text-center">
+        <view wx:for="{{tabs}}" wx:key="*this" class="flex-sub">
+            <view class="cu-item  {{index == activeIndex?'text-blue cur':''}}" bindtap="tabSelect" data-index="{{index}}">
+                {{item}}
+            </view>
+        </view>
+    </view>
+</scroll-view>
+<!-- 学生 -->
+<block wx:if="{{activeIndex == 0}}">
+    <view class="padding-tb padding-lr-xl flex justify-between align-center">
+        <picker mode="date" fields="month" value="{{date}}" bindchange="dateChange" end="{{nDate.date}}">
+            {{date?date:'请选择日期'}}
+        </picker>
+        <view class="text-gray flex">
+            <view class="margin-right text-green">
+                <text class="cuIcon-appreciatefill margin-right-xs"></text>
+                {{classTotalScoreAdd}}
+            </view>
+            <view class="text-red flex align-center">
+                <text class="cuIcon-appreciatefill margin-right-xs rotate"></text>
+                {{classTotalScoreReduce}}
+            </view>
+        </view>
+    </view>
+    <view class="bg-white student-box padding-tb-lg padding-lr">
+        <view class="grid col-4" style="width:100%;height:100%;">
+            <block wx:if="{{!isMulti}}">
+                <view wx:for="{{studentList}}" wx:key="id" class="margin-bottom flex align-center justify-center flex-direction" bindtap="chooseStudent" data-student="{{item}}" data-type="single" wx:if="{{item.status == 1}}">
+                    <view class="cu-avatar lg round" style="background-image:url({{item.avatarUrl}});">
+                        <image src="http://img.uelink.com.cn/upload/xyfx/{{score === 1?'+1a':'_1a'}}.gif?{{time}}" style="width:100%" mode="widthFix" wx:if="{{judge.isSelect(studentIds,item.id) && score}}" class="gif"/>
+                    </view>
+                    <view class="cu-capsule round margin-bottom-xs" style="margin-top:-8rpx;">
+                        <view class="cu-tag bg-blue sm">{{item.toalScoreAdd}}</view>
+                        <view class="cu-tag  bg-white line-red sm">{{item.toalScoreReduce}}</view>
+                    </view>
+                    <view class="text-sm">{{item.nickName}}</view>
+                </view>
+            </block>
+            <block wx:else>
+                <view wx:for="{{studentList}}" wx:key="id" class="margin-bottom flex align-center justify-center flex-direction" bindtap="chooseStudent" data-student="{{item}}" data-type="multi" wx:if="{{item.status == 1}}">
+                    <view class="cu-avatar lg round" style="background-image:url({{item.avatarUrl}});">
+                        <text class="select {{judge.isSelect(studentIds,item.id)?'cuIcon-roundcheckfill line-green':'cuIcon-round line-gray'}}"></text>
+                    </view>
+                    <view class="cu-capsule round margin-bottom-xs" style="margin-top:-8rpx;">
+                        <view class="cu-tag bg-blue sm">{{item.toalScoreAdd}}</view>
+                        <view class="cu-tag  bg-white line-red sm">{{item.toalScoreReduce}}</view>
+                    </view>
+                    <view class="text-sm">{{item.nickName}}</view>
+                </view>
+            </block>
+        </view>
+    </view>
+    <view class="cu-bar bg-white tabbar border shop foot">
+        <view class="btn-group" wx:if="{{!isMulti}}">
+            <button class="cu-btn bg-blue round submit margin-xs" bind:tap="setMulti">
+                <text class="cuIcon-friend"></text>
+                <text class="margin-left-xs">点评多人</text>
+            </button>
+        </view>
+        <view class="btn-group" wx:else>
+            <button class="cu-btn bg-blue round submit margin-xs" bind:tap="setModal">确定</button>
+            <button class="cu-btn bg-white round submit margin-xs" bind:tap="setMulti">取消</button>
+        </view>
+    </view>
+</block>
+<!-- 小组 -->
+<block wx:else>
+    <view class="bg-white student-box padding-tb-lg padding-lr">
+        <view class="grid col-4" style="width:100%;height:100%;">
+            <view wx:for="{{groupList}}" wx:key="id" class="margin-bottom flex align-center justify-center flex-direction" bindtap="setActiveGroup" data-group="{{item}}">
+                <view style="position:relative">
+                    <view class="cu-avatar round lg bg-gradual-orange">
+                        {{item.name[0]}}
+                    </view>
+                    <image  src="http://img.uelink.com.cn/upload/xyfx/{{score === 1?'+1a':'_1a'}}.gif?{{time}}" style="width:100%" mode="widthFix" wx:if="{{item.id === activeGroup.id && score}}" class="gif"/>
+                </view>
+                <view class="text-sm margin-top-xs">{{item.name}}</view>
+            </view>
+        </view>
+        <view class="text-grey padding-tb text-center" wx:if="{{groupList.length == 0}}">
+            - 暂无小组 -
+        </view>
+    </view>
+</block>
+<view class="cu-modal {{behaviourModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">
+                点评 {{activeStudents[0].nickName}}{{activeStudents.length>1?'等人':''}}
+            </view>
+            <view class="action" bindtap="setModal">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding-lr padding-bottom bg-white">
+            <scroll-view scroll-x class="bg-white nav">
+                <view class="flex text-center">
+                    <view wx:for="{{behaviourTabs}}" wx:key="*this" class="flex-sub">
+                        <view class="cu-item  {{index == activeBIndex?'text-blue cur':''}}" bindtap="tabBSelect" data-index="{{index}}">
+                            {{item}}
+                        </view>
+                    </view>
+                </view>
+            </scroll-view>
+            <view class="margin-top-xl">
+                <scroll-view scroll-y="{{true}}" style="max-height:600rpx;">
+                    <view class="grid col-3" style="width:100%;height:100%;">
+                        <view wx:for="{{activeBIndex == 0? addBehaviourList:reduceBehaviourList}}" wx:key="id" class="margin-bottom flex align-center justify-center flex-direction" bindtap="addBehaviour" data-id="{{item.id}}" data-score="{{item.score}}">
+                            <view class="cu-avatar lg round" style="background-image:url({{item.icon}});">
+                                <view class="score bg-blue">{{item.score}}</view>
+                            </view>
+                            <view class="text-sm margin-top-xs">{{item.name}}</view>
+                        </view>
+                    </view>
+                </scroll-view>
+            </view>
+            <button class="cu-btn bg-blue margin-top-xl round" style="width:100%" wx:if="{{!isMulti && activeIndex !== 1}}" bindtap="gotoReport">
+                查看学生行为报告
+            </button>
+        </view>
+    </view>
+</view>
+<view class="cu-modal {{groupModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">{{activeGroup.name}}</view>
+            <view class="action" bindtap="setGroupModal">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="padding-lr padding-bottom padding-top-xl bg-white">
+            <scroll-view scroll-y="{{true}}" style="max-height:600rpx;">
+                <view class="grid col-3" style="width:100%;height:100%;">
+                    <view wx:for="{{activeGroup.studentList}}" wx:key="id" class="margin-bottom flex align-center justify-center flex-direction">
+                        <view class="cu-avatar lg round" style="background-image:url({{item.avatarUrl}});"></view>
+                        <view class="text-sm margin-top-xs">{{item.nickName}}</view>
+                    </view>
+                </view>
+            </scroll-view>
+            <button class="cu-btn bg-blue margin-top-xl round" style="width:100%" bindtap="behaviourGroup">
+                点评小组
+            </button>
+        </view>
+    </view>
+</view>
+<wxs module="judge">
+    function isSelect(ids,id){
+        var index = ids.indexOf(id);
+        if(index > -1){
+            return true
+        }else{
+            return false
+        }
+    }
+    module.exports = {
+        isSelect:isSelect
+    };
+</wxs>

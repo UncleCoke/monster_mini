@@ -359,32 +359,29 @@ Page({
       "knowledges": [],
       "isCorrect": null,
       "option": ["A .It's a book.", "B .I have a book.", "C.This is a book."]
-    }]
-  ,
+    }],
+  },
 
-},
-onload:function(options){
-  wx.hideShareMenu();
-},
-publish: function (e) {
-  wx.navigateTo({
-    url: 'share'
-  });
+  onload: function (options) {
+    wx.hideShareMenu();
+  },
 
-},
-back:function(e){
-  var route = getCurrentPages()
-  if(route.length>1){
-    wx.navigateBack({
-      delta: 1
+  publish: function (e) {
+    wx.navigateTo({
+      url: 'share'
     });
-  }else{
-    wx.redirectTo({
-      url: 'create'
-    });
+  },
+
+  back: function (e) {
+    let route = getCurrentPages()
+    if (route.length > 1) {
+      wx.navigateBack({
+        delta: 1
+      });
+    } else {
+      wx.redirectTo({
+        url: 'create'
+      });
+    }
   }
-  
-}
-
-
 })

@@ -1,0 +1,54 @@
+<view class="padding-sp">
+    <view class="flex align-center margin-bottom-lg">
+        <text class="text-sp text-bold">作业份数：</text>
+        <view class="cu-tag bg-blue light round text-bold">{{recordCount}}份</view>
+    </view>
+    <empty wx:if="{{recordCount === 0}}" title="暂无作业"></empty>
+    <view wx:for="{{list}}" wx:key="id" class="bg-white radius-sp margin-bottom padding-tb padding-lr-lg" id="{{item.id}}" bind:tap="homeworkDetail">
+        <view class="flex align-center justify-between margin-bottom">
+            <view class="flex align-center padding-bottom-sm">
+                <image src="{{imgUrl}}icon_work.png" style="width:42rpx;" mode="widthFix" />
+                <view class="margin-left-xs text-sp text-bold">{{item.title}}</view>
+            </view>
+            <view class="text-sm colorF-sp">
+                由
+                <text class="text-blue">{{item.teacherName}}</text>
+                布置
+            </view>
+        </view>
+        <view class="padding-tb flex flex-wrap justify-start align-center">
+            <view class="text-sp margin-right-lg">作业类型</view>
+            <view class="cu-tag bg-{{item.type==2?'purple':(item.type==3?'cyan':'orange')}} light round">
+                {{item.type==2?'组题练习':(item.type==3?'课时练习':'单元测验')}}
+            </view>
+        </view>
+        <view class="flex flex-wrap justify-start align-center">
+            <view class="text-sp margin-right-lg">单元课时</view>
+            <view class="cu-tag bg-blue light round">{{item.unitName}}</view>
+        </view>
+        <view class="padding-top-lg padding-bottom solid-bottom flex align-center justify-between padding-lr-sm">
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-olive light">{{item.questionNum}}</view>
+                <view class="text-sm">题目数量</view>
+            </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-{{item.unFinishedNum==0?'greenSecond':(item.finishedNum>=item.unFinishedNum?'greenSecond':'red')}} light">{{item.finishedNum}}</view>
+                <view class="text-sm">完成人数</view>
+            </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-greenThird light">{{item.accuracy}}</view>
+                <view class="text-sm">平均得分</view>
+            </view>
+        </view>
+        <view class="flex align-center justify-between text-sm padding-top colorT-sp">
+            <view>截止时间：{{item.ends_at}}</view>
+            <button class="bg-blue sm cu-btn round">详情</button>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white flex-sub" bind:tap="back">返回</button>
+        <button class="cu-btn lg bg-blue sp margin-right" bind:tap="createHomework">布置作业</button>
+    </view>
+</view>

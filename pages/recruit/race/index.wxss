@@ -1,14 +1,1 @@
-.panel {
-    background: #f0f5f7;
-    border-radius: 20rpx;
-    height: 200rpx;
-    color: #464849;
-}
-
-.panel-two {
-    background: #f0f5f7;
-    border-radius: 20rpx;
-    height: 80rpx;
-    color: rgba(0, 0, 0, 0.3);
-    margin-bottom:20rpx;
-}
+@import '../eval/index.wxss';

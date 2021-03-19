@@ -262,7 +262,7 @@
         </view>
     </view>
 </view>
-<view class="cu-bar bg-white tabbar border shop bottom">
+<view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
         <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
         <!-- <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="add">写评语</button> -->

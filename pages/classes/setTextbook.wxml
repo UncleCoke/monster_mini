@@ -1,2 +1,23 @@
-<!--pages/classes/setTextbook.wxml-->
-<text>pages/classes/setTextbook.wxml</text>
+<form>
+<block wx:for="{{textbooks}}" wx:key="textbook">
+<radio-group class="margin bg-white radius flex flex-direction" data-subject="{{index}}" bindchange="formInputChange">
+        <view class="title text-blue margin">
+            {{item.subject}}
+        </view>
+        <view>
+            <radio class="blue margin-left margin-bottom" wx:for="{{item.vers}}" wx:for-index="verIndex" wx:key="ver" wx:for-item="ver" value="{{verIndex}}" checked="{{ver.checked}}">
+                <text class="margin-left-xs">{{ver.ver}}</text>
+            </radio>
+        </view>
+    </radio-group>
+    
+</block>
+    
+
+</form>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <button class="cu-btn bg-blue round submit margin-xs" bind:tap="setTextbook">保存</button>        
+    </view>
+</view>

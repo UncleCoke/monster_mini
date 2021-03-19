@@ -1,66 +1,151 @@
-// pages/classes/create.js
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    grades:['一年级','二年级','三年级', '四年级', '五年级', '六年级'],
+    formData: {
+      name: '',
+      grade: '',
+      isOpen:1,
+      price:0
+    },
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    app.checkLogin(()=>{
+      this.inti();
+    })
+    wx.hideShareMenu();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  inti() {
+    let orgName = app.globalData.orgName || ''
+    let orgId = app.globalData.orgId || 0
+    this.setData({
+      [`formData.orgId`]:orgId,
+      [`formData.orgName`]:orgName,
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  formInputChange(e) {
+    const {
+      field,
+      type,
+      range
+    } = e.currentTarget.dataset
+    console.log(field, type, range, e.detail.value);
+    if (type == 'picker') {
+      var value = range[e.currentTarget.dataset.value]
+    } else {
+      var value = e.detail.value
+    }
+    if(field == "isOpen"){
+      value = e.detail.value?1:2
+    }
+    this.setData({
+      [`formData.${field}`]: value
+    })
+  },
+  
+  create: function () {
+    console.log(this.data.formData);
+    let formData = this.data.formData
+    if(!formData.name){
+      wx.showToast({
+        title: '请输入班级名称',
+        icon: 'error',
+        duration: 1500,
+        mask: false
+      });
+      return
+    }
+    if(!formData.grade){
+      wx.showToast({
+        title: '请选择年级',
+        icon: 'error',
+        duration: 1500,
+        mask: false
+      });
+      return
+    }
+    if(isNaN(formData.price) || formData.price<0){
+      wx.showToast({
+        title: '请输入正确费用',
+        icon: 'error',
+        duration: 1500,
+        mask: false
+      });
+      return
+    }
+    if(formData.price > 99999){
+      wx.showToast({
+        title: '费用不能大于99999',
+        icon: 'none',
+        duration: 1500,
+        mask: false
+      });
+      return
+    }
+    let data = formData
+    data.token = app.globalData.token
+    data.parentId = app.globalData.parentId
+    data.price *=100
+    wx.showLoading({
+      title: "正在提交",
+      mask: true
+    });
+    app.request({
+      url:app.globalData.apiUrl + '/class/create',
+      data,
+      loading:true,
+      loadingTitle:'正在提交',
+      barLoading:true,
+      method:'POST'
+    }).then(res => {
+      let classmateId = res.classmateId
+      this.setData({
+        modalName: 'done',
+        classmateId,
+      })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  back:function(){
+    let route = getCurrentPages()
+    if(route.length>1){
+      wx.navigateBack({
+        delta: 1,
+        success: (result)=>{
+          this.hideModal()
+        }
+      });
+    }else{
+      wx.switchTab({
+        url: '/pages/recruit/index',
+        success: (result)=>{
+          this.hideModal()
+        }
+      });
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  enterClass:function(){
+    wx.redirectTo({
+      url: `classIndex?id=${this.data.classmateId}`,
+      success: (result)=>{
+        this.hideModal()
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  hideModal() {
+    this.setData({
+      modalName: null
+    })
   }
 })

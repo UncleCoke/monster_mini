@@ -1,0 +1,44 @@
+<view class="page-sp">
+    <view class="bg-white padding text-sp margin-top-sm">
+        <view class="text-bold text-left padding-bottom-lg">学员昵称</view>
+        <input bindchange="formInputChange" data-field="name" placeholder="请输入名字" placeholder-class="colorF-sp"></input>
+    </view>
+    <view class="bg-white padding text-sp margin-top-sm">
+        <view class="text-bold text-left padding-bottom-lg">来源途径</view>
+        <view class="flex align-center justify-between flex-wrap">
+            <view class="shape" wx:for="{{from}}" wx:key="*this">{{item}}</view>
+        </view>
+    </view>
+    <view class="bg-white padding text-sp margin-top-sm">
+        <view class="text-bold text-left padding-bottom-sm">当前状态</view>
+        <view class="flex align-center justify-between flex-wrap">
+            <view class="picker-shape margin-top-sm" wx:for="{{status}}" wx:key="*this">{{item}}</view>
+        </view>
+    </view>
+    <view class="bg-white padding text-sp margin-top-sm">
+        <view class="text-bold text-left padding-bottom">意向程度</view>
+        <view class="flex align-center justify-between flex-wrap">
+            <view class="shape" wx:for="{{degree}}" wx:key="*this">{{item}}</view>
+        </view>
+    </view>
+    <view class="bg-white padding text-sp margin-top-sm">
+        <view class="text-bold text-left padding-bottom-lg">下次跟进日期</view>
+        <picker mode="date" value="{{formData.date}}" start="2021-09-01" bindchange="DateChange">
+            <view class="flex align-center justify-between">
+                <view class="colorF-sp text-sp">{{formData.date?formData.date:'请选择日期'}}</view>
+                <text class="cuIcon-right margin-left-sm colorT-sp"></text>
+            </view>
+        </picker>
+    </view>
+    <view class="bg-white padding text-sp margin-top-sm">
+        <view class="text-bold text-left padding-bottom-lg">备注</view>
+        <textarea bindchange="formInputChange" data-field="name" placeholder="备注" placeholder-class="colorF-sp" class="textarea padding-lg"></textarea>
+        <view class="picker-shape hover margin-top margin-bottom-sm" style="width:300rpx">已报名其他机构</view>
+        <view class="picker-shape hover" style="width:540rpx;">没有相关意向，不考虑报名培训班</view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp">保存</button>
+    </view>
+</view>

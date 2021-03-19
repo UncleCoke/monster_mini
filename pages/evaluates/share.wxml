@@ -21,7 +21,7 @@
     </swiper>
     <canvas class="canvas" canvas-id="myQrCode"></canvas>
 </view>-->
-<view class="cu-bar bg-white tabbar border shop bottom">
+<view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
         <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
         <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="downloadImg">保存分享码</button>

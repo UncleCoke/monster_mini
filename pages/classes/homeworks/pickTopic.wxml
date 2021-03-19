@@ -1,0 +1,125 @@
+<wxs module="split">
+    var blank = function(str) {
+        str = str||''
+        return str.split('##')
+    }
+    var blanklength = function(str) {
+        return str.replace('blank','')
+    }
+    var isInArr = function(str,arr) {
+        var arrStr = arr.toString()
+        return arrStr.indexOf(str) != -1
+        
+    }
+    var instead = function(str) {
+        while (str.indexOf('##break##') != -1) {
+            str = str.replace('##break##','\n')
+        }
+        while (str.indexOf('##blank##') != -1) {
+            str = str.replace('##blank##','______')
+        }
+        str = str.replace('【点评】','\n【点评】')
+        str = str.replace('【分析】','\n【分析】')
+        return str
+    }
+    module.exports = {
+    blank: blank,
+    blanklength: blanklength,
+    isInArr:isInArr,
+    instead:instead
+};
+</wxs>
+<scroll-view class="cu-card" scroll-y="{{true}}" scroll-into-view="t{{index}}" style="padding-bottom:200rpx;">
+    <view class="cu-item shadow padding-xs margin">
+        <view class='flex justify-between'>
+            <view class='flex '>
+                <picker bindchange="formInputChange" data-field="difficulty" data-type="picker" value="{{difficulty}}" data-range="{{difficulties}}" range="{{difficulties}}" range-key="name">
+                    <view class="text-sm margin-right">
+                        {{difficulties[difficulty].name}}难度
+                        <text class='cuIcon-unfold text-blue '></text>
+                    </view>
+                </picker>
+                <picker bindchange="formInputChange" data-field="questionType" data-type="picker" value="{{questionType}}" data-range="{{questionTypes}}" range="{{questionTypes}}" range-key="name">
+                    <view class="text-sm margin-right">
+                        {{questionType>0?questionTypes[questionType].name:'全部题型'}}
+                        <text class='cuIcon-unfold text-blue '></text>
+                    </view>
+                </picker>
+                <!-- <view class="text-sm margin-right-sm">
+                    题型
+                    <text class='cuIcon-unfold text-blue '></text>
+                </view> -->
+                <!-- <view class="text-sm margin-right-sm">
+                    题目列表
+                    <text class='cuIcon-titles text-orange '></text>
+                </view> -->
+            </view>
+            <view class='action'>
+                <button class="cu-btn round sm bg-blue" aira-disabled="false" bindtap="inti">
+                    筛选
+                </button>
+            </view>
+        </view>
+    </view>
+    <view class="cu-item shadow margin-lr">
+        <view class='cu-bar solid-bottom bg-white'>
+            <view class='action'>
+                <text class='cuIcon-titles text-orange '></text>
+                题目列表
+            </view>
+            <view class='action'>共{{recordCount}}题</view>
+        </view>
+    </view>
+    <checkbox-group class="block" data-field="questionIds" bindchange="formInputChange">
+        <block wx:for="{{list}}" wx:key="topic">
+            <view class="cu-item bg-white margin radius flex align-center justify-between" id="t{{index}}">
+                <view class="margin-top-sm">
+                    <view class="cu-bar bg-white ">
+                        <view class='action  text-darkGray '>
+                            <!-- <view class="cu-tag bg-{{item.isCorrect?'green':'red'}} round margin-right">第{{index+1}}题</view> -->
+                            <text class="text-sm margin-right-sm">{{item.questionTypeName}}</text>
+                            <view class="cu-capsule radius">
+                                <view class="cu-tag bg-brown sm">难度</view>
+                                <view class="cu-tag line-brown sm">
+                                    <text class="cuIcon-favorfill" wx:for="{{item.difficulty}}" wx:key="difficulty"></text>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="padding flex flex-wrap justify-start align-center">
+                        <view wx:if="{{item.questionType == 3}}" class="flex-sub topic text-sm padding-sm radius">
+                            <text>{{split.instead(item.title)}}</text>
+                        </view>
+                        <!-- <rich-text wx:else nodes="{{topics[topicIndex].title}}"></rich-text> -->
+                        <rich-text wx:else nodes="{{item.title}}" class="flex-sub topic text-sm padding-sm radius"></rich-text>
+                    </view>
+                    <view class="padding  flex flex-wrap justify-start align-center ">
+                        <view class="cu-tag bg-white">知识点</view>
+                        <block wx:if="{{item.knowledges.length>0}}">
+                            <view class="bg-brown light radius text-cut margin-right-xs unit text-sm" wx:for="{{item.knowledges}}" wx:for-item="knowledge" wx:key="knowledge">
+                                {{knowledge.title}}
+                            </view>
+                        </block>
+                        <view wx:else class="bg-grey light radius text-cut margin-right-xs unit text-sm">
+                            无
+                        </view>
+                    </view>
+                    <!-- <view class="padding  flex flex-wrap justify-start align-center ">
+                    <view class="cu-tag bg-white">正确答案</view>
+                    <rich-text nodes="{{item.showAnswer}}" class="bg-blue light radius margin-right-xs padding-xs text-sm" style="min-width:100rpx;max-width:75%;"></rich-text>
+
+                </view> -->
+                </view>
+                <view class=" margin-lr-sm">
+                    <checkbox class="round blue" checked="{{split.isInArr(item.id,hasPickQuestionIds)}}" value="{{index}}" data-id="{{item.id}}" data-question="{{item}}" bind:tap="checkbox"></checkbox>
+                </view>
+            </view>
+        </block>
+    </checkbox-group>
+</scroll-view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <button class="cu-btn bg-blue round submit margin-xs" bind:tap="pick" disabled="{{hasPickQuestionIds.length==0}}">预览(已选{{hasPickQuestionIds.length}}题)</button>
+    </view>
+</view>

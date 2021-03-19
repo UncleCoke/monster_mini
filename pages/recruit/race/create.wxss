@@ -1,8 +1,4 @@
-page {
-    background: #f8f8f8;
-}
-
-.card-item {
+.card {
     width: 320rpx;
     margin: 0 0 30rpx 0 !important;
 }

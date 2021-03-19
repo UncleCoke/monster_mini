@@ -1,0 +1,74 @@
+<view class="margin  margin-bottom-xs  flex justify-between align-center">
+    <view class="text-darkGray">
+        <text class='cuIcon-newsfill margin-right-xs'></text>
+        共{{orgList.length}}个机构
+    </view>
+    <!-- <view >筛选</view> -->
+</view>
+<view style="padding-bottom:150rpx">
+    <block wx:for="{{orgList}}" wx:key="list">
+        <view class="cu-card ">
+            <view class="cu-item shadow">
+                <view class="cu-list menu-avatar">
+                    <view class="cu-item">
+                        <view wx:if="{{item.classLogo}}" class="cu-avatar radius lg" style="background-image:url({{item.classLogo}});"></view>
+                        <view wx:else class="cu-avatar radius lg {{item.vipLevel?'bg-gradual-orange':'bg-grey'}}">
+                            {{item.orgName[0]}}
+                        </view>
+                        <view class="content flex-sub">
+                            <view class="flex justify-between">
+                                <view class=" flex align-center">
+                                    <view class="text-cut {{item.vipLevel?'text-yellow':'text-grey'}}">
+                                        {{item.orgName}}
+                                    </view>
+                                    <view wx:if="{{item.vipLevel}}" class="cu-tag round bg-orange sm">
+                                        VIP
+                                    </view>
+                                </view>
+                                <view class="text-grey text-sm">
+                                    <text class="cuIcon-group_fill margin-right-xs"></text>
+                                    班级 {{item.classesCount}}
+                                    <text class="cuIcon-friendfill margin-left-sm margin-right-xs"></text>
+                                    老师 {{item.teacherCount}}
+                                   
+                                </view>
+                            </view>
+                            <view class="flex justify-between">
+                            <view class="text-xs text-gray">
+                                {{item.province?item.province+item.city+item.area:''}}
+                            </view>
+                             <view class="text-xs text-cyan">负责人：{{item.adminId?item.adminName:'未指定'}}</view>
+                            </view>
+                            
+                        </view>
+                    </view>
+                </view>
+                <view class="padding flex justify-between align-center bg-white solid-top">
+                    <view class="text-xs text-gray">
+                        <view wx:if="{{item.vipLevel}}">VIP有效期：{{item.vipEndTime}}</view>
+                    </view>
+                    <view class="flex justify-end">
+                        <button class="cu-btn sm bg-orange" data-id="{{item.id}}" bind:tap="edit">
+                            <view class="text-sm">{{item.vipLevel?'延期':'升级'}}</view>
+                            <text class='cuIcon-right  margin-left-xs'></text>
+                        </button>
+                        <button class="cu-btn sm bg-cyan margin-lr-sm" data-id="{{item.id}}" bind:tap="orgDetail">
+                            <view class="text-sm">详情</view>
+                            <text class='cuIcon-right  margin-left-xs'></text>
+                        </button>
+                        <button class="cu-btn sm bg-blue" data-org="{{item.id}}" data-name="{{item.orgName}}" open-type="share">
+                            <view class="text-sm">邀请</view>
+                            <text class='cuIcon-right  margin-left-xs'></text>
+                        </button>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </block>
+</view>
+<view class="cu-bar tabbar bg-white foot">
+    <view class="action text-gray add-action">
+        <button class="cu-btn cuIcon-add bg-blue shadow" bind:tap="createClass"></button>
+        新建机构
+    </view>
+</view>

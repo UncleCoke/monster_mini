@@ -1,0 +1,46 @@
+.student-box {
+    width: 100%;
+    min-height: 500rpx;
+}
+
+.rotate {
+    display:block;
+    transform: rotate(180deg);
+}
+
+.cu-tag{
+    min-width:60rpx;
+}
+
+.score{
+    position:absolute;
+    bottom:0rpx;
+    right:-10rpx;
+    width:48rpx;
+    height:48rpx;
+    border-radius:50%;
+    font-size:30rpx;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2rpx solid #fff;
+}
+
+.select{
+    position: absolute;
+    top: -10rpx;
+    right: -20rpx;
+    font-size:32rpx;
+    padding: 0rpx 10rpx;
+}
+
+.gif{
+    position:absolute;
+    top:0;
+    left:0;
+    width:96rpx;
+    height:96rpx;
+    background-color:rgba(255, 255, 255, 0.4);
+    border-radius:50%;
+    z-index:9999;
+}

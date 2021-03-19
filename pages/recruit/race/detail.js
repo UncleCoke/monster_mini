@@ -6,18 +6,18 @@ Page({
    */
   data: {
     race:{
-      type:1,
+      type:0,
       name:'元宵答题活动',
       startTime:'2021.02.21 00:00',
       endTime:'2021.02.28 00:00',
       status:1,  //0 未开始 1 进行中 10 已结束
-      openPeople:23,
-      openNum:23,
-      finishNum:23,
+      userCount:23,
+      openCount:23,
+      finishCount:23,
       users:[
         {
           userId:1,
-          name:'用户名1',
+          nickName:'用户名1',
           avatarUrl:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
           awardNum:100,
           score:100,
@@ -25,7 +25,7 @@ Page({
         },
         {
           userId:2,
-          name:'用户名2',
+          nickName:'用户名2',
           avatarUrl:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg',
           awardNum:100,
           score:100,
@@ -33,14 +33,16 @@ Page({
         },
         {
           userId:3,
-          name:'用户名3',
+          nickName:'用户名3',
           avatarUrl:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10003.jpg',
           awardNum:100,
           score:100,
           answerNum:3
         }
       ]
-    }
+    },
+    raceImgUrl:'http://img.uelink.com.cn/upload/xykj/race/',
+    evalImgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
   },
 
   /**

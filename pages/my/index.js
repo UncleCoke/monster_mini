@@ -1,66 +1,73 @@
-// pages/my/index.js
+const app = getApp()
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
 
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
+    wx.hideShareMenu();
 
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
-
+    app.checkLogin(() => {
+      this.inti();
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  inti: function () {
+    this.setData({
+      globalData: app.globalData.userInfo,
+      showModal: false,
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  setUserData: function (e) {
+    let rawData = e.detail.rawData
+    let encryptedData = e.detail.encryptedData
+    let iv = e.detail.iv
+    app.setUserData(encryptedData, iv, rawData, '', '', () => {
+      this.setData({
+        showModal: true
+      })
+    })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
+  reload: function () {
+    app.login((res) => {
+      this.inti()
+    })
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
+  orgList: function () {
+    wx.navigateTo({
+      url: '/pages/org/list'
+    });
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  quitOrg: function () {
+    wx.showModal({
+      title: '温馨提醒',
+      content: '退出后您所创建的班级也将退出机构',
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if (result.confirm) {
+          app.request({
+            url: app.globalData.apiUrl + '/org/quit',
+            barLoading: true
+          }).then(res => {
+            this.reload()
+          })
+        }
+      },
+      fail: () => {},
+      complete: () => {}
+    });
   }
+
 })

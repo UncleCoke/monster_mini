@@ -1,7 +1,13 @@
-page{
-	background-color: #f8f8f8;
+.border-bottom {
+	border-bottom: 1rpx solid rgba(70, 72, 73, 0.1);
 }
 
-.page{
-	padding:20rpx 0 160rpx;
+.panel {
+	height: 220rpx;
+	background: #F0F5F7;
+	border-radius: 36rpx;
+}
+
+.cu-tag{
+    padding:0 22rpx !important;
 }

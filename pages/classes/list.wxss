@@ -1,0 +1,15 @@
+.panel {
+    border-radius: 20rpx;
+}
+
+.avatar-radius {
+    border-radius: 16rpx;
+}
+
+.solid {
+    width: 2rpx;
+    height: 24rpx;
+    background: rgba(70, 72, 73, 0.5);
+    opacity: 0.5;
+    border-radius: 4rpx
+}

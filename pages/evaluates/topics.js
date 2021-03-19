@@ -7,23 +7,17 @@ Page({
   },
 
   onLoad: function (options) {
-
     const {
       index,
     } = options
     this.setData({
       index
     })
-    wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
+
   inti() {
     wx.getStorage({
       key: 'topics',
@@ -37,21 +31,16 @@ Page({
     });
   },
 
-
   back: function (e) {
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 1) {
       wx.navigateBack({
         delta: 1
       });
     } else {
       wx.switchTab({
-        url: 'list'
+        url: '/pages/recruit/index'
       });
     }
-
   },
-
-
-
 })

@@ -81,10 +81,23 @@ Page({
   },
 
   gotoDetail:function(e){
-    console.log(e);
     let id = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: `/pages/evaluates/detail?id=${id}`,
     });
+  },
+
+  setUserData: function (e) {
+    if (e.detail.errMsg == 'getUserInfo:fail auth deny') {
+      return
+    }
+    let rawData = e.detail.rawData
+    let encryptedData = e.detail.encryptedData
+    let iv = e.detail.iv
+    app.setUserData(encryptedData, iv, rawData, '', '', () => {
+      wx.navigateTo({
+        url:'/pages/evaluates/create'
+      });
+    })
   }
 })

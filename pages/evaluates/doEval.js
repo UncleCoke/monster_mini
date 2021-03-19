@@ -5,32 +5,27 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/poster/'
   },
 
 
   onLoad: function (options) {
-    var evalId = options.evalId || 1
+    let evalId = options.evalId || 1
     this.setData({
       evalId,
     })
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-  
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
+
   inti(){
     this.setData({
       nickName:app.globalData.nickName
     })
   },
   
-
   gotoEval:function(){
     wx.navigateToMiniProgram({
       appId:'wxcfe4dc8683b0606f',
@@ -43,8 +38,6 @@ Page({
             url: '/pages/home/home',
           });
         }
-        
-        
       },
       fail: ()=>{},
       complete: ()=>{}

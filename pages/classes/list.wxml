@@ -1,2 +1,74 @@
-<!--pages/classes/list.wxml-->
-<text>pages/classes/list.wxml</text>
+<image src="{{imgUrl}}navigation.png" mode="widthFix" style="width:100%" />
+<view class="padding-sp">
+    <view class="padding-tb-sm flex align-center justify-between">
+        <view class="flex align-center">
+            <text class="text-sp text-bold">当前班级：</text>
+            <view class="cu-tag bg-blue light round text-bold">{{classList.length}}个</view>
+        </view>
+        <button wx:if="{{!phone}}" open-type="getUserInfo" bindgetuserinfo="setUserData" class="margin-0 padding-0">
+            <view class="flex align-center" bind:tap="setFind">
+                <image src="{{imgUrl}}icon_add.png" mode="widthFix" style="width:30rpx;" />
+                <text class="text-blue text-sm text-bold margin-left-sm">创建班级</text>
+            </view>
+        </button>
+        <view class="flex align-center" bind:tap="createClass" wx:else>
+            <image src="{{imgUrl}}icon_add.png" mode="widthFix" style="width:30rpx;" />
+            <text class="text-blue text-sm text-bold margin-left-sm">创建班级</text>
+        </view>
+    </view>
+    <empty wx:if="{{classList.length === 0}}" title="暂无班级"></empty>
+    <view wx:for="{{classList}}" wx:key="id" class="bg-white text-sm panel margin-bottom" data-id="{{item.id}}" bind:tap="classDetail">
+        <view class="padding-top-lg padding-lr-lg">
+            <view class="flex align-center justify-between">
+                <view class="flex align-center">
+                    <view wx:if="{{item.classLogo}}" class="cu-avatar avatar-radius lg" style="background-image:url({{item.classLogo}});"></view>
+                    <view wx:else class="cu-avatar avatar-radius lg {{item.level && item.isFollowOrgVip?'bg-gradual-orange':'bg-blue'}}">
+                        {{item.name[0]}}
+                    </view>
+                    <view class="margin-left-sm flex-sub">
+                        <view class="flex align-center margin-bottom-sm">
+                            <view class="text-sp text-bold margin-right-sm">{{item.name}}</view>
+                            <view class="cu-tag bg-red sm round" wx:if="{{item.level && item.isFollowOrgVip}}" style="width:60rpx;">
+                                VIP
+                            </view>
+                        </view>
+                        <view class="flex align-center">
+                            <view class="colorF-sp padding-right-sm">{{item.grade}}</view>
+                            <view class="solid" wx:if="{{item.orgName}}"></view>
+                            <view wx:if="{{item.orgName}}" class="text-blue padding-left-sm">
+                                {{item.orgName}}
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="cuIcon-right" style="color:#ccc"></view>
+            </view>
+            <view class="flex align-center justify-between" style="padding:32rpx 78rpx;">
+                <view class="flex align-center justify-center flex-direction">
+                    <view class="content-shape bg-olive light">{{item.studentCount}}</view>
+                    <view class="text-sm">学生</view>
+                </view>
+                <view class="flex align-center justify-center flex-direction">
+                    <view class="content-shape bg-greenSecond light">{{item.teacherCount}}</view>
+                    <view class="text-sm">老师</view>
+                </view>
+            </view>
+        </view>
+        <view class="padding-tb padding-lr-lg flex align-center justify-between solid-top">
+            <view class="flex align-center">
+                <image mode="widthFix" src="{{imgUrl}}icon_user.png" style="width:30rpx" />
+                <view class="text-greenSecond margin-left-sm margin-right-lg">
+                    我是{{item.teacherId == teacherId?'班主任':'老师'}}
+                </view>
+                <block wx:if="{{item.price>0}}">
+                    <image mode="widthFix" src="{{imgUrl}}icon_price.png" style="width:35rpx" />
+                    <view style="color:#ffb341" class="margin-left-sm">收费{{item.price/100}}元</view>
+                </block>
+            </view>
+            <view wx:if="{{item.badge}}" class="cu-tag round bg-red sm">
+                {{item.badge>99?'99+':item.badge}}
+            </view>
+        </view>
+    </view>
+</view>
+<get-phone bgColor="bg-gradual-pink" show-modal="{{showModal}}" bindcustomevent="reload"></get-phone>

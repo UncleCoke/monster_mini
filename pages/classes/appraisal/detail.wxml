@@ -1,0 +1,46 @@
+<view class="padding-tb padding-lr-xl flex justify-end align-center">
+    <picker mode="date" fields="month" value="{{date}}" bindchange="dateChange" end="{{nDate.date}}">
+        {{date?date:'请选择日期'}}
+    </picker>
+</view>
+<view class="bg-white padding-tb-lg padding-lr margin-lr box">
+    <view class="flex align-end" style="margin-top:-60rpx;">
+        <view wx:if="{{student.avatarUrl}}" class="cu-avatar lg round" style="background-image:url({{student.avatarUrl}});"></view>
+        <view wx:else class="cu-avatar round lg bg-blue">{{student.nickName[0]}}</view>
+        <view class="margin-left-xs text-bold text-black">{{student.nickName}}</view>
+    </view>
+    <view class="text-gray text-xxl flex margin-top-xs align-center padding-tb justify-center">
+        <view class="margin-right-xl text-green">
+            <text class="cuIcon-appreciatefill margin-right-xs"></text>
+            {{student.toalScoreAdd}}
+        </view>
+        <view class="text-red flex align-center">
+            <text class="cuIcon-appreciatefill margin-right-xs rotate"></text>
+            {{student.toalScoreReduce}}
+        </view>
+    </view>
+</view>
+<view class="cu-card">
+    <view class="cu-item shadow">
+        <view class="cu-list menu-avatar padding-tb-xs">
+            <view class="text-grey padding-tb text-center" wx:if="{{list.length == 0}}">
+                - 暂无数据 -
+            </view>
+            <block wx:for="{{list}}" wx:key="user">
+                <view class="cu-item solid-bottom">
+                    <view class="cu-avatar round lg" style="background-image:url({{item.behaviorIcon}});"></view>
+                    <view class="content">
+                        <view class="text-grey text-sm">
+                            {{item.behaviorTitle}} {{item.score>0?'+'+item.score:item.score}}
+                        </view>
+                        <view class="text-grey">
+                            <view class="text-grey text-xs">
+                                {{item.created_at}} 由{{item.teacherName}}老师点评
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+</view>

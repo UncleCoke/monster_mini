@@ -1,1 +1,46 @@
-/* pages/student/index.wxss */
+page{
+    background-color:#fff;
+}
+
+.tabs {
+    padding: 180rpx 40rpx 40rpx 40rpx;
+    height: 300rpx;
+    background: url(http://img.uelink.com.cn/upload/xykj/student/navigation.png);
+    background-size: 100% 300rpx;
+}
+
+.tabs .bar {
+    width: 100%;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+.tabs .bar .hover {
+    background: #0779E4;
+    color: #fff;
+    border-radius: 20rpx;
+}
+
+.panel {
+    height: 220rpx;
+    background: #F0F5F7;
+    border-radius: 36rpx;
+}
+
+
+.drawer-box .text-custom{
+    font-size:26rpx;
+}
+
+.drawer-box .input{
+    height: 88rpx;
+    line-height:88rpx;
+    background: #F0F5F7;
+    border-radius: 36rpx;
+    text-align:center
+}
+
+.picker-shape {
+    width:190rpx;
+    font-size:26rpx;
+}

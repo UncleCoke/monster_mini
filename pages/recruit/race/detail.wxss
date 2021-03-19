@@ -1,11 +1,5 @@
-page{
-    background-color:#f8f8f8;
-}
+@import './../../evaluates/detail.wxss';
 
-.user:not(:last-of-type){
-    border-bottom:1rpx solid #eee;
-}
-
-.cu-tag{
-    padding:0 22rpx !important;
+.panel{
+    height:176rpx;
 }

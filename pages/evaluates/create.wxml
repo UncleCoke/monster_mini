@@ -1,138 +1,86 @@
-<form>
-    <view class="margin text-gray text-sm">
-        <text class="text-red margin-right-xs">*</text>
-        必填项
-    </view>
-    <radio-group wx:if="{{!classId}}" class="cu-form-group solid-bottom margin-top justify-start" data-field="subjectindex" bindchange="formInputChange">
-        <view class="title text-blue ">
-            <text class="text-red margin-right-xs">*</text>
-            科目
+<view class="page-sp padding-top-sm">
+    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr">
+        <view class="flex justify-between align-center">
+            <view class="text-sp text-bold">*选择科目</view>
+            <view class="text-sm colorT-sp">*必选项</view>
         </view>
-        <view>
-            <radio class="blue margin-left" wx:for="{{subjects}}" wx:key="subject" value="{{index}}" checked="{{formData.subjectindex == index}}">
-                <text class="margin-left-xs">{{item}}</text>
-            </radio>
-        </view>
-    </radio-group>
-    <radio-group wx:else class="cu-form-group solid-bottom margin-top justify-start" data-field="subjectindex" bindchange="formInputChange">
-        <view class="title text-blue ">
-            <text class="text-red margin-right-xs">*</text>
-            科目
-        </view>
-        <view>
-            <radio class="blue margin-left" wx:for="{{textbooks}}" wx:key="subject" value="{{index}}" checked="{{formData.subjectindex == index}}">
-                <text class="margin-left-xs">{{item.subject}}</text>
-            </radio>
-        </view>
-    </radio-group>
-    <radio-group wx:if="{{!classId}}" class="cu-form-group solid-bottom justify-start" data-field="evalRange" bindchange="formInputChange">
-        <view class="title text-blue ">
-            <text class="text-red margin-right-xs">*</text>
-            类型
-        </view>
-        <view>
-            <radio class="blue margin-left" wx:for="{{evalRanges}}" wx:key="evalRange" value="{{item.type}}" checked="{{formData.evalRange == item.type}}" disabled="{{classList.length<1 && item.type ==2}}">
-                <text class="margin-left-xs">{{item.name}}</text>
-            </radio>
-        </view>
-    </radio-group>
-    <view class="cu-form-group solid-bottom " wx:if="{{formData.evalRange == 2 }}">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            班级
-        </view>
-        <picker wx:if="{{!classId}}" bindchange="formInputChange" data-field="class" data-type="picker" value="{{formData.class.name}}" data-range="{{classList}}" range="{{classList}}" range-key="name">
-            <view class="picker margin-left">
-                {{formData.class.name?formData.class.name+'('+formData.class.studentCount+'人)':'请选择'}}
-            </view>
-        </picker>
-        <view wx:else class="picker">
-            {{formData.class.name+'('+formData.class.studentCount+'人)'}}
+        <view class="padding-top-lg flex align-center justify-between flex-wrap">
+            <block wx:if="{{!classId}}">
+                <view class="picker-shape {{formData.subjectIndex == index?'hover':''}}" wx:for="{{subjects}}" wx:key="*this" value="{{index}}" bindtap="select" data-field="subjectIndex" data-value="{{index}}">
+                    {{item}}
+                </view>
+            </block>
+            <block wx:else>
+                <view class="picker-shape {{formData.subjectIndex == index?'hover':''}}" wx:for="{{textbooks}}" wx:key="subject" value="{{index}}" bindtap="select" data-field="subjectIndex" data-value="{{index}}">
+                    {{item.subject}}
+                </view>
+            </block>
         </view>
     </view>
-    <view class="cu-form-group solid-bottom " wx:if="{{!classId}}">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            教材
-        </view>
+    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr">
         <picker mode="multiSelector" bindchange="MultiChange" value="{{multiIndex}}" range="{{multiArray}}">
-            <view class="picker margin-left">
-                {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+            <view class="flex justify-between align-center">
+                <view class="text-sp text-bold">选择教材</view>
+                <view class="text-lg colorT-sp cuIcon-right"></view>
+            </view>
+            <view class="padding-top-lg" wx:if="{{multiArray[0]}}">
+                <view class="picker-shape lg hover">
+                    {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+                </view>
             </view>
         </picker>
     </view>
-    <radio-group class="cu-form-group solid-bottom justify-start" data-field="evalType" bindchange="formInputChange">
-        <view class="title text-blue ">
-            <text class="text-red margin-right-xs">*</text>
-            范围
+    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr">
+        <view class="flex justify-between align-center">
+            <view class="text-sp text-bold">选择范围</view>
         </view>
-        <view>
-            <radio class="blue margin-left" wx:for="{{evalTypes}}" wx:key="evalType" value="{{item.type}}" checked="{{formData.evalType == item.type}}">
-                <text class="text-sm margin-left-xs">{{item.name}}</text>
-            </radio>
-        </view>
-    </radio-group>
-    <view class="cu-form-group solid-bottom " wx:if="{{formData.evalType == 0}}">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            单元
-        </view>
-        <view class="picker">
-            <button class="cu-btn bg-blue sm" bindtap="showModal" data-target="units">
-                {{formData.unitIds?'重新选择':'请选择单元'}}
-            </button>
+        <view class="padding-top-lg flex align-center justify-between flex-wrap">
+            <view class="picker-shape {{formData.evalType == item.type?'hover':''}}" wx:for="{{evalTypes}}" wx:key="type" bindtap="select" data-field="evalType" data-value="{{item.type}}">
+                {{item.name}}
+            </view>
         </view>
     </view>
-    <view wx:if="{{formData.evalType == 0 && formData.unitIds}}" class="padding bg-white flex flex-wrap justify-start align-top  solid-bottom">
-        <view class="cu-tag bg-white margin-top-xs">已选单元</view>
-        <view class="basis-xl flex flex-wrap justify-start align-center">
-            <view class="bg-blue light radius text-cut margin-right-xs unit text-sm" wx:for="{{formData.units}}" wx:for-item="unit" wx:key="unit">
+    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr" wx:if="{{formData.evalType == 0}}" bindtap="showModal" data-target="units">
+        <view class="flex justify-between align-center {{formData.units.length > 0?'margin-bottom-sm':''}}">
+            <view class="text-sp text-bold">选择单元</view>
+            <view class="text-lg colorT-sp cuIcon-right"></view>
+        </view>
+        <view class="flex align-center justify-between flex-wrap" wx:if="{{formData.units.length > 0}}">
+            <view class="picker-shape middle hover margin-top-sm" wx:for="{{formData.units}}" wx:for-item="unit" wx:key="unit">
                 {{unit}}
             </view>
         </view>
     </view>
-    <view class="cu-modal {{modalName=='units'?'show':''}}">
-        <view class="cu-dialog">
-            <view class="cu-bar bg-white justify-end">
-                <view class="content">请选择单元(可多选)</view>
-                <view class="action" bindtap="hideModal">
-                    <text class="cuIcon-close text-red"></text>
-                </view>
-            </view>
-            <scroll-view scroll-y="{{true}}" style="max-height:600rpx;">
-                <checkbox-group class="block" data-field="units" bindchange="formInputChange">
-                    <view class="cu-list menu text-left">
-                        <view class="cu-item" wx:for="{{units}}" wx:key="units">
-                            <label class="flex justify-between align-center flex-sub">
-                                <view class="flex-sub text-sm">{{item.name}}</view>
-                                <checkbox class="radius blue" value="{{index}}"></checkbox>
-                            </label>
-                        </view>
-                    </view>
-                </checkbox-group>
-            </scroll-view>
-            <view class="cu-bar bg-white btn-group padding-sm">
-                <button class="cu-btn bg-blue margin round lg" bindtap="hideModal">确定</button>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp" bindtap="create">
+            发布新的活动
+        </button>
+    </view>
+</view>
+<view class="cu-modal {{modalName=='units'?'show':''}}">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content">请选择单元(可多选)</view>
+            <view class="action" bindtap="hideModal">
+                <text class="cuIcon-close text-red"></text>
             </view>
         </view>
-    </view>
-    <view class="margin text-gray text-sm">选填项</view>
-    <!-- <view class="cu-form-group">
-        <view class="title">题目数量</view>
-        <picker bindchange="formInputChange" data-field="topicsCount" data-type="picker" value="{{formData.topicsCount}}" data-range="{{topicsCounts}}" range="{{topicsCounts}}">
-            <view class="picker">{{formData.topicsCount?formData.topicsCount:'请选择'}}</view>
-        </picker>
-    </view> -->
-    <view class="cu-form-group">
-        <view class="title">评测目的</view>
-        <picker bindchange="formInputChange" data-field="evalPurpose" data-type="picker" value="{{formData.evalPurpose}}" data-range="{{evalPurposes}}" range="{{evalPurposes}}">
-            <view class="picker margin-left">{{formData.evalPurpose?formData.evalPurpose:'请选择'}}</view>
-        </picker>
-    </view>
-</form>
-<view class="cu-bar bg-white tabbar border shop bottom">
-    <view class="btn-group">
-        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
-        <button class="cu-btn bg-blue round submit margin-xs" bind:tap="create">发布</button>
+        <scroll-view scroll-y="{{true}}" style="max-height:600rpx;">
+            <checkbox-group class="block" data-field="units" bindchange="select">
+                <view class="cu-list menu text-left">
+                    <view class="cu-item" wx:for="{{units}}" wx:key="units">
+                        <label class="flex justify-between align-center flex-sub">
+                            <view class="flex-sub text-sm">{{item.name}}</view>
+                            <checkbox class="radius blue" value="{{index}}"></checkbox>
+                        </label>
+                    </view>
+                </view>
+            </checkbox-group>
+        </scroll-view>
+        <view class="cu-bar bg-white btn-group padding-sm">
+            <button class="cu-btn bg-blue margin round lg" bindtap="hideModal">确定</button>
+        </view>
     </view>
 </view>

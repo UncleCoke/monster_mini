@@ -1,0 +1,27 @@
+.call [class*="cuIcon-"] {
+	font-size: 48rpx;
+}
+
+.score{
+    margin: 0 auto;
+    width: 100rpx;
+    
+}
+
+
+
+.chart_title {
+    font-size: 28rpx;
+    color: #29b6f6;
+    padding: 10rpx 0;
+}
+
+
+.f2-chart3 {
+    width: 650rpx;
+    height: 600rpx;
+}
+.f2-chart4 {
+    width: 650rpx;
+    height: 400rpx;
+}

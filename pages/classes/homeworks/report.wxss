@@ -1,0 +1,9 @@
+.call [class*="cuIcon-"] {
+	font-size: 48rpx;
+}
+
+.score{
+    margin: 0 auto;
+    width: 100rpx;
+    
+}

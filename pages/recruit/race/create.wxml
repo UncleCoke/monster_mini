@@ -1,7 +1,7 @@
 <view class="padding-lg">
     <view class="flex flex-wrap justify-between">
         <view class="cu-card case" wx:for="{{races}}" wx:key="name" bindtap="raceIntroduce">
-            <view class="cu-item shadow card-item">
+            <view class="cu-item shadow card">
                 <view class="image">
                     <image src="{{item.imgUrl}}" mode="widthFix"></image>
                 </view>

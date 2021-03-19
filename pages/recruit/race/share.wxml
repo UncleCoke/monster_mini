@@ -1,9 +1,9 @@
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn lg bg-white margin-lr">
+        <button class="cu-btn lg bg-white flex-sub">
             保存
         </button>
-        <button class="cu-btn lg bg-blue submit sp margin-right" open-type="share">
+        <button class="cu-btn lg bg-blue sp margin-right" open-type="share">
             转发
         </button>
     </view>

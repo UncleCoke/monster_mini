@@ -1,1 +1,45 @@
-
+<view class="margin  margin-bottom-xs  flex justify-center">
+    <view class="flex justify-center">
+        <button wx:if="{{!globalData.phone}}" open-type="getUserInfo" bindgetuserinfo="setUserData" class='cu-btn round sm line-blue'>
+            未登录
+        </button>
+        <block wx:else>
+            <view class='flex flex-direction  justify-center align-center'>
+                <view class="cu-avatar lg round" style="background-image:url({{globalData.avatarUrl}})"></view>
+                <view class="padding-sm text-darkGray">{{globalData.nickName}}</view>
+            </view>
+        </block>
+    </view>
+</view>
+<view class="margin bg-white radius padding">
+    <view class="cu-form-group">
+        <view class="title text-blue">姓名</view>
+        <view class="text-grey">{{globalData.trueName?globalData.trueName:'未填写'}}</view>
+    </view>
+    <view class="cu-form-group ">
+        <view class="title text-blue">手机号码</view>
+        <view class="text-grey">{{globalData.phone?globalData.phone:'未填写'}}</view>
+    </view>
+    <view class="cu-form-group ">
+        <view class="title text-blue">所属机构</view>
+        <view class="flex justify-end align-center">
+            <view class="text-grey">{{globalData.orgName?globalData.orgName:'无'}}</view>
+            <button wx:if="{{globalData.orgName}}" class="cu-btn sm  bg-red light margin-left-sm" bind:tap="quitOrg">
+                <view class="text-sm">退出</view>
+            </button>
+        </view>
+    </view>
+    <view class="cu-form-group">
+        <view class="title text-blue">ID</view>
+        <view class="text-grey">{{globalData.uid}}</view>
+    </view>
+</view>
+<view class="padding">
+    <button class="cu-btn block bg-blue margin-tb-sm lg round" open-type="getUserInfo" bindgetuserinfo="setUserData">
+        {{globalData.nickName?'更新资料':'填写资料'}}
+    </button>
+    <button wx:if="{{globalData.isAdmin == 1}}" class="cu-btn block bg-cyan margin-tb lg round" bind:tap="orgList">
+        机构管理
+    </button>
+</view>
+<get-phone wx:if="{{globalData.nickName}}" bgColor="bg-gradual-pink" show-modal="{{showModal}}" bindcustomevent="reload"></get-phone>

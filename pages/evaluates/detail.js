@@ -8,8 +8,8 @@ Page({
   data: {
     eval: {},
     topics: [],
-    imgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
-
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/eval/',
+    isShowAll:false
   },
 
   onLoad: function (options) {
@@ -59,7 +59,7 @@ Page({
       });
     } else {
       wx.switchTab({
-        url: 'list'
+        url: '/pages/recruit/index'
       });
     }
   },
@@ -81,11 +81,20 @@ Page({
       barLoading:true
     }).then(res=>{
       let evalData = res.eval
+      let intiUnits = evalData.units.slice(0,2);
       let users = res.users
       this.setData({
         eval: evalData,
-        users
+        users,
+        intiUnits
       })
     })
   },
+
+  setIsShowAll:function(){
+    let isShowAll = this.data.isShowAll;
+    this.setData({
+      isShowAll:!isShowAll
+    })
+  }
 })

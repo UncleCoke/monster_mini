@@ -1,0 +1,19 @@
+<view class="cu-card">
+    <view class="cu-item shadow">
+        <view class="margin margin-bottom-xs">
+            <view class='text-center text-grey'>邀请使用小优评测</view>
+        </view>
+        <view class="image text-center margin-lg">
+            <image src="/images/shareQrcode.png" mode="widthFix"></image>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="downloadImg">保存分享码</button>
+        <button class="cu-btn bg-blue round submit margin-xs" data-id="{{eval.id}}" open-type="share">
+            直接转发
+        </button>
+    </view>
+</view>

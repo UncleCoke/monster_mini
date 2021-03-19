@@ -1,0 +1,217 @@
+<wxs module="split">
+    var blank = function (str) {
+        str = str || ''
+        return str.split('##')
+    }
+    var blanklength = function (str) {
+        return str.replace('blank', '')
+    }
+    var isBlank = function (str) {
+        return str.indexOf('blank') != -1
+    }
+    var instead = function (str) {
+        while (str.indexOf('##break##') != -1) {
+            str = str.replace('##break##', '\n')
+        }
+        while (str.indexOf('##blank##') != -1) {
+            str = str.replace('##blank##', '______')
+        }
+        str = str.replace('【点评】', '\n【点评】')
+        str = str.replace('【分析】', '\n【分析】')
+        return str
+    }
+    module.exports = {
+        blank: blank,
+        blanklength: blanklength,
+        isBlank: isBlank,
+        instead: instead
+    };
+</wxs>
+<view style="padding-bottom:150rpx;">
+    <view class="cu-card dynamic">
+        <view class="cu-item shadow">
+            <view class="cu-list menu-avatar">
+                <view class="cu-item">
+                    <view class="cu-avatar round lg" style="background-image:url({{user.imgUserAvatar}});"></view>
+                    <view class="content">
+                        <view>{{user.nickName}}</view>
+                        <view class="text-gray text-sm flex justify-between">{{user.phone}}</view>
+                    </view>
+                    <view class='action flex flex-direction align-center justify-center'>
+
+                        <text
+                            class="cuIcon-evaluate{{report.homework.gotFlower>0?'_fill':''}} text-{{report.homework.gotFlower>0?'pink':'grey'}} margin-right"></text>
+                        <text
+                            class="text-xs margin-right text-{{report.homework.gotFlower>0?'pink':'grey'}} ">{{report.homework.gotFlower}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="cu-item shadow">
+            <view class="cu-bar bg-white">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    作业概况
+                </view>
+            </view>
+            <view class="grid col-2 padding">
+                <view class="padding-right-xs flex justify-center">
+                    <view
+                        class="bg-gradual-{{report.homework.score>=60?'green':'red'}} padding round text-center shadow-blur flex flex-direction justify-center"
+                        style="width:180rpx;height:180rpx;">
+                        <view class="text-xl">{{report.homework.score}}分</view>
+                        <view class="margin-top-sm text-sm">得分</view>
+                    </view>
+                </view>
+                <view class="padding-left-xs flex justify-center">
+                    <view
+                        class="bg-gradual-blue padding round text-center shadow-blur flex flex-direction justify-center"
+                        style="width:180rpx;height:180rpx;">
+                        <view class="text-xl">{{report.homework.spendTime}}</view>
+                        <view class="margin-top-sm text-sm">耗时</view>
+                    </view>
+                </view>
+            </view>
+
+            <view class="cu-bar bg-white margin-top" wx:if="{{weak>0}}">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    以下知识点有待加强练习
+                </view>
+            </view>
+            <view class="padding-lr bg-white flex flex-wrap">
+                <block wx:for="{{report.knowledgeData}}" wx:key="knowledgeData" wx:if="{{item.tips == '待提高'}}">
+                    <view class="cu-tag sm bg-grey round margin-xs">{{item.title}}</view>
+                </block>
+            </view>
+
+            <view class="cu-bar bg-white margin-top">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    答题记录
+                </view>
+                <view class='action'></view>
+                <!-- <view class="action text-xs">点击可查看答题详情</view> -->
+            </view>
+            <view class="padding-sm flex flex-wrap">
+                <view class="padding-xs" wx:for="{{report.questionList}}" wx:key="topic">
+                    <view class="cu-capsule round" data-index="{{index}}" bind:tap="viewTopic">
+                        <view class="cu-tag bg-{{item.isCorrect?'green':'red'}}">
+                            <text class="cuIcon-{{item.isCorrect?'check':'close'}}"></text>
+                        </view>
+                        <view class="cu-tag line-{{item.isCorrect?'green':'red'}}" style="width:90rpx;">
+                            第{{index+1}}题
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <view class="cu-bar bg-white margin-top">
+                <view class='action'>
+                    <text class='cuIcon-titles text-orange '></text>
+                    题目列表
+                </view>
+                <view class='action'>共{{report.questionList.length}}题</view>
+            </view>
+            <block wx:for="{{report.questionList}}" wx:key="topic">
+                <view class="cu-item bg-white margin-bottom" id="t{{index}}">
+                    <view class="margin-top-sm">
+                        <view class="cu-bar bg-white ">
+                            <view class='action  text-darkGray '>
+                                <view class="cu-tag bg-{{item.isCorrect?'green':'red'}} round margin-right">
+                                    第{{index+1}}题</view>
+                                <text class="text-sm">{{item.questionTypeName}}</text>
+                            </view>
+                            <view class="action">
+                                <!-- <view class="cu-capsule radius margin-right-xs">
+                                <view class="cu-tag bg-orange sm">正确率</view>
+                                <view class="cu-tag line-orange sm">80%</view>
+                            </view> -->
+                                <view class="cu-capsule radius">
+                                    <view class="cu-tag bg-brown sm">难度</view>
+                                    <view class="cu-tag line-brown sm">
+                                        <text class="cuIcon-favorfill" wx:for="{{item.difficulty}}"
+                                            wx:key="difficulty"></text>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                        <view class="padding flex flex-wrap justify-start align-center">
+                            <view wx:if="{{item.questionType == 3}}" class="flex-sub topic text-sm padding-sm radius">
+                                <text>{{split.instead(item.title)}}</text>
+                            </view>
+                            <!-- <rich-text wx:else nodes="{{topics[topicIndex].title}}"></rich-text> -->
+                            <rich-text wx:else nodes="{{item.title}}" class="flex-sub topic text-sm padding-sm radius">
+                            </rich-text>
+                        </view>
+                        <view class="padding  flex flex-wrap justify-start align-center ">
+                            <view class="cu-tag bg-white">知识点</view>
+                            <block wx:if="{{item.knowledges.length>0}}">
+                                <view class="bg-brown light radius text-cut margin-right-xs unit text-sm"
+                                    wx:for="{{item.knowledges}}" wx:for-item="knowledge" wx:key="knowledge">
+                                    {{knowledge.title}}
+                                </view>
+                            </block>
+                            <view wx:else class="bg-grey light radius text-cut margin-right-xs unit text-sm">
+                                无
+                            </view>
+                        </view>
+                        <view class="padding  flex flex-wrap justify-start align-center ">
+                            <view class="cu-tag bg-white">学生答案</view>
+                            <view
+                                class="bg-{{item.isCorrect?'green':'red'}} light radius  margin-right-xs padding-xs text-sm"
+                                style="min-width:120rpx;max-width:75%;">
+                                <block wx:if="{{item.questionType == 1}}">
+                                 {{item.myAnswer>-1?topicOptions[item.myAnswer]:'无'}}
+                                </block>
+                                <block wx:else>{{item.myAnswer?item.myAnswer:'无'}}</block>
+                            </view>
+                        </view>
+                        <view class="padding  flex flex-wrap justify-start align-center ">
+                            <view class="cu-tag bg-white">正确答案</view>
+                            <!-- <view class="bg-blue light radius margin-right-xs unit text-sm">
+                        {{item.showAnswer}}
+                    </view> -->
+                            <rich-text nodes="{{item.showAnswer}}"
+                                class="bg-blue light radius margin-right-xs padding-xs text-sm"
+                                style="min-width:100rpx;max-width:75%;"></rich-text>
+
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <!-- <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="add">写评语</button> -->
+    </view>
+</view>
+<wxs module="func">
+    var showTime = function (time) {
+        time = time * 1
+        var showTime = ''
+        var minute = Math.floor(time / 60)
+        var second = time % 60
+        if (minute > 0) {
+            second = second < 10 ? '0' + second : second 
+            showTime = minute + '分' + second + '秒'
+        } else { showTime = second + '秒' } return showTime
+    }
+    var random = function (number) {
+        number = number * 1 
+        var randomNumber = number * Math.random()
+        randomNumber = Math.floor(randomNumber) 
+        return randomNumber
+    } 
+    var floor = function (number) {
+        number = number * 1
+        number = Math.floor(number) 
+        return number
+    } 
+    module.exports.showTime = showTime 
+    module.exports.random = random
+    module.exports.floor = floor 
+    </wxs>

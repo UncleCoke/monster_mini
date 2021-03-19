@@ -1,2 +1,49 @@
-<!--pages/classes/create.wxml-->
-<text>pages/classes/create.wxml</text>
+<view class="page-sp">
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">*号为必填项</view>
+    <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
+        <view class="text-bold padding-top padding-bottom-lg">*班级名称</view>
+        <input bindchange="formInputChange" data-field="name" placeholder="请输入班级名称" placeholder-class="colorF-sp"></input>
+        <view class="text-bold padding-top padding-bottom-sm margin-top solid-top">*所在年级</view>
+        <view class="flex align-center justify-between flex-wrap">
+            <view wx:for="{{grades}}" wx:key="*this" class="picker-shape {{formData.grade === item?'hover':''}} margin-top-sm" bindtap="formInputChange" data-field="grade" data-type="picker" data-range="{{grades}}" data-value="{{index}}">
+                {{item}}
+            </view>
+        </view>
+    </view>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">学生加入班级的费用，默认不收费</view>
+    <view class="bg-white padding-lr-lg text-sp padding-tb">
+        <view class="text-bold padding-bottom-lg">费用（元）</view>
+        <input bindchange="formInputChange" value="{{formData.price}}" data-field="price" placeholder="请输入加入班级的费用，默认不收费" type="number" placeholder-class="colorF-sp"></input>
+    </view>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">选填项</view>
+    <view class="bg-white padding-lr-lg text-sp">
+        <view wx:if="{{formData.orgId}}" class="padding-tb">
+            <view class="text-bold padding-bottom-lg">所属机构</view>
+            <input value="{{formData.orgName}}"  disabled="{{true}}"></input>
+        </view>
+        <view class="padding-tb flex align-center justify-between">
+            <view>
+                <text class="text-bold margin-right-sm">是否公开</text>
+                <text class="text-sm colorF-sp">(在学生端可被搜索)</text>
+            </view>
+            <switch checked="{{formData.isOpen==1}}" class="blue" data-field="isOpen" bindchange="formInputChange"></switch>
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white flex-sub" bindtap="back">返回</button>
+        <button class="cu-btn lg bg-blue sp margin-right" bind:tap="create">创建</button>
+    </view>
+</view>
+<view class="cu-modal {{modalName=='done'?'show':''}}">
+    <view class="cu-dialog bg-white">
+        <view class="cu-bar bg-white justify-end margin">
+            <view class="content">创建成功</view>
+        </view>
+        <view class="cu-bar bg-white justify-center margin">
+            <button class="cu-btn line-blue round text-blue" bindtap="back">返回</button>
+            <button class="cu-btn bg-blue round margin-left" bindtap="enterClass">进入班级</button>
+        </view>
+    </view>
+</view>

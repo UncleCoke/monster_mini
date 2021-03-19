@@ -8,19 +8,20 @@ Page({
     list:[
       {
         name:'元宵答题活动',
-        openPeople:23,
-        openNum:23,
-        finishNum:23,
+        userCount:23,
+        openCount:23,
+        finishCount:23,
         created_at:'2020-02-21 12:23'
       },
       {
         name:'元宵组队答题活动',
-        openPeople:23,
-        openNum:23,
-        finishNum:23,
+        userCount:23,
+        openCount:23,
+        finishCount:23,
         created_at:'2020-02-21 12:23'
       }
-    ]
+    ],
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/race/'
   },
 
   /**
@@ -94,4 +95,10 @@ Page({
       });
     })
   },
+
+  gotoDetail:function(){
+    wx.navigateTo({
+      url: 'detail'
+    });
+  }
 })

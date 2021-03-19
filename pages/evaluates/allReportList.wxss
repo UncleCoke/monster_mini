@@ -1,7 +1,0 @@
-.cu-list.menu-avatar>.cu-item .content .cu-tag.sm {
-	display: inline-block;
-	margin-left: 0rpx;
-	height: 28rpx;
-	font-size: 16rpx;
-	line-height: 32rpx
-}
