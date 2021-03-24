@@ -5,3 +5,7 @@
     font-size:32rpx;
     padding: 0rpx 10rpx;
 }
+
+.btn-sp{
+    width:210rpx;
+}

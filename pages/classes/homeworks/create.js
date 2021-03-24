@@ -201,7 +201,7 @@ Page({
     formData.subject = this.data.textbooks[formData.subjectindex].subject
     formData.ends_at = `${formData.endDate} ${formData.endTime}`
     app.request({
-      url:app.globalData.apiUrl + '/class/createHomeworkV2',
+      url:'/class/createHomeworkV2',
       data:formData,
       barLoading:true,
       method:'POST'
@@ -238,7 +238,7 @@ Page({
 
   getUnit: function (textbookId) {
     app.request({
-      url:app.globalData.apiUrl + '/class/getUnits',
+      url:'/class/getUnits',
       data:{
         textbookId
       },
@@ -278,7 +278,7 @@ Page({
 
   getTextbook: function () {
     app.request({
-      url:app.globalData.apiUrl + '/class/getTextbooks',
+      url:'/class/getTextbooks',
       data:{
         classId
       },
@@ -306,7 +306,7 @@ Page({
 
   getClassDetail: function () {
     app.request({
-      url:app.globalData.apiUrl + '/class/detail',
+      url:'/class/detail',
       data:{
         classId
       },
@@ -328,7 +328,7 @@ Page({
   //获取分组列表
   getGroupList: function () {
     app.request({
-      url:app.globalData.apiUrl + '/class/students/group/get',
+      url:'/class/students/group/get',
       data:{
         classId
       },
@@ -344,7 +344,7 @@ Page({
   //获取学生列表
   getStudentList: function () {
     app.request({
-      url:app.globalData.apiUrl + '/class/students',
+      url:'/class/students',
       data:{
         classId
       },

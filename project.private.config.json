@@ -119,6 +119,90 @@
           "pathName": "pages/classes/homeworks/create",
           "query": "classId=112&id=51",
           "scene": null
+        },
+        {
+          "name": "学生列表",
+          "pathName": "pages/classes/students/list",
+          "query": "id=175&tid=1002",
+          "scene": null
+        },
+        {
+          "name": "老师列表",
+          "pathName": "pages/classes/teachers/list",
+          "query": "id=175&tid=1002",
+          "scene": null
+        },
+        {
+          "name": "行为评价",
+          "pathName": "pages/classes/appraisal/index",
+          "query": "id=175",
+          "scene": null
+        },
+        {
+          "name": "设置教材版本",
+          "pathName": "pages/classes/setTextbook",
+          "query": "id=175",
+          "scene": null
+        },
+        {
+          "name": "班级设置",
+          "pathName": "pages/classes/setting",
+          "query": "id=175",
+          "scene": null
+        },
+        {
+          "name": "我的",
+          "pathName": "pages/my/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "我的收益（老师）",
+          "pathName": "pages/my/revenue",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "机构收益",
+          "pathName": "pages/org/revenue",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "机构详情",
+          "pathName": "pages/org/detail",
+          "query": "id=13",
+          "scene": null
+        },
+        {
+          "name": "机构列表",
+          "pathName": "pages/org/list",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "编辑机构",
+          "pathName": "pages/org/edit",
+          "query": "id=8",
+          "scene": null
+        },
+        {
+          "name": "新建机构",
+          "pathName": "pages/org/create",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "活动详情（个人 、队伍）",
+          "pathName": "pages/recruit/race/unitDetail",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "答题记录",
+          "pathName": "pages/evaluates/topics",
+          "query": "index=20",
+          "scene": null
         }
       ]
     }

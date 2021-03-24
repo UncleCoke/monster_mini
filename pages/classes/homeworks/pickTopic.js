@@ -116,7 +116,7 @@ Page({
 
   getQuestions: function (_page) {
 
-    var url = app.globalData.apiUrl + '/class/getQuestions'
+    var url = '/class/getQuestions'
     var data = {
       questionType: this.data.questionType,
       difficulty: this.data.difficulty,

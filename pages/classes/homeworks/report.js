@@ -57,7 +57,7 @@ Page({
   },
   getReport: function () {
     var options = this.data.options
-    var url = app.globalData.apiUrl + '/class/homework/studentDetail'
+    var url = '/class/homework/studentDetail'
     var data = {
       userId: options.userId,
       homeworkId: options.homeworkId,

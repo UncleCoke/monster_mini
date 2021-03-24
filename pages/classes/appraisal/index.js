@@ -18,7 +18,8 @@ Page({
     isMulti: false,
     activeGroup: {},
     groupModal: false,
-    time:new Date().getTime()
+    time:new Date().getTime(),
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/classes/'
   },
 
   /**
@@ -26,13 +27,9 @@ Page({
    */
   onLoad: function (options) {
     classId = options.id;
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
 
   /**
@@ -77,13 +74,6 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-
   inti: function () {
     this.getBehaviour();
     let day = new Date();
@@ -106,90 +96,47 @@ Page({
 
   //获取学生列表（包含行为得分）
   getAllStudentBehaviour: function () {
-    let url = app.globalData.apiUrl + '/class/behaviour/allStudent'
-    let data = {
-      token: app.globalData.token,
-      classId,
-      year: Number(this.data.year),
-      month: Number(this.data.month)
-    }
-    wx.showLoading({
-      title: '正在获取',
-      mask: true,
-    });
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        if (res.data.code == 0) {
-          let classTotalScoreAdd = res.data.data.classToalScoreAdd;
-          let classTotalScoreReduce = res.data.data.classToalScoreReduce;
-          let studentList = res.data.data.studentList;
-          this.setData({
-            classTotalScoreAdd,
-            classTotalScoreReduce,
-            studentList
-          }, () => {
-            wx.hideLoading();
-          })
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/behaviour/allStudent',
+      data:{
+        classId,
+        year: Number(this.data.year),
+        month: Number(this.data.month)
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      barLoading:true
+    }).then(res => {
+      let classTotalScoreAdd = res.classToalScoreAdd;
+      let classTotalScoreReduce = res.classToalScoreReduce;
+      let studentList = res.studentList;
+      this.setData({
+        classTotalScoreAdd,
+        classTotalScoreReduce,
+        studentList
+      })
     })
   },
 
   //获取点评列表（表扬 & 待改进）
   getBehaviour: function () {
-    let url = app.globalData.apiUrl + '/class/behaviour/items'
-    let data = {
-      token: app.globalData.token
-    }
-    wx.showLoading({
-      title: '正在获取',
-      mask: true,
-    });
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          let list = res.data.data.list;
-          let addBehaviourList = [],
-            reduceBehaviourList = [];
-          list.forEach(item => {
-            if (item.score == 1) {
-              addBehaviourList.push(item);
-            } else {
-              reduceBehaviourList.push(item);
-            }
-          })
-          this.setData({
-            behaviour: list,
-            addBehaviourList,
-            reduceBehaviourList
-          })
+    app.request({
+      url:'/class/behaviour/items',
+      barLoading:true
+    }).then(res => {
+      let list = res.list;
+      let addBehaviourList = [],
+        reduceBehaviourList = [];
+      list.forEach(item => {
+        if (item.score == 1) {
+          addBehaviourList.push(item);
         } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
+          reduceBehaviourList.push(item);
         }
-      },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      })
+      this.setData({
+        behaviour: list,
+        addBehaviourList,
+        reduceBehaviourList
+      })
     })
   },
 
@@ -235,47 +182,28 @@ Page({
   addBehaviour: function (e) {
     let score = e.currentTarget.dataset.score;
     let behaviorId = e.currentTarget.dataset.id;
-    let url = app.globalData.apiUrl + '/class/behaviour/add'
-    let data = {
-      token: app.globalData.token,
-      classId,
-      studentIds: this.data.studentIds.toString(),
-      behaviorId
-    }
-    wx.showLoading({
-      title: '正在获取',
-      mask: true,
-    });
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.setData({
-            score,
-            time:new Date().getTime()
-          },()=>{
-            setTimeout(()=>{
-              this.setData({
-                score:''
-              })
-            },1500)
-            this.setModal();
-            this.getAllStudentBehaviour();
-          })
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/behaviour/add',
+      data:{
+        classId,
+        studentIds: this.data.studentIds.toString(),
+        behaviorId
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:'正在点评'
+    }).then(res => {
+      this.setData({
+        score,
+        time:new Date().getTime()
+      },()=>{
+        setTimeout(()=>{
+          this.setData({
+            score:''
+          })
+        },1500)
+        this.setModal();
+        this.getAllStudentBehaviour();
+      })
     })
   },
 
@@ -295,14 +223,6 @@ Page({
 
   setModal: function () {
     let behaviourModal = this.data.behaviourModal;
-    /*if (behaviourModal) {
-      setTimeout(()=>{
-        this.setData({
-          activeStudents: [],
-          studentIds: []
-        })
-      },1500)
-    }*/
     if (this.data.isMulti && behaviourModal) {
       this.setMulti();
     }
@@ -378,37 +298,17 @@ Page({
 
   //获取分组列表
   getGroupList: function () {
-    var url = app.globalData.apiUrl + '/class/students/group/get'
-    var data = {
-      classId: classId,
-      token: app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-          let groupList = res.data.data.list;
-          this.setData({
-            groupList
-          })
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/students/group/get',
+      data:{
+        classId
       },
-      fail: (res) => {
-        wx.hideNavigationBarLoading()
-        wx.stopPullDownRefresh()
-      }
+      barLoading:true
+    }).then(res => {
+      let groupList = res.list;
+      this.setData({
+        groupList
+      })
     })
   },
 

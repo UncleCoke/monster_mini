@@ -1,5 +1,5 @@
 const app = getApp()
-var classId,className
+let classId,className
 Page({
 
   /**
@@ -16,20 +16,16 @@ Page({
     this.setData({
       masterId
     })
-
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
+    app.checkLogin(() => {
+      this.inti();
+    })
   },
+
   onPullDownRefresh: function () {
     this.getTeacherList()
-
+    wx.stopPullDownRefresh();
   },
+
   inti: function () {
     this.setData({
       teacherId:app.globalData.uid
@@ -37,44 +33,23 @@ Page({
     this.getTeacherList()
   },
 
-
   getTeacherList: function () {
-    var url = app.globalData.apiUrl + '/class/teachers'
-    var data = {
-      classId: classId,
-      token:app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-          let teachers = res.data.data.teachers
-          this.setData({
-            teachers
-          })
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/teachers',
+      data:{
+        classId
       },
-      fail: (res) => {
-        wx.hideNavigationBarLoading()
-        wx.stopPullDownRefresh()
-      }
+      barLoading:true
+    }).then(res => {
+      let teachers = res.teachers
+      this.setData({
+        teachers
+      })
     })
   },
 
   check: function (e) {
-    var id = e.currentTarget.dataset.id
+    let id = e.currentTarget.dataset.id
     wx.showModal({
       title: '审核老师',
       content: '是否同意该老师加入班级？',
@@ -86,7 +61,6 @@ Page({
       success: (result) => {
         if(result.confirm){
           this.checkStatus(1,id)
-          
         }else{
           this.checkStatus(-1,id)
         }
@@ -97,7 +71,7 @@ Page({
   },
 
   remove: function (e) {
-    var id = e.currentTarget.dataset.id
+    let id = e.currentTarget.dataset.id
     wx.showModal({
       title: '移除老师',
       content: '是否将该老师移除班级？',
@@ -130,41 +104,20 @@ Page({
   },
 
   checkStatus: function (status,teacherId) {
-    wx.showLoading({
-      title: "正在处理",
-      mask: true
-    });
-    var url = app.globalData.apiUrl + '/class/checkJoin'
-    var data = {
-      token:app.globalData.token,
-      classId: classId,
-      teacherId:teacherId,
-      status:status
-    }
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.getTeacherList()
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/checkJoin',
+      data:{
+        classId,teacherId,status
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:'正在处理'
+    }).then(() => {
+      this.getTeacherList();
     })
   },
+
   back:function(e){
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if(route.length>1){
       wx.navigateBack({
         delta: 1

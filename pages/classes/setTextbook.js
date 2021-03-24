@@ -1,73 +1,47 @@
 const app = getApp()
-var classId,tid
+let classId,tid
 Page({
 
   /**
    * 页面的初始数据
    */
-  data: {
-    list: []
+  data: {},
 
-  },
   onLoad: function (options) {
-    classId = options.id,tid= options.tid
+    classId = options.id
+    tid= options.tid
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-  
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
+
   inti(){
     this.getTextbook()
   },
-  getTextbook:function(){
 
-    var url = app.globalData.apiUrl + '/class/getTextbooks'
-    var data = {
-      classId:classId,
-      token:app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-          console.log(res.data.data)
-          var textbooks = res.data.data.textbooks
-          this.setData({
-            textbooks
-          })
-          
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+  getTextbook:function(){
+    app.request({
+      url:'/class/getTextbooks',
+      data:{
+        classId
       },
-      fail: (res) => {
-        wx.stopPullDownRefresh()
-        wx.hideNavigationBarLoading();
-      }
+      barLoading:true
+    }).then(res => {
+      let textbooks = res.textbooks
+      this.setData({
+        textbooks
+      })
     })
   },
-  setTextbook:function(){
 
-    var textbooks = this.data.textbooks
-    var setTextbooks = []
+  setTextbook:function(){
+    let textbooks = this.data.textbooks
+    let setTextbooks = []
     textbooks.forEach(element => {
-      var subjectItem = {}
+      let subjectItem = {}
       subjectItem.subject = element.subject
-      var vers = element.vers
+      let vers = element.vers
       if(vers.length == 1){
         subjectItem.textbookId = vers[0].id
       }else{
@@ -80,74 +54,54 @@ Page({
       setTextbooks.push(subjectItem)
     });
     console.log(setTextbooks);
-    var url = app.globalData.apiUrl + '/class/setTextbooks'
-    var data = {
-      classId:classId,
-      textbooks:setTextbooks,
-      token:app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      method:"POST",
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        if (res.data.code == 0) {
-          wx.showModal({
-            title: '温馨提示',
-            content: '设置成功',
-            showCancel: false,
-            confirmText: '返回',
-            confirmColor: '#3CC51F',
-            success: (result) => {
-              if(result.confirm){
-                this.back()
-              }
-            },
-            fail: ()=>{},
-            complete: ()=>{}
-          });
-          
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+
+    app.request({
+      url:'/class/setTextbooks',
+      data:{
+        classId,textbooks:setTextbooks
       },
-      fail: (res) => {
-        wx.hideNavigationBarLoading();
-      }
+      barLoading:true,
+      method:"POST"
+    }).then(res => {
+      wx.showModal({
+        title: '温馨提示',
+        content: '设置成功',
+        showCancel: false,
+        confirmText: '返回',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if(result.confirm){
+            this.back()
+          }
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
     })
   },
+
   back:function(e){
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if(route.length>1){
       wx.navigateBack({
         delta: 1
       });
     }else{
-      
       wx.switchTab({
         url: 'list'
       });
     }
-    
   },
+
   formInputChange(e) {
     const {
-      subject
+      subject,
+      index
     } = e.currentTarget.dataset
-    var verIndex = e.detail.value
-
-    var vers = this.data.textbooks[subject].vers
-
-    vers.forEach((element,index) => {
+    let vers = this.data.textbooks[subject].vers
+    vers.forEach((element,verIndex) => {
       this.setData({
-        [`textbooks[${subject}].vers[${index}].checked`]: index == verIndex
+        [`textbooks[${subject}].vers[${verIndex}].checked`]: index == verIndex
       })
     });
     

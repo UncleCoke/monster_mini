@@ -20,23 +20,20 @@ Page({
     this.setData({
       masterId
     })
-    
   },
+  
   onShow:function(){
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
+    app.checkLogin(() => {
+      this.inti();
+    })
   },
+
   onPullDownRefresh: function () {
     this.getStudentList()
     this.getGroupList();
-
+    wx.stopPullDownRefresh();
   },
+
   inti: function () {
     this.setData({
       teacherId:app.globalData.uid
@@ -46,45 +43,24 @@ Page({
   },
 
   studentInfo:function(e){
-    var id = e.currentTarget.dataset.id
-
+    let id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: `info?id=${id}`
     });
   },
 
   getStudentList: function () {
-    var url = app.globalData.apiUrl + '/class/students'
-    var data = {
-      classId: classId,
-      token:app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-          let studentList = res.data.data.studentList
-          this.setData({
-            studentList
-          })
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/students',
+      data:{
+        classId
       },
-      fail: (res) => {
-        wx.hideNavigationBarLoading()
-        wx.stopPullDownRefresh()
-      }
+      barLoading:true
+    }).then(res => {
+      let studentList = res.studentList
+      this.setData({
+        studentList
+      })
     })
   },
 
@@ -94,7 +70,7 @@ Page({
       id,
       index
     } = e.currentTarget.dataset
-    var userInfo = this.data.studentList[index]
+    let userInfo = this.data.studentList[index]
     wx.setStorage({
       key: 'userInfo',
       data: userInfo
@@ -102,10 +78,10 @@ Page({
     wx.navigateTo({
       url: `studySum?token=${token}&userId=${id}&classId=${classId}`
     });
-  
   },
+
   check: function (e) {
-    var id = e.currentTarget.dataset.id
+    let id = e.currentTarget.dataset.id
     wx.showModal({
       title: '审核学生',
       content: '是否同意该学生加入班级？',
@@ -116,8 +92,7 @@ Page({
       confirmColor: '#3CC51F',
       success: (result) => {
         if(result.confirm){
-          this.checkStatus(1,id)
-          
+          this.checkStatus(1,id) 
         }else{
           this.checkStatus(-1,id)
         }
@@ -128,7 +103,7 @@ Page({
   },
 
   remove: function (e) {
-    var id = e.currentTarget.dataset.id
+    let id = e.currentTarget.dataset.id
     wx.showModal({
       title: '移除学生',
       content: '是否将该学生移除班级？',
@@ -154,37 +129,20 @@ Page({
       title: "正在处理",
       mask: true
     });
-    var url = app.globalData.apiUrl + '/class/checkStudent'
-    var data = {
-      token:app.globalData.token,
-      classId: classId,
-      userId:userId,
-      status:status
-    }
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.getStudentList()
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/checkStudent',
+      data:{
+        classId,userId,status
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:'正在处理'
+    }).then(res => {
+      this.getStudentList()
     })
   },
+
   back:function(e){
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if(route.length>1){
       wx.navigateBack({
         delta: 1
@@ -194,7 +152,6 @@ Page({
         url: '/pages/classes/list'
       });
     }
-    
   },
 
   onShareAppMessage: function () {
@@ -217,37 +174,17 @@ Page({
 
   //获取分组列表
   getGroupList: function () {
-    var url = app.globalData.apiUrl + '/class/students/group/get'
-    var data = {
-      classId: classId,
-      token:app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-          let groupList = res.data.data.list
-          this.setData({
-            groupList
-          })
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/students/group/get',
+      data:{
+        classId
       },
-      fail: (res) => {
-        wx.hideNavigationBarLoading()
-        wx.stopPullDownRefresh()
-      }
+      barLoading:true
+    }).then(res => {
+      let groupList = res.list
+      this.setData({
+        groupList
+      })
     })
   },
 

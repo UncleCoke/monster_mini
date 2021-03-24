@@ -1,111 +1,55 @@
-<form>
-    <view class="margin text-gray text-sm">
-        <text class="text-red margin-right-xs">*</text>
-        班级信息
-    </view>
-    <view class="cu-form-group margin-top solid-bottom">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            班级名称
-        </view>
-        <input bindchange="formInputChange" value="{{formData.name}}" data-field="name" placeholder="请输入班级名称"></input>
-    </view>
-    <view class="cu-form-group">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            所在年级
-        </view>
-        <picker bindchange="formInputChange" data-field="grade" data-type="picker" value="{{formData.grade}}" data-range="{{grades}}" range="{{grades}}">
-            <view class="picker">{{formData.grade?formData.grade:'请选择'}}</view>
-        </picker>
-    </view>
-    <!-- <view class="margin text-gray text-sm">所属机构（或学校）</view>
-    <view class="cu-form-group margin-top solid-bottom">
-        <view class="title">机构编码</view>
-        <input bindchange="formInputChange" data-field="inviteCode" placeholder="请输入机构编码，不修改请留空"></input>
-    </view>
-    <view class="cu-form-group solid-bottom">
-        <view class="title">机构名称</view>
-        <input value="{{classDetail.orgName}}" placeholder="请输入机构名称" bindchange="formInputChange" data-field="orgName" disabled="{{classDetail.level==1}}"></input>
-    </view> -->
-    <view class="margin text-gray text-sm">学生加入班级的费用，默认不收费</view>
-    <view class="cu-form-group">
-        <view class="title">费用（元）</view>
-        <input bindchange="formInputChange" value="{{classDetail.price}}" data-field="price" placeholder="请输入加入班级的费用，默认不收费" type="number"></input>
-    </view>
-    <view class="margin text-gray text-sm">所属机构（或学校）</view>
-    <view class="cu-form-group" wx:if="{{classDetail.orgId}}">
-        <view class="title">机构名称</view>
-        <input bindchange="formInputChange" value="{{classDetail.orgName}}" data-field="inviteCode" placeholder="请输入机构编码" disabled="{{true}}"></input>
-    </view>
-
-    <view class="margin text-gray text-sm">
-        班级联系方式
-    </view>
-    <view class="cu-form-group">
-        <view class="title">是否在学生端公开</view>
-        <view >
-        <switch checked="{{formData.isShowContact==1}}" class="blue" data-field="isShowContact" bindchange="formInputChange"></switch>
-        </view>
-        
-    </view>
-    <view class="cu-form-group solid-bottom">
-        <view class="title">
-            班主任：{{classDetail.masterName}}
+<view class="page-sp">
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">*号为必填项</view>
+    <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
+        <view class="text-bold padding-top padding-bottom-lg">*班级名称</view>
+        <input bindchange="formInputChange" data-field="name" placeholder="请输入班级名称" placeholder-class="colorF-sp" value="{{formData.name}}"></input>
+        <view class="text-bold padding-top padding-bottom-sm margin-top solid-top">*所在年级</view>
+        <view class="flex align-center justify-between flex-wrap">
+            <view wx:for="{{grades}}" wx:key="*this" class="picker-shape {{formData.grade === item?'hover':''}} margin-top-sm" bindtap="formInputChange" data-field="grade" data-type="picker" data-range="{{grades}}" data-value="{{index}}">
+                {{item}}
+            </view>
         </view>
     </view>
-    <view class="cu-form-group solid-bottom">
-        <view class="title ">
-            联系电话：{{classDetail.masterPhone}}
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">学生加入班级的费用，默认不收费</view>
+    <view class="bg-white padding-lr-lg text-sp padding-tb">
+        <view class="text-bold padding-bottom-lg">费用（元）</view>
+        <input bindchange="formInputChange" value="{{formData.price}}" data-field="price" placeholder="请输入加入班级的费用，默认不收费" type="number" placeholder-class="colorF-sp"></input>
+    </view>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">班级联系方式</view>
+    <view class="bg-white padding-lr-lg text-sp">
+        <view class="flex align-center height-sp solid-bottom">
+            <view class="text-bold">班主任：</view>
+            <view>{{classDetail.masterName}}</view>
+        </view>
+        <view class="flex align-center height-sp">
+            <view class="text-bold">联系电话：</view>
+            <view>{{classDetail.masterPhone}}</view>
         </view>
     </view>
-
-    <view class="margin text-gray text-sm">班级是否公开</view>
-
-    <view class="cu-form-group">
-        <view class="title">在学生端可被搜索</view>
-        <view >
-        <switch checked="{{formData.isOpen==1}}" class="blue" data-field="isOpen" bindchange="formInputChange"></switch>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">班级是否公开</view>
+    <view class="bg-white padding-lr-lg text-sp">
+        <view class="padding-tb flex align-center justify-between">
+            <view>
+                <text class="text-bold margin-right-sm">是否公开</text>
+                <text class="text-sm colorF-sp">(在学生端可被搜索)</text>
+            </view>
+            <switch checked="{{formData.isOpen==1}}" class="blue" data-field="isOpen" bindchange="formInputChange"></switch>
         </view>
-        
     </view>
-    <view class="margin text-gray text-sm">高级班</view>
-
-    <view class="cu-form-group" wx:if="{{classDetail.level==1}}" >
-        <view class="title" >{{formData.isFollowOrgVip==1?"已开通VIP功能":"已关闭VIP功能"}}</view>
-        <view >
-        
-        <switch  checked="{{formData.isFollowOrgVip==1}}" class="blue" data-field="isFollowOrgVip" bindchange="formInputChange"></switch>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm" wx:if="{{classDetail.level==1}}">
+        高级班
+    </view>
+    <view class="bg-white padding-lr-lg text-sp" wx:if="{{classDetail.level==1}}">
+        <view class="padding-tb flex align-center justify-between">
+            <view class="text-bold">{{formData.isFollowOrgVip==1?"已开通VIP功能":"已关闭VIP功能"}}</view>
+            <switch checked="{{formData.isFollowOrgVip==1}}" class="blue" data-field="isFollowOrgVip" bindchange="formInputChange"></switch>
         </view>
-        
-    </view>
-
-    <view class="cu-form-group" wx:else>
-        <view class="title" >未开通</view>
-        <view >
-        
-        <button class="cu-btn line-blue round sm text-blue" open-type="contact">联系客服</button>
-        </view>
-        
-    </view>
-    
-</form>
-<view class="cu-bar bg-white tabbar border shop foot">
-    <view class="btn-group">
-        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
-        <button class="cu-btn bg-red light round submit margin-xs" bind:tap="dismiss">解散</button>
-        <button class="cu-btn bg-blue round submit margin-xs" bind:tap="update">更新</button>
-        
     </view>
 </view>
-<view class="cu-modal {{modalName=='done'?'show':''}}">
-    <view class="cu-dialog bg-white">
-        <view class="cu-bar bg-white justify-end margin">
-            <view class="content">创建成功</view>
-        </view>
-        <view class="cu-bar bg-white justify-center margin">
-            <button class="cu-btn line-blue round text-blue" bindtap="back">返回</button>
-                <button class="cu-btn bg-blue round margin-left" bindtap="enterClass">进入班级</button>
-        </view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn bg-white flex-sub" bind:tap="back">返回</button>
+        <button class="cu-btn bg-blue light btn-sp margin-right-sm" bind:tap="dismiss">解散</button>
+        <button class="cu-btn bg-blue btn-sp margin-right" bind:tap="update">更新</button>
     </view>
 </view>

@@ -16,6 +16,7 @@
             <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
         </view>
     </view>
+    <empty wx:if="{{potentialList.length === 0}}" title="暂无潜在生源"></empty>
     <view wx:for="{{potentialList}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp" bindtap="potentialDetail">
         <view class="flex align-center justify-between margin-bottom-sm">
             <view class="flex align-center">
@@ -44,6 +45,7 @@
             <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
         </view>
     </view>
+    <empty wx:if="{{potentialList.length === 0}}" title="暂无学生"></empty>
     <view wx:for="{{potentialList}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp">
         <view class="flex align-center justify-between margin-bottom-sm">
             <view class="flex align-center">

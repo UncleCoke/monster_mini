@@ -32,7 +32,7 @@
             </view>
         </view>
         <view class="flex align-center justify-between" style="padding:32rpx 118rpx;">
-            <view class="flex align-center justify-center flex-direction">
+            <view class="flex align-center justify-center flex-direction" data-type="page" data-url="students/list" data-master="{{0}}" bind:tap="action">
                 <view style="position:relative">
                     <view class="content-shape bg-olive light">{{classDetail.studentCount}}</view>
                     <view wx:if="{{classDetail.toBeStudentCount && master}}" class="badge">
@@ -41,7 +41,7 @@
                 </view>
                 <view class="text-sm">学生</view>
             </view>
-            <view class="flex align-center justify-center flex-direction">
+            <view class="flex align-center justify-center flex-direction" data-type="page" data-master="{{0}}" data-url="teachers/list" bind:tap="action">
                 <view style="position:relative">
                     <view class="content-shape bg-greenSecond light">
                         {{classDetail.teacherCount}}
@@ -82,18 +82,24 @@
             <image src="{{imgUrl}}icon_action.png" style="width:36rpx;" mode="widthFix" />
             <view class="margin-left-sm text-sp text-bold">班级功能</view>
         </view>
-        <view class="flex align-center justify-between flex-wrap">
-            <view class="action-panel radius-sp flex flex-direction align-center justify-center" wx:for="{{iconList}}" wx:key="icon" data-type="{{item.type}}" data-master="{{item.master}}" data-url="{{item.url}}" wx:if="{{item.open && master >= item.master}}" bind:tap="action">
-                <image src="{{imgUrl + item.icon}}.png" mode="widthFix" style="width:72rpx;" />
-                <view class="text-sm margin-top-xs">{{item.name}}</view>
+        <view class="grid col-3">
+            <view wx:for="{{iconList}}" wx:key="icon" data-type="{{item.type}}" data-master="{{item.master}}" data-url="{{item.url}}" wx:if="{{item.open && master >= item.master}}" bind:tap="action" class="flex align-center justify-center">
+                <view class="action-panel radius-sp flex flex-direction align-center justify-center">
+                    <image src="{{imgUrl + item.icon}}.png" mode="widthFix" style="width:72rpx;" />
+                    <view class="text-sm margin-top-xs">{{item.name}}</view>
+                </view>
             </view>
-            <view class="action-panel radius-sp flex flex-direction align-center justify-center" wx:if="{{master}}" data-type="page" data-master="1" data-url="setting" bind:tap="action">
-                <image src="{{imgUrl}}icon/setting.png" mode="widthFix" style="width:72rpx;" />
-                <view class="text-sm margin-top-xs">设置</view>
+            <view wx:if="{{master}}" class="flex align-center justify-center">
+                <view class="action-panel radius-sp flex flex-direction align-center justify-center" data-type="page" data-master="1" data-url="setting" bind:tap="action">
+                    <image src="{{imgUrl}}icon/setting.png" mode="widthFix" style="width:72rpx;" />
+                    <view class="text-sm margin-top-xs">设置</view>
+                </view>
             </view>
-            <view wx:elif="{{hasJoin == 1}}" class="action-panel radius-sp flex flex-direction align-center justify-center" bind:tap="quit">
-                <image src="{{imgUrl}}icon/quit.png" mode="widthFix" style="width:72rpx;" />
-                <view class="text-sm margin-top-xs">退出班级</view>
+            <view wx:elif="{{hasJoin == 1}}" class="flex align-center justify-center">
+                <view class="action-panel radius-sp flex flex-direction align-center justify-center" bind:tap="quit">
+                    <image src="{{imgUrl}}icon/quit.png" mode="widthFix" style="width:72rpx;" />
+                    <view class="text-sm margin-top-xs">退出班级</view>
+                </view>
             </view>
         </view>
     </view>

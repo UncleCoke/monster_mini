@@ -1,36 +1,64 @@
-.student-box {
+page {
+    background: #fff;
+}
+
+.tabs {
+    padding: 40rpx 40rpx 20rpx 40rpx;
+}
+
+.tabs .bar {
     width: 100%;
-    min-height: 500rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    background: #F0F5F7;
 }
 
-.rotate {
-    display:block;
-    transform: rotate(180deg);
+.tabs .bar .hover {
+    background: #0779E4;
+    color: #fff;
+    border-radius: 20rpx;
 }
 
-.cu-tag{
-    min-width:60rpx;
+.cu-tag.goodColor {
+    background: #E0F5D9 !important;
+    color: #66CE41;
+    width: 60rpx;
+    height: 36rpx;
+    line-height: 36rpx;
+}
+
+.cu-tag.errorColor {
+    background: #FED8D8 !important;
+    color: #F93C3C;
+    width: 60rpx;
+    height: 36rpx;
+    line-height: 36rpx;
+}
+
+.cu-tag.picker {
+    width: 168rpx;
+    height: 44rpx;
+    line-height:44rpx;
 }
 
 .score{
     position:absolute;
     bottom:0rpx;
     right:-10rpx;
-    width:48rpx;
-    height:48rpx;
+    width:34rpx;
+    height:34rpx;
     border-radius:50%;
-    font-size:30rpx;
+    font-size:24rpx;
     display:flex;
     align-items:center;
     justify-content:center;
-    border:2rpx solid #fff;
 }
 
 .select{
     position: absolute;
     top: -10rpx;
     right: -20rpx;
-    font-size:32rpx;
+    font-size:34rpx;
     padding: 0rpx 10rpx;
 }
 
@@ -43,4 +71,22 @@
     background-color:rgba(255, 255, 255, 0.4);
     border-radius:50%;
     z-index:9999;
+}
+
+.cu-dialog{
+    border-radius:36rpx;
+}
+
+.btn-sp{
+    width: 260rpx;
+    height: 64rpx;
+    line-height:64rpx;
+    background: #F0F5F7;
+    border-radius: 40rpx;
+    font-size:24rpx;
+}
+
+.btn-sp.hover{
+    background: #0779E4;
+    color: #fff;
 }

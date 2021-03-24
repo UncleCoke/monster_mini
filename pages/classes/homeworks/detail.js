@@ -64,7 +64,7 @@ share: function (e) {
 
 getHomework:function(id){
   app.request({
-    url:app.globalData.apiUrl + '/class/homeworkDetail',
+    url:'/class/homeworkDetail',
     data:{
       homeworkId
     },
@@ -107,7 +107,7 @@ delete: function () {
     success: (result) => {
       if (result.confirm) {
         app.request({
-          url:app.globalData.apiUrl + '/class/homework/remove',
+          url:'/class/homework/remove',
           data:{
             homeworkId
           },
@@ -172,7 +172,7 @@ warn:function(e){
     success: (result) => {
       if(result.confirm){
         app.request({
-          url:app.globalData.apiUrl + '/class/homework/warn',
+          url:'/class/homework/warn',
           data:{
             homeworkId
           },

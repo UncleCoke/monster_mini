@@ -99,7 +99,7 @@ Page({
 
   getTextbooks: function () {
     app.request({
-      url: app.globalData.apiUrl + '/public/getTextbooksSimple',
+      url: '/public/getTextbooksSimple',
       barLoading: true
     }).then(res => {
       let textbookList = res.textbookList;
@@ -245,7 +245,7 @@ Page({
     formData.textbook = this.data.multiArray[0][this.data.multiIndex[0]] + this.data.multiArray[1][this.data.multiIndex[1]]
 
     app.request({
-      url:app.globalData.apiUrl + '/public/teacher/eval/create',
+      url:'/public/teacher/eval/create',
       data:formData,
       method:'POST',
       barLoading:true
@@ -259,7 +259,7 @@ Page({
 
   getUnit: function (textbookId) {
     app.request({
-      url: app.globalData.apiUrl + '/public/teacher/unit/list',
+      url: '/public/teacher/unit/list',
       data: {
         textbookId
       },
@@ -300,7 +300,7 @@ Page({
   //班级教材
   getTextbook: function () {
     app.request({
-      url: app.globalData.apiUrl + '/class/getTextbooks',
+      url: '/class/getTextbooks',
       data: {
         classId
       },
@@ -328,7 +328,7 @@ Page({
 
   getClassDetail: function () {
     app.request({
-      url: app.globalData.apiUrl + '/class/detail',
+      url: '/class/detail',
       data: {
         classId
       },

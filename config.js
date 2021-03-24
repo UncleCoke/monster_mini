@@ -1,6 +1,6 @@
 export default class GlobalConfig {
   constructor() {
-    this.productName = '小优复习-老师端'
+    this.productName = '小优科教'
     this.apiUrl = 'https://fxb2api.uelink.com.cn/teacherapi'
     //this.apiUrl = 'http://192.168.1.159:8080/teacherapi/'
 

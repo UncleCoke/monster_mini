@@ -1,44 +1,38 @@
-<form>
-    <view class="margin text-gray text-sm">
-        <text class="text-red margin-right-xs">*</text>
-        必填项
-    </view>
-    <view class="cu-form-group margin-top solid-bottom">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            机构名称
-        </view>
-        <input bindchange="formInputChange" data-field="orgName" value="{{formData.orgName}}" placeholder="请输入机构名称"></input>
-    </view>
-    <view class="cu-form-group">
-        <view class="title text-blue">
-            <text class="text-red margin-right-xs">*</text>
-            所在地区
-        </view>
-        <picker bindchange="formInputChange" data-field="areaCode" value="{{area}}"  mode="region">
-            <view class="picker">{{formData.areaCode?formData.province+formData.city+formData.area:'请选择'}}</view>
+<view class="page-sp">
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">基本信息</view>
+    <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
+        <view class="text-bold padding-top padding-bottom-lg">机构名称</view>
+        <input bindchange="formInputChange" data-field="orgName" placeholder="请输入机构名称" placeholder-class="colorF-sp" value="{{formData.orgName}}"></input>
+        <view class="text-bold padding-top padding-bottom-lg margin-top solid-top">所在地区</view>
+        <picker bindchange="formInputChange" data-field="areaCode" value="{{area}}" mode="region">
+            <view class="colorF-sp flex justify-between align-center">
+                <view>
+                    {{formData.areaCode?formData.province+formData.city+formData.area:'请选择'}}
+                </view>
+                <view class="cuIcon-right"></view>
+            </view>
         </picker>
     </view>
-    <view class="margin text-gray text-sm">选填项</view>
-
-    <view class="cu-form-group">
-        <view class="title">是否开通VIP</view>
-        <view >
-        <text class="text-gray text-sm margin-right-sm"></text>
-        <switch checked="{{formData.vipLevel==1}}" class="blue" data-field="vipLevel" bindchange="formInputChange"></switch>
+    <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">开通会员</view>
+    <view class="bg-white padding-lr-lg text-sp {{formData.vipLevel == 1?'padding-bottom-lg':''}}">
+        <view class="padding-tb flex align-center justify-between">
+            <view class="text-bold">开通VIP</view>
+            <switch checked="{{formData.vipLevel==1}}" class="blue" data-field="vipLevel" bindchange="formInputChange"></switch>
         </view>
-        
+        <block wx:if="{{formData.vipLevel==1}}">
+            <view class="text-bold padding-top padding-bottom-lg solid-top">有效期</view>
+            <picker bindchange="formInputChange" data-field="vipEndTime" value="{{formData.vipEndTime}}" mode="date" start="{{formData.vipEndTime?formData.vipEndTime:today}}">
+                <view class="colorF-sp flex justify-between align-center">
+                    <view>{{formData.vipEndTime?formData.vipEndTime:'请选择开通时间'}}</view>
+                    <view class="cuIcon-right"></view>
+                </view>
+            </picker>
+        </block>
     </view>
-    <view class="cu-form-group" wx:if="{{formData.vipLevel==1}}" >
-        <picker bindchange="formInputChange" data-field="vipEndTime" value="{{formData.vipEndTime}}" mode="date" start="{{today}}">
-            <view class="picker">{{formData.vipEndTime?formData.vipEndTime:'请选择开通时间'}}</view>
-        </picker>
-    </view>
-</form>
+</view>
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
-        <button class="cu-btn bg-blue round submit margin-xs" bind:tap="create">创建</button>
-        
+        <button class="cu-btn lg bg-white flex-sub" bind:tap="back">返回</button>
+        <button class="cu-btn lg bg-blue sp margin-right" bind:tap="create">创建</button>
     </view>
 </view>

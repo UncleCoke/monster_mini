@@ -1,44 +1,114 @@
-<view class="margin  margin-bottom-xs  flex justify-center">
-    <view class="flex justify-center">
-        <button wx:if="{{!globalData.phone}}" open-type="getUserInfo" bindgetuserinfo="setUserData" class='cu-btn round sm line-blue'>
-            未登录
-        </button>
-        <block wx:else>
-            <view class='flex flex-direction  justify-center align-center'>
-                <view class="cu-avatar lg round" style="background-image:url({{globalData.avatarUrl}})"></view>
-                <view class="padding-sm text-darkGray">{{globalData.nickName}}</view>
-            </view>
-        </block>
+<view class="padding-lg flex align-center justify-between" style="background:#f8f8f8;">
+    <view>
+        <view class="text-bold text-xxl text-black">
+            你好，{{!globalData.phone?'请登录':globalData.trueName || globalData.nickName}}
+        </view>
+        <view class="text-sp colorF-sp margin-top-sm">欢迎使用小优科教小程序</view>
     </view>
+    <button class="cu-btn bg-blue sm round" wx:if="{{!globalData.phone}}" open-type="getUserInfo" bindgetuserinfo="setUserData">
+        立即登录
+    </button>
+    <view wx:else class="cu-avatar lg round" style="background-image:url({{globalData.avatarUrl}})"></view>
 </view>
-<view class="margin bg-white radius padding">
-    <view class="cu-form-group">
-        <view class="title text-blue">姓名</view>
-        <view class="text-grey">{{globalData.trueName?globalData.trueName:'未填写'}}</view>
+<view class="bg"></view>
+<view class="bg-white radius padding-top form padding-lr-lg padding-bottom-lg">
+    <view class="flex align-center">
+        <view class="flex align-center padding-bottom-lg">
+            <image src="{{imgUrl}}icon_info.png" style="width:40rpx;" mode="widthFix" />
+            <view class="margin-left-sm text-sp text-bold">基本信息</view>
+        </view>
     </view>
-    <view class="cu-form-group ">
-        <view class="title text-blue">手机号码</view>
-        <view class="text-grey">{{globalData.phone?globalData.phone:'未填写'}}</view>
+    <view class="text-sp height-sp solid-bottom flex align-center">
+        <view class="label">姓名</view>
+        <view>{{globalData.trueName?globalData.trueName:'未填写'}}</view>
     </view>
-    <view class="cu-form-group ">
-        <view class="title text-blue">所属机构</view>
-        <view class="flex justify-end align-center">
-            <view class="text-grey">{{globalData.orgName?globalData.orgName:'无'}}</view>
-            <button wx:if="{{globalData.orgName}}" class="cu-btn sm  bg-red light margin-left-sm" bind:tap="quitOrg">
+    <view class="text-sp height-sp solid-bottom flex align-center">
+        <view class="label">手机号码</view>
+        <view>{{globalData.phone?globalData.phone:'未填写'}}</view>
+    </view>
+    <block wx:if="{{!globalData.orgAdmin}}">
+        <view class="text-sp height-sp solid-bottom flex align-center justify-between">
+            <view class="flex align-center">
+                <view class="label">所属机构</view>
+                <view>{{globalData.orgName?globalData.orgName:'无'}}</view>
+            </view>
+            <button wx:if="{{globalData.orgName}}" class="cu-btn sm  round bg-red light" bind:tap="quitOrg">
                 <view class="text-sm">退出</view>
             </button>
         </view>
-    </view>
-    <view class="cu-form-group">
-        <view class="title text-blue">ID</view>
-        <view class="text-grey">{{globalData.uid}}</view>
-    </view>
+        <view class="text-sp height-sp solid-bottom flex align-center justify-between">
+            <view class="flex align-center">
+                <view class="label">我的收益</view>
+                <view class="text-price">0</view>
+            </view>
+            <button class="cu-btn sm  round bg-blue" bindtap="revenueDetail">
+                <view class="text-sm">详情</view>
+            </button>
+        </view>
+    </block>
+    <block wx:if="{{globalData.orgAdmin}}">
+        <view class="flex align-center padding-top-xl">
+            <view class="flex align-center padding-bottom-lg">
+                <image src="{{imgUrl}}icon_org.png" style="width:40rpx;" mode="widthFix" />
+                <view class="margin-left-sm text-sp text-bold">我的机构</view>
+            </view>
+        </view>
+        <view class="panel">
+            <view class="padding-top-lg padding-lr-lg padding-bottom solid-bottom">
+                <view class="flex align-center margin-bottom-xl">
+                    <view class="cu-avatar radius lg {{globalData.org.vipLevel?'bg-gradual-orange':'bg-grey'}}">
+                        {{globalData.org.orgName[0]}}
+                    </view>
+                    <view class="margin-left-sm flex-sub">
+                        <view class="flex align-center margin-bottom-sm">
+                            <view class="text-sp text-bold margin-right-sm">
+                                {{globalData.org.orgName}}
+                            </view>
+                            <view class="cu-tag bg-red sm round" wx:if="{{globalData.org.vipLevel}}" style="width:60rpx;">
+                                VIP
+                            </view>
+                        </view>
+                        <view class="flex align-center">
+                            <image src="{{imgUrl}}icon_area.png" style="width:26rpx" mode="widthFix" />
+                            <view class="text-sm colorF-sp margin-left-sm">
+                                {{globalData.org.province}}{{globalData.org.city}}{{globalData.org.area}}
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="flex align-center justify-between" style="padding:0 80rpx;">
+                    <button class="flex flex-direction align-center justify-center" data-org="{{globalData.org.id}}" data-name="{{globalData.org.orgName}}" open-type="share">
+                        <image mode="widthFix" style="width:60rpx;" src="{{imgUrl}}inviteTeacher.png" />
+                        <view class="text-sm margin-top-xs">邀请老师</view>
+                    </button>
+                    <button class="flex flex-direction align-center justify-center" bindtap="orgDetail">
+                        <image mode="widthFix" style="width:60rpx;" src="{{imgUrl}}orgDetail.png" />
+                        <view class="text-sm margin-top-xs">机构详情</view>
+                    </button>
+                    <button class="flex flex-direction align-center justify-center" bindtap="revenueDetail">
+                        <image mode="widthFix" style="width:60rpx;" src="{{imgUrl}}revenueDetail.png" />
+                        <view class="text-sm margin-top-xs">收益详情</view>
+                    </button>
+                </view>
+            </view>
+            <view class="padding-tb padding-lr-lg flex align-center justify-between">
+                <view class="flex align-center">
+                    <view>机构收益：</view>
+                    <view class="cu-tag bg-blue light round">0元</view>
+                </view>
+                <view class="flex align-center">
+                    <view>VIP剩余：</view>
+                    <view class="cu-tag bg-green light round">{{globalData.org.vipEndTime?globalData.org.vipEndTime:'无'}}</view>
+                </view>
+            </view>
+        </view>
+    </block>
 </view>
-<view class="padding">
-    <button class="cu-btn block bg-blue margin-tb-sm lg round" open-type="getUserInfo" bindgetuserinfo="setUserData">
+<view class="flex flex-direction align-center justify-center" wx:if="{{!globalData.orgAdmin}}">
+    <button class="cu-btn block bg-blue lg radius sp" open-type="getUserInfo" bindgetuserinfo="setUserData">
         {{globalData.nickName?'更新资料':'填写资料'}}
     </button>
-    <button wx:if="{{globalData.isAdmin == 1}}" class="cu-btn block bg-cyan margin-tb lg round" bind:tap="orgList">
+    <button wx:if="{{globalData.isAdmin == 1}}" class="cu-btn block bg-green margin-top lg radius sp" bind:tap="orgList">
         机构管理
     </button>
 </view>

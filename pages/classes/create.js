@@ -98,7 +98,7 @@ Page({
       mask: true
     });
     app.request({
-      url:app.globalData.apiUrl + '/class/create',
+      url:'/class/create',
       data,
       loading:true,
       loadingTitle:'正在提交',

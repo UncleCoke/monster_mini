@@ -59,7 +59,7 @@ Page({
 
   getHomeworkList:function(_page){
 
-    var url = app.globalData.apiUrl + '/student/evalList'
+    var url = '/student/evalList'
     var data = {
       token:token,
       userId:userId,

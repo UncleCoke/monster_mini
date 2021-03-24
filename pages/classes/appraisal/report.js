@@ -98,7 +98,7 @@ Page({
   },
 
   getReport: function () {
-    let url = app.globalData.apiUrl + '/class/behaviour/report'
+    let url = '/class/behaviour/report'
     let data = {
       token: app.globalData.token,
       classId,

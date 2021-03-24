@@ -74,7 +74,7 @@ Page({
 
   getEval: function () {
     app.request({
-      url:app.globalData.apiUrl + '/public/teacher/eval/detail',
+      url:'/public/teacher/eval/detail',
       data:{
         evalId
       },

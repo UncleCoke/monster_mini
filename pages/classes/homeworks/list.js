@@ -52,7 +52,7 @@ Page({
 
   getHomeworkList:function(_page){
     app.request({
-      url:app.globalData.apiUrl + '/class/homeworks',
+      url:'/class/homeworks',
       data:{
         classId,
         page:_page,
@@ -91,7 +91,7 @@ Page({
 
   getTextbook:function(){
     app.request({
-      url:app.globalData.apiUrl + '/class/getTextbooks',
+      url:'/class/getTextbooks',
       data:{
         classId
       }

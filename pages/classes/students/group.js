@@ -138,59 +138,38 @@ Page({
       return;
     }
 
-    let url = app.globalData.apiUrl + '/class/students/group/create'
-    let data = {
-      classId: classId,
-      token: app.globalData.token,
-      groupName: this.data.name,
-      studentIds: this.data.studentIds.toString()
-    }
-    wx.showLoading({
-      title: '正在创建',
-      mask: true,
-    });
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          wx.showModal({
-            title: '创建成功',
-            content: '是否继续创建新的小组',
-            showCancel: true,
-            cancelText: '返回',
-            cancelColor: '#000000',
-            confirmText: '继续',
-            confirmColor: '#3CC51F',
-            success: (result) => {
-              if (result.confirm) {
-                this.setData({
-                  name: '',
-                  studentIds: []
-                })
-              } else {
-                this.back();
-              }
-            },
-            fail: () => {},
-            complete: () => {}
-          });
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/students/group/create',
+      data:{
+        classId,
+        groupName: this.data.name,
+        studentIds: this.data.studentIds.toString()
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:"正在创建"
+    }).then(res => {
+      wx.showModal({
+        title: '创建成功',
+        content: '是否继续创建新的小组',
+        showCancel: true,
+        cancelText: '返回',
+        cancelColor: '#000000',
+        confirmText: '继续',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if (result.confirm) {
+            this.setData({
+              name: '',
+              studentIds: []
+            })
+          } else {
+            this.back();
+          }
+        },
+        fail: () => {},
+        complete: () => {}
+      });
     })
-
   },
 
   edit: function () {
@@ -208,38 +187,19 @@ Page({
       });
       return;
     }
-
-    let url = app.globalData.apiUrl + '/class/students/group/edit'
-    let data = {
-      classId: classId,
-      token: app.globalData.token,
-      groupName: this.data.name,
-      studentIds: this.data.studentIds.toString(),
-      groupId
-    }
-    wx.showLoading({
-      title: '正在编辑',
-      mask: true,
-    });
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.back();
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url: '/class/students/group/edit',
+      data:{
+        classId: classId,
+        token: app.globalData.token,
+        groupName: this.data.name,
+        studentIds: this.data.studentIds.toString(),
+        groupId
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:"正在编辑"
+    }).then(() => {
+      this.back();
     })
   },
 
@@ -254,35 +214,15 @@ Page({
       confirmColor: '#3CC51F',
       success: (result) => {
         if (result.confirm) {
-          let url = app.globalData.apiUrl + '/class/students/group/delete'
-          let data = {
-            classId: classId,
-            token: app.globalData.token,
-            groupId: groupId
-          }
-          wx.showLoading({
-            title: '正在删除',
-            mask: true,
-          });
-          wx.request({
-            url: url,
-            data: data,
-            success: (res) => {
-              wx.hideLoading();
-              if (res.data.code == 0) {
-                this.back();
-              } else {
-                wx.showToast({
-                  title: res.data.msg,
-                  icon: 'none',
-                  duration: 2000,
-                  mask: true
-                })
-              }
+          app.request({
+            url:'/class/students/group/delete',
+            data:{
+              classId,groupId
             },
-            fail: (res) => {
-              wx.hideLoading();
-            }
+            loading:true,
+            loadingTitle:"正在删除"
+          }).then(() => {
+            this.back();
           })
         }
       },

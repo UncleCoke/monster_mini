@@ -1,1 +1,9 @@
-/* pages/classes/students/list.wxss */
+page{
+    background-color:#fff;
+}
+
+.panel {
+    height: 176rpx;
+    background: #F0F5F7;
+    border-radius: 36rpx;
+}

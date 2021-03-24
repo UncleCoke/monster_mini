@@ -15,28 +15,23 @@ Page({
 
   onLoad: function (options) {
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
+
   inti() {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1
-    var day = date.getDate()
-    var today = `${year}-${month<10?'0'+month:month}-${day<10?'0'+day:day}`
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    let today = `${year}-${month<10?'0'+month:month}-${day<10?'0'+day:day}`
     this.setData({
       today
     })
   },
 
   formInputChange(e) {
-    console.log(e);
     const {
       field,
       type,
@@ -49,7 +44,6 @@ Page({
       var value = e.detail.value
 
     }
-
     if(field == "vipLevel"){
       value = e.detail.value?1:0
     }
@@ -61,7 +55,6 @@ Page({
         [`formData.area`]: e.detail.value[2]
       })
     }
-    
     this.setData({
       [`formData.${field}`]: value
     })
@@ -69,7 +62,7 @@ Page({
   
   create: function (e) {
     console.log(this.data.formData);
-    var formData = this.data.formData
+    let formData = this.data.formData
     if(!formData.orgName){
       wx.showToast({
         title: '请输入名称',
@@ -97,78 +90,50 @@ Page({
       });
       return
     }
-    var url = app.globalData.apiUrl + '/org/create'
-    var data = formData
-    data.token = app.globalData.token
-    
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      method: "POST",
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        if (res.data.code == 0) {
-          var classmateId = res.data.data.classmateId
-          wx.showModal({
-            title: '创建成功',
-            content: '',
-            showCancel: true,
-            cancelText: '返回',
-            cancelColor: '#000000',
-            confirmText: '继续创建',
-            confirmColor: '#3CC51F',
-            success: (result) => {
-              if(result.confirm){
-                this.setData({
-                  formData:{
-                    orgName: '',
-                    vipEndTime: '',
-                    vipLevel:0,
-                  }
-                })
-              }else{
-                this.back()
+    let data = formData
+    app.request({
+      url:'/org/create',
+      data,
+      method:'POST',
+      barLoading:true
+    }).then(res => {
+      wx.showModal({
+        title: '创建成功',
+        content: '',
+        showCancel: true,
+        cancelText: '返回',
+        cancelColor: '#000000',
+        confirmText: '继续创建',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if(result.confirm){
+            this.setData({
+              formData:{
+                orgName: '',
+                vipEndTime: '',
+                vipLevel:0,
               }
-            },
-            fail: ()=>{},
-            complete: ()=>{}
-          });
-          
-
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
-      },
-      fail: (res) => {
-        wx.hideNavigationBarLoading();
-      }
+            })
+          }else{
+            this.back()
+          }
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
     })
   },
-  back:function(e){
-    var route = getCurrentPages()
-    
+
+  back:function(){
+    let route = getCurrentPages()
     if(route.length>1){
       wx.navigateBack({
-        delta: 1,
-        success: (result)=>{
-        }
+        delta: 1
       });
     }else{
-      
       wx.redirectTo({
-        url: 'list',
-        success: (result)=>{
-        }
+        url: 'list'
       });
     }
-    
-  },
-  
+  }
 })

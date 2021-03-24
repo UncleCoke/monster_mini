@@ -11,3 +11,7 @@
 .cu-tag{
     padding:0 22rpx !important;
 }
+
+.picker-shape{
+	width:325rpx;
+}

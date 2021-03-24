@@ -30,7 +30,7 @@ Page({
 
   getEvalList: function () {
     app.request({
-      url:app.globalData.apiUrl + '/public/teacher/eval/reportUserList',
+      url:'/public/teacher/eval/reportUserList',
       data:{
         evalId: this.data.evalId
       },

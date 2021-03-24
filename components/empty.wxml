@@ -1,4 +1,4 @@
 <view class="empty_box">
-    <image  src="https://img01.yzcdn.cn/vant/custom-empty-image.png"  mode="widthFix" class="empty_img"/>
+    <image  src="http://img.uelink.com.cn/upload/xykj/empty.png"  mode="widthFix" class="empty_img"/>
     <view class="empty_title">{{title}}</view>
 </view>

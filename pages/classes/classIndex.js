@@ -89,7 +89,7 @@ Page({
 
   getClassDetail: function () {
     app.request({
-      url:app.globalData.apiUrl + '/class/detail',
+      url:'/class/detail',
       data:{
         classId
       },
@@ -136,49 +136,29 @@ Page({
 
   join:function(e){
     let teacherId = app.globalData.uid
-    var url = app.globalData.apiUrl + '/class/join'
-    var data = {
-      classId: classId,
-      teacherId:teacherId,
-      token:app.globalData.token
-    }
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideNavigationBarLoading();
-        if (res.data.code == 0) {
-          wx.showModal({
-            title: '申请成功',
-            content: '请等待班主任审核',
-            showCancel: false,
-            confirmText: '我知道了',
-            confirmColor: '#3CC51F',
-            success: (result) => {
-              if(result.confirm){
-                this.getClassDetail()
-                
-              }
-            },
-            fail: ()=>{},
-            complete: ()=>{}
-          });
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/join',
+      data:{
+        classId,teacherId
       },
-      fail: (res) => {
-        wx.stopPullDownRefresh()
-      }
+      barLoading:true
+    }).then(() => {
+      wx.showModal({
+        title: '申请成功',
+        content: '请等待班主任审核',
+        showCancel: false,
+        confirmText: '我知道了',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if(result.confirm){
+            this.getClassDetail()
+            
+          }
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
     })
-
   },
 
   back:function(e){
@@ -260,6 +240,7 @@ Page({
       complete: ()=>{}
     });
   },
+
   hideModal(e) {
     this.setData({
       modalName: null
@@ -288,71 +269,15 @@ Page({
   },
 
   checkStatus: function (status,teacherId) {
-    wx.showLoading({
-      title: "正在处理",
-      mask: true
-    });
-    var url = app.globalData.apiUrl + '/class/checkJoin'
-    var data = {
-      token:app.globalData.token,
-      classId: classId,
-      teacherId:teacherId,
-      status:status
-    }
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.inti()
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/checkJoin',
+      data:{
+        classId,teacherId,status
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:'正在处理'
+    }).then(() => {
+      this.inti();
     })
-  },
-  checkStatus: function (status,teacherId) {
-    wx.showLoading({
-      title: "正在处理",
-      mask: true
-    });
-    var url = app.globalData.apiUrl + '/class/checkJoin'
-    var data = {
-      token:app.globalData.token,
-      classId: classId,
-      teacherId:teacherId,
-      status:status
-    }
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.inti()
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
-      },
-      fail: (res) => {
-        wx.hideLoading();
-      }
-    })
-  },
+  }
 })

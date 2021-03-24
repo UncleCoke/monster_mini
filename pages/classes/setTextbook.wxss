@@ -1,1 +1,4 @@
-/* pages/classes/setTextbook.wxss */
+.picker-shape{
+    width:220rpx;
+    text-align:center;
+}

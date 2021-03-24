@@ -4,6 +4,7 @@
     "pages/recruit/race/index",
     "pages/recruit/race/create",
     "pages/recruit/race/detail",
+    "pages/recruit/race/unitDetail",
     "pages/recruit/race/introduce",
     "pages/recruit/race/product",
     "pages/recruit/race/share",
@@ -37,6 +38,7 @@
     "pages/student/potentialDetail",
     "pages/student/follow",
     "pages/my/index",
+    "pages/my/revenue",
     "pages/evaluates/create",
     "pages/evaluates/preview",
     "pages/evaluates/share",
@@ -48,7 +50,9 @@
     "pages/org/list",
     "pages/org/detail",
     "pages/org/create",
-    "pages/org/edit"
+    "pages/org/edit",
+    "pages/org/revenue",
+    "pages/org/classRevenue"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -2,7 +2,7 @@
     <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">*号为必填项</view>
     <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
         <view class="text-bold padding-top padding-bottom-lg">*班级名称</view>
-        <input bindchange="formInputChange" data-field="name" placeholder="请输入班级名称" placeholder-class="colorF-sp"></input>
+        <input bindchange="formInputChange" data-field="name" placeholder="请输入班级名称" placeholder-class="colorF-sp" value="{{formData.name}}"></input>
         <view class="text-bold padding-top padding-bottom-sm margin-top solid-top">*所在年级</view>
         <view class="flex align-center justify-between flex-wrap">
             <view wx:for="{{grades}}" wx:key="*this" class="picker-shape {{formData.grade === item?'hover':''}} margin-top-sm" bindtap="formInputChange" data-field="grade" data-type="picker" data-range="{{grades}}" data-value="{{index}}">

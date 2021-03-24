@@ -70,7 +70,7 @@ Page({
 
   getEvalList:function(){
     app.request({
-      url:app.globalData.apiUrl + '/public/teacher/eval/list',
+      url:'/public/teacher/eval/list',
       barLoading:true
     }).then(res => {
       let list = res.list;

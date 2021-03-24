@@ -47,7 +47,7 @@ Page({
 
   getClassList: function () {
     app.request({
-      url:app.globalData.apiUrl + '/class/list',
+      url:'/class/list',
       data:{
         teacherId: app.globalData.uid
       },

@@ -238,7 +238,7 @@ Page({
       title: '加载数据',
       mask: true
     })
-    var url = app.globalData.apiUrl + '/student/studyData'
+    var url = '/student/studyData'
     var data = {
       token: app.globalData.token,
       userId: userId,
@@ -334,7 +334,7 @@ Page({
       title: "正在处理",
       mask: true
     });
-    var url = app.globalData.apiUrl + '/class/checkStudent'
+    var url = '/class/checkStudent'
     var data = {
       token:app.globalData.token,
       classId: classId,

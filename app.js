@@ -48,8 +48,7 @@ App({
     session_key: '',
     unionId: '',
     appId: globalConfig.appId,
-    secret: globalConfig.secret,
-    loadingNum:0
+    secret: globalConfig.secret
   },
 
   //版本更新
@@ -149,18 +148,6 @@ App({
     }
   },
 
-  //判断是否关闭loading
-  closeLoading: function (loading) {
-    if (!loading || this.globalData.loadingNum === 0) {
-      return;
-    }
-    if (this.globalData.loadingNum === 1) {
-      wx.hideLoading();
-      this.globalData.loadingNum = 0
-    }
-    this.globalData.loadingNum -= 1;
-  },
-
   setUserData: function (encryptedData,iv,rawData, phone, trueName, callback) {
     let data = {
       session_key:this.globalData.session_key
@@ -181,7 +168,7 @@ App({
       data.trueName = trueName
     }
     this.request({
-      url:this.globalData.apiUrl + '/public/teacher/setUserData2',
+      url:'/public/teacher/setUserData2',
       data,
       method:'POST'
     }).then(() => {
@@ -212,7 +199,6 @@ App({
         title: loadingTitle,
         mask: true,
       });
-      this.globalData.loadingNum += 1;
     }
     if(barLoading){
       wx.showNavigationBarLoading();
@@ -220,15 +206,20 @@ App({
     data['token'] = this.globalData.token;
     return new Promise((resolve, reject) => {
       wx.request({
-        url,
+        url:this.globalData.apiUrl + url,
         data,
         method,
+        header:{
+          'token':this.globalData.token
+        },
         success: res => {
           if(barLoading){
             wx.hideNavigationBarLoading();
           }
+          if (loading) {
+            wx.hideLoading();
+          }
           if (res.data.code === 0) {
-            this.closeLoading(loading);
             resolve(res.data.data);
           } else {
             wx.showToast({
@@ -237,11 +228,12 @@ App({
               duration: 2000,
               mask: true
             })
-            this.globalData.loadingNum = 0;
           }
         },
         fail: err => {
-          this.closeLoading(loading);
+          if (loading) {
+            wx.hideLoading();
+          }
           if(barLoading){
             wx.hideNavigationBarLoading();
           }

@@ -41,8 +41,7 @@ Page({
         }
       ]
     },
-    raceImgUrl:'http://img.uelink.com.cn/upload/xykj/race/',
-    evalImgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/'
   },
 
   /**
@@ -99,5 +98,12 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  unitDetail:function(e){
+    let user = e.currentTarget.dataset.user;
+    wx.navigateTo({
+      url: `unitDetail?user=${user}&type=${this.data.race.type}`,
+    });
   }
 })

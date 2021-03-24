@@ -1,17 +1,15 @@
 <block wx:if="{{!isMaster}}">
     <form>
-        <view class="cu-form-group margin-top solid-bottom">
-            <view class="title text-blue">小组名称</view>
-            <view>{{name}}</view>
+        <view class="margin-tb-sm padding-tb padding-lr-lg bg-white">
+            <view class="text-sp text-bold margin-bottom-lg">小组名称</view>
+            <view class="text-sp">{{name}}</view>
         </view>
-        <view class="cu-form-group">
-            <view class="title text-blue">小组学生</view>
-        </view>
-        <view class="bg-white">
+        <view class="bg-white padding-tb padding-lr-lg">
+            <view class="text-sp text-bold margin-bottom-lg">选择学生</view>
             <view class="grid col-4" style="width:100%;height:100%;">
-                <view wx:for="{{selectStudentList}}" wx:key="id" class="margin-bottom-lg flex align-center justify-center flex-direction">
+                <view wx:for="{{studentList}}" wx:key="id" class="margin-bottom-lg flex align-center justify-center flex-direction" bindtap="select" data-id="{{item.id}}" wx:if="{{item.status == 1}}">
                     <view class="cu-avatar lg round" style="background-image:url({{item.avatarUrl}});"></view>
-                    <text class="margin-top-xs text-sm">{{item.nickName}}</text>
+                    <text class="margin-top-xs text-sm colorF-sp">{{item.nickName}}</text>
                 </view>
             </view>
         </view>
@@ -19,20 +17,18 @@
 </block>
 <block wx:else>
     <form>
-        <view class="cu-form-group margin-top solid-bottom">
-            <view class="title text-blue">小组名称</view>
-            <input bindchange="formInputChange" value="{{name}}" data-field="name" placeholder="请输入小组名称"></input>
+        <view class="margin-tb-sm padding-tb padding-lr-lg bg-white">
+            <view class="text-sp text-bold margin-bottom-lg">小组名称</view>
+            <input bindchange="formInputChange" value="{{name}}" data-field="name" placeholder="请输入小组名称" class="text-sp"></input>
         </view>
-        <view class="cu-form-group">
-            <view class="title text-blue">选择学生</view>
-        </view>
-        <view class="bg-white">
+        <view class="bg-white padding-tb padding-lr-lg">
+            <view class="text-sp text-bold margin-bottom-lg">选择学生</view>
             <view class="grid col-4" style="width:100%;height:100%;">
                 <view wx:for="{{studentList}}" wx:key="id" class="margin-bottom-lg flex align-center justify-center flex-direction" bindtap="select" data-id="{{item.id}}" wx:if="{{item.status == 1}}">
                     <view class="cu-avatar lg round" style="background-image:url({{item.avatarUrl}});">
-                        <text class="select {{judge.isSelect(studentIds,item.id)?'cuIcon-roundcheckfill line-green':'cuIcon-round line-gray'}}"></text>
+                        <text class="select {{judge.isSelect(studentIds,item.id)?'cuIcon-roundcheckfill line-blue':'cuIcon-round line-gray'}}"></text>
                     </view>
-                    <text class="margin-top-xs text-sm">{{item.nickName}}</text>
+                    <text class="margin-top-xs text-sm colorF-sp">{{item.nickName}}</text>
                 </view>
             </view>
         </view>
@@ -40,13 +36,13 @@
 </block>
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
+        <button class="cu-btn lg bg-white flex-sub" bind:tap="back">返回</button>
         <block wx:if="{{isMaster}}">
-            <button class="cu-btn bg-blue round submit margin-xs" bind:tap="{{type == 'add'?'add':'edit'}}">
-                {{type=="add"?'新增小组':'修改'}}
-            </button>
-            <button class="cu-btn bg-red round submit margin-xs" wx:if="{{type == 'edit'}}" bindtap="delete">
+            <button class="cu-btn bg-blue light btn-sp margin-right-sm lg" wx:if="{{type == 'edit'}}" bindtap="delete">
                 删除
+            </button>
+            <button class="cu-btn bg-blue lg {{type == 'add'?'sp margin-right':'btn-sp margin-right-sm'}}" bind:tap="{{type == 'add'?'add':'edit'}}">
+                {{type=="add"?'新增小组':'修改'}}
             </button>
         </block>
     </view>

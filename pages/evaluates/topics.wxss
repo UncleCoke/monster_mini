@@ -1,0 +1,10 @@
+.panel {
+    background: #F0F5F7;
+    border: 1rpx dashed #0779E4;
+    border-radius:20rpx;
+}
+
+.label{
+    width:160rpx;
+    text-align:left;
+}

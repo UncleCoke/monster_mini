@@ -47,7 +47,7 @@ Page({
   getReport: function () {
     let options = this.data.options
     app.request({
-      url:app.globalData.apiUrl + '/eval/view',
+      url:'/eval/view',
       data:{
         userId: options.user,
         userEvalId: options.id

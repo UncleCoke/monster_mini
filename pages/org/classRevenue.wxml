@@ -1,0 +1,23 @@
+<view class="bg flex flex-direction align-center">
+    <view class="btn-sp">{{revenue}}</view>
+    <view class="text-white text-sm margin-top-xs">总收益（元）</view>
+    <picker mode="date" fields="month" value="{{date}}" bindchange="dateChange">
+        <view class="flex align-center cu-tag round picker">
+            <view class="text-sm margin-right-xs">{{date?date:'请选择日期'}}</view>
+            <view class="cuIcon-triangledownfill text-xl"></view>
+        </view>
+    </picker>
+    <view class="className text-sp text-white text-bold">{{className}}</view>
+</view>
+<view class="padding-lg solid-bottom text-sp text-bold">收益记录</view>
+<empty wx:if="{{list.length == 0}}" title="暂无收益记录"></empty>
+<view wx:for="{{list}}" wx:key="nickName" class="flex align-center">
+    <view class="cu-avatar lg round margin-tb-lg margin-left-lg margin-right" style="background-image:url({{item.avatarUrl}})"></view>
+    <view class="flex align-center justify-between flex-sub padding-tb-lg padding-right-lg solid-bottom">
+        <view class="flex-sub">
+            <view class="text-sp">{{item.nickName}} {{item.content}}</view>
+            <view class="text-sm colorT-sp margin-top-sm">{{item.created_at}}</view>
+        </view>
+        <view class="text-sp text-bold margin-left-lg" style="color:#FFB341">{{item.price}}元</view>
+    </view>
+</view>
