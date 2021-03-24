@@ -1,104 +1,71 @@
 const app = getApp();
+let page = 1,pageCount,limit = 10;
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-    list:[
-      {
-        name:'元宵答题活动',
-        userCount:23,
-        openCount:23,
-        finishCount:23,
-        created_at:'2020-02-21 12:23'
-      },
-      {
-        name:'元宵组队答题活动',
-        userCount:23,
-        openCount:23,
-        finishCount:23,
-        created_at:'2020-02-21 12:23'
-      }
-    ],
-    imgUrl:'http://img.uelink.com.cn/upload/xykj/race/'
+    list: [],
+    imgUrl: 'http://img.uelink.com.cn/upload/xykj/race/'
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
-    app.checkLogin(()=>{
+    wx.hideShareMenu();
+    app.checkLogin(() => {
+      page = 1;
       this.getRaces();
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
+    page = 1;
     this.getRaces();
     wx.stopPullDownRefresh();
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
-
+    if (page <= pageCount) {
+      this.getRaces()
+    }
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  getRaces: function () {
+    app.request({
+      url: '/recruit/event/list',
+      data: {
+        page,limit
+      }
+    }).then(res => {
+      let _list = res.list;
+      let list = []
+      if (page > 1) {
+        list = this.data.list
+      }
+      list = list.concat(_list);
+      if(!pageCount){
+        pageCount = Math.ceil(res.total / limit)
+      }
+      page += 1
+      this.setData({
+        list,
+        total:res.total
+      })
+    })
   },
 
-  getRaces:function(){},
-
-  setUserData:function(e){
+  setUserData: function (e) {
     let rawData = e.detail.rawData;
     let encryptedData = e.detail.encryptedData;
     let iv = e.detail.iv;
-    app.setUserData(encryptedData,iv,rawData,'','',()=>{
+    app.setUserData(encryptedData, iv, rawData, '', '', () => {
       wx.navigateTo({
         url: 'create'
       });
     })
   },
 
-  gotoDetail:function(){
+  gotoDetail: function (e) {
+    let id = e.currentTarget.id;
     wx.navigateTo({
-      url: 'detail'
+      url: `detail?id=${id}`
     });
   }
 })

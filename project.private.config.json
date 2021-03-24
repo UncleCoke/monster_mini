@@ -33,13 +33,13 @@
         {
           "name": "活动介绍",
           "pathName": "pages/recruit/race/introduce",
-          "query": "",
+          "query": "id=3",
           "scene": null
         },
         {
           "name": "制作活动",
           "pathName": "pages/recruit/race/product",
-          "query": "",
+          "query": "id=3",
           "scene": null
         },
         {
@@ -202,6 +202,12 @@
           "name": "答题记录",
           "pathName": "pages/evaluates/topics",
           "query": "index=20",
+          "scene": null
+        },
+        {
+          "name": "分享活动",
+          "pathName": "pages/recruit/race/share",
+          "query": "id=2",
           "scene": null
         }
       ]

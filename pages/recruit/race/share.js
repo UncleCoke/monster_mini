@@ -1,66 +1,234 @@
-// pages/recruit/race/share.js
+const app = getApp();
+const QRCode = require('../../../utils/weapp-qrcode')
+import rpx2px from '../../../utils/rpx2px.js'
+let id;
+const qrCodeWidth = rpx2px(200)
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    posterIndex:0
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    id = options.id * 1
+    app.checkLogin(() => {
+      this.getPosterList();
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
-
+    this.createQrCode();
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  posterChange: function (e) {
+    let posterIndex = e.detail.current
+    this.setData({
+      posterIndex
+    })
+  },
+
+  createQrCode: function () {
+    let qrCode = new QRCode('canvas', {
+      text: 'https://xyfxadmin.uelink.com.cn/mp/1/22',
+      image: '',
+      width: qrCodeWidth,
+      height: qrCodeWidth,
+      colorDark: "#101010",
+      colorLight: "white",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
+
+    console.log(qrCode);
+
+    let _this = this;
+    qrCode.makeCode('https://xyfxadmin.uelink.com.cn/mp/1/22', () => {
+      setTimeout(() => {
+        qrCode.exportImage(function (path) {
+          _this.setData({
+            qrCodeUrl: path
+          })
+        })
+      }, 200)
+    })
+  },
+
+  getPosterList: function () {
+    app.request({
+      url: '/recruit/poster/list',
+      data: {
+        recruitType: 2
+      }
+    }).then(res => {
+      this.setData({
+        posters: res.posters
+      })
+    })
+  },
+
+  makePoster: function () {
+    wx.showLoading({
+      title: '正在生成海报',
+      mask: true
+    });
+    wx.downloadFile({
+      url: this.data.posters[this.data.posterIndex].image,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const ctx = wx.createCanvasContext("myQrCode", this)
+          var scale = wx.getSystemInfoSync().windowWidth / 375
+          ctx.drawImage(res.tempFilePath, 0, 0, 315 * scale, 560 * scale)
+          ctx.drawImage(this.data.qrCodeUrl, 123 * scale, 430 * scale, 70 * scale, 70 * scale)
+          ctx.draw()
+          setTimeout(() => {
+            this.downloadPosterImg()
+          }, 1500);
+        }
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showModal({
+          title: '提示',
+          content: '生成海报发生错误，请重试',
+          showCancel: false,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '好的',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+
+            }
+          }
+        });
+
+      },
+    })
+  },
+
+  downloadImg: function () {
+    wx.showLoading({
+      title: '正在下载',
+      mask: true
+    });
+
+    var myQrCode = this.data.myQrCode
+    wx.downloadFile({
+      url: myQrCode,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          wx.hideLoading();
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: (res) => {
+              wx.showToast({
+                title: '下载成功',
+                icon: 'success',
+                duration: 1500,
+                mask: false
+              });
+            },
+            fail: () => {},
+            complete: () => {}
+          });
+        }
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showModal({
+          title: '提示',
+          content: '下载海报发生错误，请重试',
+          showCancel: false,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '好的',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+
+            }
+          }
+        });
+      },
+    })
+  },
+
+  downloadPosterImg: function () {
+    wx.hideLoading();
+    wx.showLoading({
+      title: '正在下载海报',
+      mask: true
+    });
+    wx.canvasToTempFilePath({
+      canvasId: 'myQrCode',
+      destWidth: 720,
+      destHeight: 1280,
+      success: (result) => {
+        wx.hideLoading();
+        wx.saveImageToPhotosAlbum({
+          filePath: result.tempFilePath,
+          success: () => {
+            wx.showToast({
+              title: '下载成功',
+              icon: 'success',
+              duration: 1500,
+              mask: false
+            });
+          },
+          fail: (err) => {
+            console.log(err)
+            if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+              wx.authorize({
+                scope: 'scope.writePhotosAlbum',
+                success: () => {
+                  wx.saveImageToPhotosAlbum({
+                    filePath: result.tempFilePath,
+                    success: () => {
+                      wx.showToast({
+                        title: '下载成功',
+                        icon: 'success',
+                        duration: 1500,
+                        mask: false
+                      });
+                    },
+                    fail: (err) => {
+                      console.log(err)
+                    },
+                    complete: () => {}
+                  });
+                },
+                fail: (err) => {
+                  console.log(err);
+                },
+                complete: () => {}
+              });
+            }
+          },
+          complete: () => {}
+        });
+
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showModal({
+          title: '提示',
+          content: '下载海报发生错误，请重试',
+          showCancel: false,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '好的',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+
+            }
+          }
+        });
+      },
+      complete: () => {}
+    }, this);
+  },
 })

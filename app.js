@@ -210,7 +210,7 @@ App({
         data,
         method,
         header:{
-          'token':this.globalData.token
+          'X-token':this.globalData.token
         },
         success: res => {
           if(barLoading){

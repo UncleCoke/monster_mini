@@ -1,4 +1,21 @@
-<view class="padding-tb padding-lr-xl flex justify-end align-center">
+<view class="padding-tb-sm padding-lr-lg">
+    <picker mode="date" fields="month" value="{{date}}" bindchange="dateChange" end="{{nDate.date}}">
+        <view class="flex align-center cu-tag bg-blue light round picker">
+            <view class="text-sm text-blue margin-right-xs">{{date?date:'请选择日期'}}</view>
+            <image src="{{imgUrl}}icon_arrowDown.png" mode="widthFix" style="width:20rpx;" />
+        </view>
+    </picker>
+</view>
+<view class="padding-lr-lg">
+    <view class="bg-white radius-sp padding-tb-lg">
+        <view class="padding-lr-lg flex align-center">
+            <view wx:if="{{student.avatarUrl}}" class="cu-avatar lg round" style="background-image:url({{student.avatarUrl}});"></view>
+            <view wx:else class="cu-avatar round lg bg-blue">{{student.nickName[0]}}</view>
+            <view class="margin-left-sm text-sp">{{student.nickName}}</view>
+        </view>
+    </view>
+</view>
+<!-- <view class="padding-tb padding-lr-xl flex justify-end align-center">
     <picker mode="date" fields="month" value="{{date}}" bindchange="dateChange" end="{{nDate.date}}">
         {{date?date:'请选择日期'}}
     </picker>
@@ -92,4 +109,4 @@
             综合分析发现<text wx:for="{{report.badBehaviours}}" wx:key="*this" class="text-bold">【{{item.type}}】</text>得分较差，注意学生综合行为培养
         </view>
     </view>
-</view>
+</view> -->

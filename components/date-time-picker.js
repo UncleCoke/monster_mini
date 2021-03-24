@@ -69,9 +69,13 @@ Component({
   },
   observers: {
     value: function(v) {
-      this.setData({
-        valueArray: this._dateToValueArray(stringToDate(v))
-      })
+      if(v){
+        this.setData({
+          valueArray: this._dateToValueArray(stringToDate(v))
+        },()=>{
+          console.log(this.data.valueArray);
+        })
+      }
     },
     dateValue: function(date) {
       this.setData({

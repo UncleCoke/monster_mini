@@ -1,5 +1,9 @@
 @import 'index.wxss';
 
+page{
+    background:#f8f8f8;
+}
+
 .box{
     position:relative;
     border-radius:10rpx;

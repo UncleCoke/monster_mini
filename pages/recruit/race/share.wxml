@@ -1,6 +1,21 @@
+<view class="page">
+    <swiper class="swiper" circular previous-margin="40rpx" next-margin="40rpx" indicator-dots="{{true}}" autoplay="{{false}}" interval="{{5000}}" duration="{{500}}" current="{{posterIndex}}" bindchange="posterChange">
+        <block wx:for="{{posters}}" wx:key="id">
+            <swiper-item>
+                <view class="posterBlock" >
+                    <image class="poster" src="{{item.image}}" mode="widthFix"/>
+                    <image class="qrCode" src="{{qrCodeUrl}}" />
+                </view>
+            </swiper-item>
+        </block>
+    </swiper>
+    <canvas class="canvas" canvas-id="myQrCode"></canvas>
+    <canvas class="canvas" canvas-id="canvas"></canvas>
+</view>
+
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn lg bg-white flex-sub">
+        <button class="cu-btn lg bg-white flex-sub" bindtap="makePoster">
             保存
         </button>
         <button class="cu-btn lg bg-blue sp margin-right" open-type="share">
