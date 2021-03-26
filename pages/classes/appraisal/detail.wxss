@@ -1,7 +1,1 @@
-@import 'index.wxss';
-
-.box{
-    position:relative;
-    border-radius:10rpx;
-}
-
+@import 'report.wxss';

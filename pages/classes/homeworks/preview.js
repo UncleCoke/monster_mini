@@ -1,5 +1,5 @@
 const app = getApp()
-var classId
+let classId
 Page({
 
   /**
@@ -23,23 +23,18 @@ Page({
     difficulty:0,
     difficulties:[{name:"全部",value:0},{name:"一星",value:1},{name:"二星",value:2},{name:"三星",value:3},{name:"四星",value:4},{name:"五星",value:5}],
     questionIds:[],
-
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
   },
   onLoad: function (options) {
     classId= options.classId
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-  
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
 
   inti(){
-    var hasPickQuestions = wx.getStorageSync('hasPickQuestions');
+    let hasPickQuestions = wx.getStorageSync('hasPickQuestions');
     if(hasPickQuestions){
       this.setData({
         hasPickQuestions
@@ -47,10 +42,8 @@ Page({
     }
   },
 
-
-  
   back: function (e) {
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 1) {
       wx.navigateBack({
         delta: 1
@@ -60,10 +53,10 @@ Page({
         url: `../classIndex?id=${classId}`
       });
     }
-
   },
+
   pick:function(){
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 2) {
       wx.navigateBack({
         delta: 2
@@ -73,7 +66,5 @@ Page({
         url: `create?classId=${classId}`
       });
     }
-  },
-  
-  
+  }
 })

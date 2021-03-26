@@ -47,7 +47,11 @@
         <view class="bg-white padding-top padding-bottom-sm padding-lr-lg margin-bottom-sm text-sp" wx:for="{{template.eventAward}}" wx:key="*this" wx:for-index="awardIndex" wx:for-item="award">
             <view class="text-bold margin-bottom-sm">{{award.title}}</view>
             <input placeholder="输入奖品内容" class="height-sp1 text-sp" value="{{award.name}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="name" />
-            <view class="flex align-center justify-center solid-top padding-top margin-top-sm" wx:if="{{race.type === 1}}">
+            <block wx:if="{{template.eventType == 2}}">
+                <view class="text-bold margin-bottom-sm  padding-top solid-top margin-top">获奖几率</view>
+                <input placeholder="输入奖品内容" class="height-sp1 text-sp" type="number"  value="{{award.rate}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="rate" />
+            </block>
+            <view class="flex align-center justify-center solid-top padding-top margin-top-sm">
                 <view class="flex align-center">
                     <text class="cuIcon-move text-blue text-xl margin-right-sm text-bold" data-type="reduce" data-index="{{awardIndex}}" bindtap="setAward"></text>
                     <input type="number" class="input" value="{{award.number}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="number" />

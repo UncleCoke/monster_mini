@@ -1,8 +1,8 @@
 const app = getApp()
-var unitId, page, pageCount = 1,
+let unitId, page, pageCount = 1,
   pageSize = 20,
   classId
-var checkGroup, checkValue, hasPickQuestionIds = [],
+let checkGroup, checkValue, hasPickQuestionIds = [],
   hasPickQuestions = []
 
 function unique(arr) {
@@ -74,40 +74,31 @@ Page({
     }],
     questionIds: [],
     hasPickQuestionIds: [],
-    hasPickQuestions: []
-
+    hasPickQuestions: [],
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
   },
+
   onLoad: function (options) {
     hasPickQuestionIds = [], checkGroup = [], checkValue = "", hasPickQuestions = []
     classId = options.classId
     unitId = options.unitId
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
-  },
-  onShow: function () {
-    // var questions = wx.getStorageSync('questions');
-    // if(questions){
-    //   this.setData({
-    //     questions
-    //   })
-    // }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
 
   inti() {
     page = 1
     this.getQuestions(page)
   },
+
   onPullDownRefresh: function () {
     page = 1
     this.getQuestions(page)
+    wx.stopPullDownRefresh();
   },
+
   onReachBottom: function () {
     if (page <= pageCount) {
       this.getQuestions(page)
@@ -115,94 +106,54 @@ Page({
   },
 
   getQuestions: function (_page) {
-
-    var url = '/class/getQuestions'
-    var data = {
-      questionType: this.data.questionType,
-      difficulty: this.data.difficulty,
-      unitId: unitId,
-      page: _page,
-      pageSize: pageSize,
-      token: app.globalData.token
-    }
-    this.setData({
-      loadMore: true
-    })
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        this.setData({
-          loadMore: false
-        })
-        wx.hideNavigationBarLoading();
-        wx.stopPullDownRefresh()
-        if (res.data.code == 0) {
-
-          var newList = res.data.data.list;
-          var list = []
-          if (page > 1) {
-            list = this.data.list
-          }
-          list = list.concat(newList)
-          pageCount = res.data.data.pageCount
-          page += 1
-          let recordCount = res.data.data.recordCount
-
-          this.setData({
-            list,
-            recordCount,
-          })
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/getQuestions',
+      data:{
+        questionType: this.data.questionType,
+        difficulty: this.data.difficulty,
+        unitId: unitId,
+        page: _page,
+        pageSize: pageSize,
+        token: app.globalData.token
       },
-      fail: (res) => {
-        this.setData({
-          loadMore: false
-        })
-        wx.stopPullDownRefresh()
-        wx.hideNavigationBarLoading();
+      barLoading:true
+    }).then(res => {
+      var newList = res.list;
+      var list = []
+      if (page > 1) {
+        list = this.data.list
       }
+      list = list.concat(newList)
+      pageCount = res.pageCount
+      page += 1
+      let recordCount = res.recordCount
+      this.setData({
+        list,
+        recordCount,
+      })
     })
   },
-  checkbox(e) {
 
+  checkbox(e) {
     checkValue = e.currentTarget.dataset.id
-    // console.log('checkbox',checkValue,checkGroup);
-    var isUncheck = checkGroup.indexOf(checkValue)
+    let isUncheck = checkGroup.indexOf(checkValue)
     console.log('isUncheck', isUncheck);
     if (isUncheck == -1) {
-      // console.log('请移除',checkValue,hasPickQuestionIds);
       var index = hasPickQuestionIds.indexOf(checkValue)
       hasPickQuestionIds.splice(index, 1)
       hasPickQuestions.splice(index, 1)
     }
-
-    // console.log('移除了',hasPickQuestionIds);
     this.setData({
       hasPickQuestionIds,
       hasPickQuestions
     })
   },
+
   formInputChange(e) {
     const {
-      field,
-      type,
-      range
+      field
     } = e.currentTarget.dataset
-    // console.log(field, type, range, e.detail.value,e);
-    // console.log(e.detail.value);
-
     var value = e.detail.value
-
     if (field == "questionIds") {
       var questionIds = e.detail.value
       var questions = this.data.list
@@ -215,16 +166,14 @@ Page({
       });
       hasPickQuestionIds = unique(hasPickQuestionIds)
       hasPickQuestions = unique(hasPickQuestions)
-      // console.log('更新了', hasPickQuestionIds, hasPickQuestions)
-
-
     }
     this.setData({
       [`${field}`]: value
     })
   },
+
   back: function (e) {
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 1) {
       wx.navigateBack({
         delta: 1
@@ -234,8 +183,8 @@ Page({
         url: `../classIndex?id=${classId}`
       });
     }
-
   },
+
   pick: function () {
     wx.setStorageSync('questionIds', hasPickQuestionIds);
     wx.setStorage({
@@ -249,7 +198,5 @@ Page({
       fail: () => {},
       complete: () => {}
     });
-  },
-
-
+  }
 })

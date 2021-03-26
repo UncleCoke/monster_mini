@@ -8,105 +8,111 @@
 </view>
 <view class="padding-lr-lg">
     <view class="bg-white radius-sp padding-tb-lg">
-        <view class="padding-lr-lg flex align-center">
+        <view class="padding-lr-lg flex align-center padding-bottom-lg">
             <view wx:if="{{student.avatarUrl}}" class="cu-avatar lg round" style="background-image:url({{student.avatarUrl}});"></view>
             <view wx:else class="cu-avatar round lg bg-blue">{{student.nickName[0]}}</view>
             <view class="margin-left-sm text-sp">{{student.nickName}}</view>
         </view>
-    </view>
-</view>
-<!-- <view class="padding-tb padding-lr-xl flex justify-end align-center">
-    <picker mode="date" fields="month" value="{{date}}" bindchange="dateChange" end="{{nDate.date}}">
-        {{date?date:'请选择日期'}}
-    </picker>
-</view>
-<view class="bg-white padding-tb-lg padding-lr margin-lr box">
-    <view class="flex align-end" style="margin-top:-60rpx;">
-        <view wx:if="{{student.avatarUrl}}" class="cu-avatar lg round" style="background-image:url({{student.avatarUrl}});"></view>
-        <view wx:else class="cu-avatar round lg bg-blue">{{student.nickName[0]}}</view>
-        <view class="margin-left-xs text-bold text-black">{{student.nickName}}</view>
-    </view>
-    <view class="text-gray text-xxl flex margin-top-xs align-center padding-tb justify-center">
-        <view class="margin-right-xl text-green">
-            <text class="cuIcon-appreciatefill margin-right-xs"></text>
-            {{student.toalScoreAdd}}
-        </view>
-        <view class="text-red flex align-center">
-            <text class="cuIcon-appreciatefill margin-right-xs rotate"></text>
-            {{student.toalScoreReduce}}
-        </view>
-    </view>
-    <view class="text-gray text-xxl flex margin-top-xs align-center padding-tb justify-center">
-        <view class="margin-right-xl">
-            <view class="flex align-end justify-center margin-bottom-xs">
-                <view class="text-black margin-right-xs">
-                    {{report.rank}}/{{report.studentCount}}
-                </view>
-                <view class="text-sm {{report.lastRank == 0?'text-gray':(report.rank == report.lastRank?'text-gray':(report.rank > report.lastRank?'text-red':'text-green'))}}">
-                    {{report.lastRank == 0?'无排名':(report.rank == report.lastRank?'无变化':(report.rank > report.lastRank?'下降'+(report.rank-report.lastRank):'上升'+(report.lastRank - report.rank)))}}
-                </view>
+        <view class="padding-bottom-lg flex align-center justify-around padding-lr-xl">
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-olive light">{{student.toalScoreAdd}}</view>
+                <view class="text-sm">表扬</view>
             </view>
-            <view class="text-black text-df text-center">全班行为排名</view>
-        </view>
-        <view class="margin-right-xl">
-            <view class="flex align-end justify-center margin-bottom-xs">
-                <view class="text-black margin-right-xs">{{report.toalScore}}</view>
-                <view class="text-sm {{report.lastToalScore == report.toalScore?'text-gray':(report.lastToalScore > report.toalScore?'text-red':'text-green')}}">
-                    {{report.lastToalScore == report.toalScore?'无变化':(report.lastToalScore > report.toalScore?'下降'+(report.lastToalScore-report.toalScore):'上升'+(report.toalScore - report.lastToalScore))}}
-                </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-red light">{{student.toalScoreReduce}}</view>
+                <view class="text-sm">待改进</view>
             </view>
-            <view class="text-black text-df text-center">点评总得分</view>
         </view>
-        <view>
-            <view class="flex align-end justify-center margin-bottom-xs">
-                <view class="text-black margin-right-xs">{{report.goodRate}}%</view>
-                <view class="text-sm {{report.lastGoodRate == report.goodRate?'text-gray':(report.lastGoodRate > report.goodRate?'text-red':'text-green')}}">
-                    {{report.lastGoodRate == report.goodRate?'无变化':(report.lastGoodRate > report.goodRate?'下降'+(report.lastGoodRate-report.goodRate):'上升'+(report.goodRate - report.lastGoodRate))}}
-                </view>
-            </view>
-            <view class="text-black text-df text-center">表扬占比</view>
-        </view>
-    </view>
-</view>
-<view class="cu-card">
-    <view class="cu-item shadow">
-        <view class="cu-list padding-tb-xs">
-            <view class="text-grey padding-tb text-center" wx:if="{{list.length == 0}}">
-                - 暂无数据 -
-            </view>
-            <block wx:else>
-                <block wx:for="{{list}}" wx:key="user">
-                    <view class="cu-item padding">
-                        <view class="flex justify-between align-center">
-                            <view class="text-lg">{{item.sort}}</view>
-                            <view class="flex align-center text-lg">
-                                <view class="margin-right-xl text-green flex align-center" style="width:100rpx;">
-                                    <text class="cuIcon-appreciatefill margin-right-xs"></text>
-                                    {{item.score}}
-                                </view>
-                                <view class="text-red flex align-center" style="width:100rpx;">
-                                    <text class="cuIcon-appreciatefill margin-right-xs rotate"></text>
-                                    {{item.reduce}}
-                                </view>
-                            </view>
-                        </view>
+        <view class="padidng-top-sm padding-lr flex align-center justify-between">
+            <view class="panel color-sp text-sm">
+                <view class="flex align-end justify-center margin-bottom-xs">
+                    <view class="margin-right-xs flex align-center">
+                        <text class="text-blue text-xl">{{report.rank}}</text>
+                        /{{report.studentCount}}
                     </view>
-                </block>
-                <view class="text-gray text-df text-center padding-tb" bindtap="gotoDetail">查看点评明细</view>
-            </block>
+                    <view class="flex align-center">
+                        <block wx:if="{{report.rank < report.lastRank && report.lastRank != 0}}">
+                            <view class="cuIcon-pullup text-olive"></view>
+                            <view class="text-olive">{{report.lastRank - report.rank}}</view>
+                        </block>
+                        <block wx:if="{{report.rank > report.lastRank && report.lastRank != 0}}">
+                            <view class="cuIcon-pulldown text-red"></view>
+                            <view class="text-red">{{report.rank - report.lastRank}}</view>
+                        </block>
+                    </view>
+                </view>
+                <view class="text-center">全班行为排名</view>
+            </view>
+            <view class="panel color-sp text-sm">
+                <view class="flex align-end justify-center margin-bottom-xs">
+                    <view class="margin-right-xs">
+                        <text class="text-blue text-xl">{{report.toalScore}}</text>
+                    </view>
+                    <view class="flex align-center">
+                        <block wx:if="{{report.toalScore < report.lastToalScore}}">
+                            <view class="cuIcon-pullup text-olive"></view>
+                            <view class="text-olive">
+                                {{report.lastToalScore - report.toalScore}}
+                            </view>
+                        </block>
+                        <block wx:if="{{report.toalScore > report.lastToalScore}}">
+                            <view class="cuIcon-pulldown text-red"></view>
+                            <view class="text-red">
+                                {{report.toalScore - report.lastToalScore}}
+                            </view>
+                        </block>
+                    </view>
+                </view>
+                <view class="text-center">点评总得分</view>
+            </view>
+            <view class="panel color-sp text-sm">
+                <view class="flex align-end justify-center margin-bottom-xs">
+                    <view class="margin-right-xs">
+                        <text class="text-blue text-xl">{{report.goodRate}}%</text>
+                    </view>
+                    <view class="flex align-center">
+                        <block wx:if="{{report.goodRate < report.lastGoodRate}}">
+                            <view class="cuIcon-pullup text-olive"></view>
+                            <view class="text-olive">
+                                {{report.lastGoodRate - report.goodRate}}
+                            </view>
+                        </block>
+                        <block wx:if="{{report.goodRate > report.lastGoodRate}}">
+                            <view class="cuIcon-pulldown text-red"></view>
+                            <view class="text-red">{{report.goodRate - report.lastGoodRate}}</view>
+                        </block>
+                    </view>
+                </view>
+                <view class="text-center">表扬占比</view>
+            </view>
         </view>
     </view>
 </view>
-<view class="cu-card article" wx:if="{{list.length > 0}}">
-    <view class="cu-item shadow">
-        <view class="title">
-            <view class="text-cut text-center">- 小优点评 -</view>
-        </view>
-        <view class="padding-lr text-df" style="line-height:50rpx;text-indent:56rpx">
-            根据本月{{student.nickName}}小朋友的表现，对比上月表现，班级排名<text class="text-bold">{{report.lastRank == 0?'第'+report.rank:(report.rank == report.lastRank?'无变化':(report.rank > report.lastRank?'下降'+(report.rank-report.lastRank)+'名':'上升'+(report.lastRank - report.rank)+'名'))}}</text>，
-            总得分<text class="text-bold">{{report.lastToalScore == report.toalScore?'无变化':(report.lastToalScore > report.toalScore?'下降'+(report.lastToalScore-report.toalScore)+'分':'上升'+(report.toalScore - report.lastToalScore)+'分')}}</text>，
-            表扬占比<text class="text-bold">{{report.lastGoodRate == report.goodRate?'无变化':(report.lastGoodRate > report.goodRate?'下降'+(report.lastGoodRate-report.goodRate)+'%':'上升'+(report.goodRate - report.lastGoodRate)+'%')}}</text>，
-            综合分析发现<text wx:for="{{report.badBehaviours}}" wx:key="*this" class="text-bold">【{{item.type}}】</text>得分较差，注意学生综合行为培养
+<view class="bg-white margin-top-sm padding-lr-lg">
+    <empty wx:if="{{list.length == 0}}" title="暂无数据"></empty>
+    <view wx:for="{{list}}" wx:key="user" class="flex align-center justify-between height-sp {{index == list.length-1?'':'solid-bottom'}}">
+        <view class="text-sp text-bold">{{item.sort}}</view>
+        <view class="flex align-center text-sp flex-sub justify-end">
+            <view class="text-green flex align-center margin-right-sm" style="min-width:100rpx;">
+                <image src="{{imgUrl}}good.png" mode="widthFix" style="width:32rpx" />
+                <view class="text-olive margin-left-sm margin-right-lg">{{item.score}}</view>
+            </view>
+            <view class="flex align-center" style="min-width:100rpx;">
+                <image src="{{imgUrl}}error.png" mode="widthFix" style="width:32rpx" />
+                <view class="text-red margin-left-sm">{{item.reduce}}</view>
+            </view>
         </view>
     </view>
-</view> -->
+    <view class="flex align-center justify-center padding-top-sm padding-bottom-lg" wx:if="{{list.length > 0}}">
+        <button class="cu-btn bg-blue round" style="width:260rpx;" bindtap="gotoDetail">查看点评明细</button>
+    </view>
+</view>
+<view class="bg-white padding-lg margin-top-sm" wx:if="{{list.length > 0}}">
+    <view class="text-center text-sp text-bold margin-bottom-sm">- 小优点评 -</view>
+    <view class="content-panel">
+        根据本月{{student.nickName}}小朋友的表现，对比上月表现，班级排名{{report.lastRank == 0?'第'+report.rank:(report.rank == report.lastRank?'无变化':(report.rank > report.lastRank?'下降'+(report.rank-report.lastRank)+'名':'上升'+(report.lastRank - report.rank)+'名'))}}，
+        总得分{{report.lastToalScore == report.toalScore?'无变化':(report.lastToalScore > report.toalScore?'下降'+(report.lastToalScore-report.toalScore)+'分':'上升'+(report.toalScore - report.lastToalScore)+'分')}}，
+        表扬占比{{report.lastGoodRate == report.goodRate?'无变化':(report.lastGoodRate > report.goodRate?'下降'+(report.lastGoodRate-report.goodRate)+'%':'上升'+(report.goodRate - report.lastGoodRate)+'%')}}，
+        综合分析发现<text wx:for="{{report.badBehaviours}}" wx:key="*this" class="text-bold">【{{item.type}}】</text>得分较差，注意学生综合行为培养
+    </view>
+</view>

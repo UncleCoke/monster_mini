@@ -11,8 +11,10 @@ Page({
 
   onLoad: function (options) {
     id = options.id * 1
+    wx.hideShareMenu();
     app.checkLogin(() => {
       this.getPosterList();
+      this.getRecruitDetail();
     })
   },
 
@@ -21,7 +23,14 @@ Page({
   },
 
   onShareAppMessage: function () {
-
+    let title = `${app.globalData.nickName}邀请你参与${this.data.eventTitle}活动`
+    let path = `/pages/recruit/race/join?recruitId=${id}&id=${this.data.eventId}&eventType=${this.data.eventType}`
+    let shareImg = `http://img.uelink.com.cn/upload/xykj/race/${this.data.eventType}.jpg`
+    return {
+      title: title,
+      path: path,
+      imageUrl: shareImg
+    }
   },
 
   posterChange: function (e) {
@@ -33,7 +42,7 @@ Page({
 
   createQrCode: function () {
     let qrCode = new QRCode('canvas', {
-      text: 'https://xyfxadmin.uelink.com.cn/mp/1/22',
+      text: `https://xyfxadmin.uelink.com.cn/mp/2/${id}`,
       image: '',
       width: qrCodeWidth,
       height: qrCodeWidth,
@@ -45,7 +54,7 @@ Page({
     console.log(qrCode);
 
     let _this = this;
-    qrCode.makeCode('https://xyfxadmin.uelink.com.cn/mp/1/22', () => {
+    qrCode.makeCode(`https://xyfxadmin.uelink.com.cn/mp/2/${id}`, () => {
       setTimeout(() => {
         qrCode.exportImage(function (path) {
           _this.setData({
@@ -230,5 +239,20 @@ Page({
       },
       complete: () => {}
     }, this);
+  },
+
+  getRecruitDetail:function(){
+    app.request({
+      url:'/recruit/event/detail',
+      data:{
+        id
+      }
+    }).then(res => {
+      this.setData({
+        eventId:res.event.eventId,
+        eventType:res.event.eventType,
+        eventTitle:res.event.eventTitle
+      })
+    })
   },
 })

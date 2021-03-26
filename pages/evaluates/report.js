@@ -1,17 +1,14 @@
 const app = getApp()
 Page({
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
 
+  data: {
+    imgUrl: 'http://img.uelink.com.cn/upload/xykj/',
+    reportImgUrl:'http://img.uelink.com.cn/upload/xykj/eval/report/'
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
+    console.log(options);
     this.setData({
       options
     })
@@ -71,7 +68,7 @@ Page({
   call:function(e){
     let phone = e.currentTarget.dataset.phone
     wx.makePhoneCall({
-      phoneNumber: phone //仅为示例，并非真实的电话号码
+      phoneNumber: phone
     })
   },
 

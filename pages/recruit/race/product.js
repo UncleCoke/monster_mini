@@ -7,19 +7,7 @@ Page({
    */
   data: {
     tabs: ['活动信息', '奖品设置'],
-    activeTab: 0,
-    raceData: {
-      name: '',
-      startTime: '',
-      endTime: ''
-    },
-    race: {
-      rule: '用户每天可参与一次答题活动，答题完成后分数进行累积，当天答题次数用完后，可邀请好友参加活动，邀请人会等额获得好友答题获得的金币或红包奖励，以此类推，一天最多邀请30名好友参与活动。',
-      type: 1 //0：答题  1：抽奖
-    },
-    awards: [
-
-    ]
+    activeTab: 0
   },
 
   onLoad: function (options) {
@@ -153,7 +141,11 @@ Page({
       return title;
     }
     let filter_awards = template.eventAward.filter(item => {
-      return item.name == '' || item.name == '奖品名称(请输入)' || item.number == ''
+      if(template.eventType == 2){
+        return item.name == '' || item.name == '奖品名称(请输入)' || item.number == '' || item.rate == ''
+      }else{
+        return item.name == '' || item.name == '奖品名称(请输入)' || item.number == ''
+      }
     })
     if (filter_awards.length > 0) {
       title = '请补充好奖品数据'

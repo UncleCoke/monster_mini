@@ -209,6 +209,12 @@
           "pathName": "pages/recruit/race/share",
           "query": "id=2",
           "scene": null
+        },
+        {
+          "name": "评测报告",
+          "pathName": "pages/evaluates/report",
+          "query": "id=1603&token=37a7a14ed5154460bf4ecd632d3e5fd8&user=2072",
+          "scene": null
         }
       ]
     }

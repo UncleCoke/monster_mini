@@ -67,7 +67,8 @@ Page({
       }
     }).then(res => {
       this.setData({
-        event:res.event
+        event:res.event,
+        users:res.users
       })
     })
   },

@@ -1,23 +1,23 @@
 <view class="tabs">
     <view class="bar bg-white radius-sp flex align-center">
-        <view class="flex-sub text-center text-bold text-sp {{activeTab == index?'hover':''}}" wx:for="{{tabs}}" wx:key="*this" bindtap="tabChange" data-index="{{index}}">
-            {{item}}
+        <view class="flex-sub text-center text-bold text-sp {{status == item.status?'hover':''}}" wx:for="{{tabs}}" wx:key="status" bindtap="tabChange" data-status="{{item.status}}">
+            {{item.title}}
         </view>
     </view>
 </view>
-<view class="padding-tb-sm padding-lr-lg" hidden="{{activeTab != 0}}">
+<view class="padding-tb-sm padding-lr-lg" hidden="{{status == 10}}">
     <view class="padding-tb-lg flex align-center justify-between">
         <view class="flex align-center">
             <text class="text-sp text-bold">潜在生源：</text>
-            <view class="cu-tag bg-blue light round text-bold">{{potentialList.length}}人</view>
+            <view class="cu-tag bg-blue light round text-bold">{{total}}人</view>
         </view>
         <view class="flex align-center" bind:tap="setFind">
             <image src="{{imgUrl}}icon_find.png" mode="widthFix" style="width:30rpx;" />
             <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
         </view>
     </view>
-    <empty wx:if="{{potentialList.length === 0}}" title="暂无潜在生源"></empty>
-    <view wx:for="{{potentialList}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp" bindtap="potentialDetail">
+    <empty wx:if="{{total === 0}}" title="暂无潜在生源"></empty>
+    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp" bindtap="potentialDetail">
         <view class="flex align-center justify-between margin-bottom-sm">
             <view class="flex align-center">
                 <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
@@ -34,19 +34,19 @@
         <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime}}</view>
     </view>
 </view>
-<view class="padding-tb-sm padding-lr-lg" hidden="{{activeTab == 0}}">
+<view class="padding-tb-sm padding-lr-lg" hidden="{{status == 1}}">
     <view class="padding-tb-lg flex align-center justify-between">
         <view class="flex align-center">
             <text class="text-sp text-bold">当前学生：</text>
-            <view class="cu-tag bg-blue light round text-bold">{{potentialList.length}}人</view>
+            <view class="cu-tag bg-blue light round text-bold">{{total}}人</view>
         </view>
         <view class="flex align-center" bind:tap="setFind">
             <image src="{{imgUrl}}icon_find.png" mode="widthFix" style="width:30rpx;" />
             <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
         </view>
     </view>
-    <empty wx:if="{{potentialList.length === 0}}" title="暂无学生"></empty>
-    <view wx:for="{{potentialList}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp">
+    <empty wx:if="{{total === 0}}" title="暂无学生"></empty>
+    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp">
         <view class="flex align-center justify-between margin-bottom-sm">
             <view class="flex align-center">
                 <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>

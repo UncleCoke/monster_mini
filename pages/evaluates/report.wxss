@@ -1,9 +1,64 @@
 .call [class*="cuIcon-"] {
-	font-size: 48rpx;
+    font-size: 48rpx;
 }
 
-.score{
+.score {
     margin: 0 auto;
     width: 100rpx;
-    
+
+}
+
+.header {
+    width: 100%;
+    background: url('http://img.uelink.com.cn/upload/xykj/eval/report-navigation.png') no-repeat;
+    background-size: 100% 224rpx;
+}
+
+.borderRadius {
+    border-radius: 36rpx;
+}
+
+.score-box {
+    position: relative;
+    width: 352rpx;
+    height: 298rpx;
+    position: relative;
+    background: url('http://img.uelink.com.cn/upload/xykj/eval/report/icon_go.png');
+    background-size: 352rpx 298rpx;
+}
+
+.score-box .myScore {
+    position: absolute;
+    left: 50%;
+    bottom: 30rpx;
+    font-size: 56rpx;
+    font-weight: bold;
+    transform: translateX(-50%);
+    color: #fff;
+}
+
+.time-box{
+    width:320rpx;
+    height:160rpx;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:rgba(255, 255, 255, 0.5);
+    background:url('http://img.uelink.com.cn/upload/xykj/eval/report/bg_myTime.png');
+    background-size:320rpx 160rpx;
+}
+
+.tip-panel {
+    min-height:278rpx;
+    background: #F0F5F7;
+    border-radius: 20rpx;
+    padding:30rpx;
+    font-size:30rpx;
+    line-height:44rpx;
+    color:rgba(0, 0, 0, 0.5)
+}
+
+.cu-progress{
+    height:34rpx !important;
 }

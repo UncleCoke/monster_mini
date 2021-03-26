@@ -1,1 +1,1 @@
-/* pages/classes/homeworks/preview.wxss */
+@import 'pickTopic.wxss';

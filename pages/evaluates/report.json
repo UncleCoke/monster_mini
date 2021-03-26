@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "评测报告",
-  "navigationBarBackgroundColor":"#f8f8f8",
+  "navigationBarBackgroundColor":"#0779E4",
+  "navigationBarTextStyle":"white",
   "usingComponents": {}
 }

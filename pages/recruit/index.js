@@ -24,7 +24,7 @@ Page({
         introduce: '组建线上服务体验班，引流线上转线下',
         bgColor: 'bg-yellow',
         bgImgUrl: 'http://img.uelink.com.cn/upload/xykj/bg_class.png',
-        url: '/pages/classes/create'
+        url: 'classes/index'
       }
     ]
   },

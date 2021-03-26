@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "预览作业",
-  "usingComponents": {}
+  "usingComponents": {},
+  "navigationBarBackgroundColor":"#f8f8f8"
 }

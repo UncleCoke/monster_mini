@@ -1,11 +1,36 @@
-@import 'index.wxss';
-
-page{
-    background:#f8f8f8;
+page {
+    background: #f8f8f8;
 }
 
-.box{
-    position:relative;
-    border-radius:10rpx;
+.box {
+    position: relative;
+    border-radius: 10rpx;
 }
 
+.cu-tag.picker {
+    width: 168rpx;
+    height: 44rpx;
+    line-height: 44rpx;
+}
+
+.panel {
+    width: 190rpx;
+    height: 140rpx;
+    background: #F0F5F7;
+    border-radius: 20rpx;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.content-panel{
+    background: #F0F5F7;
+    border-radius: 20rpx;
+    padding:30rpx;
+    line-height:44rpx;
+}
+
+.color-sp{
+    color:rgba(70, 72, 73, 0.5)
+}

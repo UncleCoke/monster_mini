@@ -1,4 +1,5 @@
 const app = getApp()
+let isRecruit;
 Page({
 
   /**
@@ -15,6 +16,10 @@ Page({
   },
 
   onLoad: function (options) {
+    if(options.isRecruit){
+      isRecruit = options.isRecruit*1;
+      console.log(isRecruit);
+    }
     app.checkLogin(()=>{
       this.inti();
     })
@@ -93,6 +98,9 @@ Page({
     data.token = app.globalData.token
     data.parentId = app.globalData.parentId
     data.price *=100
+    if(isRecruit){
+      data['isRecruit'] = isRecruit;
+    }
     wx.showLoading({
       title: "正在提交",
       mask: true

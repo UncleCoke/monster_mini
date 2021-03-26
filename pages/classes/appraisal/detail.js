@@ -2,16 +2,10 @@ const app = getApp()
 let classId,studentId;
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/classes/'
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     let student = JSON.parse(options.student);
     studentId = student.id;
@@ -26,16 +20,6 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
     let day = new Date();
     let month = day.getMonth() + 1;
@@ -49,40 +33,9 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
     this.getReport();
     wx.stopPullDownRefresh();
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   },
 
   dateChange: function (e) {
@@ -98,42 +51,23 @@ Page({
   },
 
   getReport:function(){
-    let url = '/class/behaviour/list'
-    let data = {
-      token: app.globalData.token,
-      classId,
-      studentId,
-      year:Number(this.data.year),
-      month:Number(this.data.month)
-    }
-    wx.showLoading({
-      title: '正在获取',
-      mask: true,
-    });
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          let list = res.data.data.list;
-          this.setData({
-            list,
-            [`student.toalScoreAdd`]:res.data.data.toalScoreAdd,
-            [`student.toalScoreReduce`]:res.data.data.toalScoreReduce
-          })
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/behaviour/list',
+      data:{
+        classId,
+        studentId,
+        year:Number(this.data.year),
+        month:Number(this.data.month)
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:'正在获取'
+    }).then(res => {
+      let list = res.list;
+      this.setData({
+        list,
+        [`student.toalScoreAdd`]:res.toalScoreAdd,
+        [`student.toalScoreReduce`]:res.toalScoreReduce
+      })
     })
   }
 })
