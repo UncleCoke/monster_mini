@@ -44,7 +44,7 @@ Page({
       classId: 0,
       evalPurpose: '',
       evalRange: 1,
-      evalType: 0,
+      evalType: '',
       subject: "数学",
       subjectIndex: 0,
       textbook: '',
@@ -64,7 +64,7 @@ Page({
       ["人教版", "北师大版"],
 
     ],
-    multiIndex: [0, 0, 0],
+    multiIndex: [],
     units: []
   },
 
@@ -79,34 +79,21 @@ Page({
   },
 
   inti() {
-    if (classId) {
-      this.setData({
-        [`formData.classId`]: classId,
-        [`formData.evalRange`]: 2,
-        [`formData.evalPurpose`]: '辅助教学'
-      })
-      this.getTextbook()
-      this.getClassDetail()
-
-    } else {
-      this.setData({
-        [`formData.evalRange`]: 1,
-        [`formData.evalPurpose`]: '宣传推广'
-      })
-      this.getTextbooks()
-    }
+    this.getTextbooks(true);
   },
 
-  getTextbooks: function () {
+  getTextbooks: function (isNoSet) {
     app.request({
-      url: '/public/getTextbooksSimple',
+      url: '/recruit/getTextbooksSimple',
       barLoading: true
     }).then(res => {
       let textbookList = res.textbookList;
       this.setData({
         textbookList,
       }, () => {
-        this.setTextbookPickData(this.data.formData.subjectIndex)
+        if(!isNoSet){
+          this.setTextbookPickData(this.data.formData.subjectIndex)
+        }
       })
     })
   },
@@ -208,59 +195,26 @@ Page({
   create: function (e) {
     console.log(this.data.formData);
     let formData = this.data.formData
-    if (formData.class.id) {
-      formData.classId = formData.class.id
-    }
-    if (formData.evalRange == 2 && !formData.classId) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请选择班级',
-        showCancel: false,
-        confirmText: '我知道了',
-        confirmColor: '#3CC51F'
-      });
-      return
-    }
-    if (formData.evalRange == 2 && formData.class.studentCount < 1) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '该班级人数不足，无法发布评测！',
-        showCancel: false,
-        confirmText: '我知道了',
-        confirmColor: '#3CC51F'
-      });
-      return
-    }
-    if (formData.evalType == 0 && !formData.unitIds) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请选择至少一个单元',
-        showCancel: false,
-        confirmText: '我知道了',
-        confirmColor: '#3CC51F'
-      });
-      return
-    }
     formData.subject = this.data.subjects[formData.subjectIndex]
     formData.evalType = formData.evalType * 1
     formData.textbook = this.data.multiArray[0][this.data.multiIndex[0]] + this.data.multiArray[1][this.data.multiIndex[1]]
 
     app.request({
-      url:'/public/teacher/eval/create',
+      url:'/recruit/eval/create',
       data:formData,
       method:'POST',
       barLoading:true
     }).then(res => {
       let evalId = res.evalId
       wx.redirectTo({
-        url: `detail?id=${evalId}`
+        url: `/pages/recruit/share?id=${evalId}&&recruitType=1`
       })
     })
   },
 
   getUnit: function (textbookId) {
     app.request({
-      url: '/public/teacher/unit/list',
+      url: '/recruit/getUnits',
       data: {
         textbookId
       },
@@ -296,49 +250,5 @@ Page({
         url: '/pages/recruit/index'
       });
     }
-  },
-
-  //班级教材
-  getTextbook: function () {
-    app.request({
-      url: '/class/getTextbooks',
-      data: {
-        classId
-      },
-      barLoading: true
-    }).then(res => {
-      let textbooks = res.textbooks
-      let textbookId = 0
-      textbooks.forEach(element => {
-        if (element.subject == this.data.formData.subject) {
-          let vers = element.vers
-          vers.forEach(ver => {
-            if (ver.checked) {
-              textbookId = ver.id
-            }
-          });
-        }
-      });
-      this.getUnit(textbookId)
-      this.setData({
-        textbooks,
-        [`formData.textbookId`]: textbookId
-      })
-    })
-  },
-
-  getClassDetail: function () {
-    app.request({
-      url: '/class/detail',
-      data: {
-        classId
-      },
-      barLoading: true
-    }).then(res => {
-      let classDetail = res.class
-      this.setData({
-        [`formData.class`]: classDetail
-      })
-    })
-  },
+  }
 })

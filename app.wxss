@@ -127,28 +127,3 @@ image {
     color: #A0DF4A;
     background-color: rgba(160, 223, 74, 0.2);
 }
-
-
-
-
-
-
-.shape {
-    width: 210rpx;
-    height: 64rpx;
-    line-height: 64rpx;
-    text-align: center;
-    background: #F0F5F7;
-    border: 2rpx solid rgba(0, 0, 0, 0);
-    border-radius: 36rpx;
-    font-size: 30rpx;
-    padding: 0 30rpx;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap
-}
-
-.shape.hover {
-    background-color: rgba(7, 121, 228, 0.1);
-    color: #0779E4;
-}

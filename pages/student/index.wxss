@@ -22,7 +22,7 @@ page{
 }
 
 .panel {
-    height: 220rpx;
+    max-height: 220rpx;
     background: #F0F5F7;
     border-radius: 36rpx;
 }

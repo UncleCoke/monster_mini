@@ -1,7 +1,7 @@
 const app = getApp();
-const QRCode = require('../../../utils/weapp-qrcode')
-import rpx2px from '../../../utils/rpx2px.js'
-let id;
+const QRCode = require('/../../utils/weapp-qrcode')
+import rpx2px from '/../../utils/rpx2px.js'
+let id,recruitType;
 const qrCodeWidth = rpx2px(200)
 Page({
 
@@ -10,11 +10,14 @@ Page({
   },
 
   onLoad: function (options) {
-    id = options.id * 1
+    id = options.id * 1;
+    recruitType = options.recruitType*1;
     wx.hideShareMenu();
     app.checkLogin(() => {
       this.getPosterList();
-      this.getRecruitDetail();
+      if(recruitType == 2){
+        this.getRecruitDetail();
+      }
     })
   },
 
@@ -23,9 +26,20 @@ Page({
   },
 
   onShareAppMessage: function () {
-    let title = `${app.globalData.nickName}邀请你参与${this.data.eventTitle}活动`
-    let path = `/pages/recruit/race/join?recruitId=${id}&id=${this.data.eventId}&eventType=${this.data.eventType}`
-    let shareImg = `http://img.uelink.com.cn/upload/xykj/race/${this.data.eventType}.jpg`
+    let title,path,shareImg;
+    if(recruitType == 1){
+      title = `${app.globalData.nickName}邀请你参与评测`
+      path = `/pages/recruit/join?recruitId=${id}&recruitType=${recruitType}`
+      shareImg = ''
+    }else if(recruitType == 2){
+      title = `${app.globalData.nickName}邀请你参与${this.data.eventTitle}活动`
+      path = `/pages/recruit/join?recruitId=${id}&eventId=${this.data.eventId}&eventType=${this.data.eventType}&recruitType=${recruitType}`
+      shareImg = `http://img.uelink.com.cn/upload/xykj/race/${this.data.eventType}.jpg`
+    }else if(recruitType == 3){
+      title = `${app.globalData.nickName}邀请你加入班级`
+      path = `/pages/recruit/join?recruitId=${id}&recruitType=${recruitType}`
+      shareImg = ''
+    }
     return {
       title: title,
       path: path,
@@ -42,7 +56,7 @@ Page({
 
   createQrCode: function () {
     let qrCode = new QRCode('canvas', {
-      text: `https://xyfxadmin.uelink.com.cn/mp/2/${id}`,
+      text: `https://xyfxadmin.uelink.com.cn/mp/${recruitType}/${id}`,
       image: '',
       width: qrCodeWidth,
       height: qrCodeWidth,
@@ -54,7 +68,7 @@ Page({
     console.log(qrCode);
 
     let _this = this;
-    qrCode.makeCode(`https://xyfxadmin.uelink.com.cn/mp/2/${id}`, () => {
+    qrCode.makeCode(`https://xyfxadmin.uelink.com.cn/mp/${recruitType}/${id}`, () => {
       setTimeout(() => {
         qrCode.exportImage(function (path) {
           _this.setData({
@@ -69,7 +83,7 @@ Page({
     app.request({
       url: '/recruit/poster/list',
       data: {
-        recruitType: 2
+        recruitType
       }
     }).then(res => {
       this.setData({

@@ -13,28 +13,23 @@ Page({
   },
 
   onLoad: function (options) {
-    var evalId = options.id
+    let evalId = options.id
     subject = options.subject
     textbook = options.textbook
     this.setData({
       evalId
     })
+
     wx.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage']
     })
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
 
-    } else {
-      this.inti()
-    }
+    app.checkLogin(() => {
+      this.getMyQrCode()
+    })
   },
-  inti() {
-    this.getMyQrCode()
-  },
+
 
   onShareAppMessage: function () {
     let title = `邀请你做${textbook}${subject}评测`
@@ -245,7 +240,7 @@ Page({
   },
 
   back: function (e) {
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 1) {
       wx.navigateBack({
         delta: 1
@@ -255,8 +250,5 @@ Page({
         url: 'list'
       });
     }
-
   }
-
-
 })

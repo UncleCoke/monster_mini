@@ -19,14 +19,14 @@
     </view>
     <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr">
         <picker mode="multiSelector" bindchange="MultiChange" value="{{multiIndex}}" range="{{multiArray}}">
-            <view class="flex justify-between align-center">
-                <view class="text-sp text-bold">选择教材</view>
-                <view class="text-lg colorT-sp cuIcon-right"></view>
-            </view>
-            <view class="padding-top-lg" wx:if="{{multiArray[0]}}">
+            <view class="padding-top-lg" wx:if="{{multiIndex[0]}}">
                 <view class="picker-shape lg hover">
                     {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
                 </view>
+            </view>
+            <view class="flex justify-between align-center" wx:else>
+                <view class="text-sp text-bold">选择教材</view>
+                <view class="text-lg colorT-sp cuIcon-right"></view>
             </view>
         </picker>
     </view>
@@ -35,12 +35,12 @@
             <view class="text-sp text-bold">选择范围</view>
         </view>
         <view class="padding-top-lg flex align-center justify-between flex-wrap">
-            <view class="picker-shape {{formData.evalType == item.type?'hover':''}}" wx:for="{{evalTypes}}" wx:key="type" bindtap="select" data-field="evalType" data-value="{{item.type}}">
+            <view class="picker-shape {{formData.evalType === item.type?'hover':''}}" wx:for="{{evalTypes}}" wx:key="type" bindtap="select" data-field="evalType" data-value="{{item.type}}">
                 {{item.name}}
             </view>
         </view>
     </view>
-    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr" wx:if="{{formData.evalType == 0}}" bindtap="showModal" data-target="units">
+    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr" wx:if="{{formData.evalType === 0}}" bindtap="showModal" data-target="units">
         <view class="flex justify-between align-center {{formData.units.length > 0?'margin-bottom-sm':''}}">
             <view class="text-sp text-bold">选择单元</view>
             <view class="text-lg colorT-sp cuIcon-right"></view>

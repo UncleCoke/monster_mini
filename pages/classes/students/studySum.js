@@ -1,6 +1,6 @@
 const app = getApp()
 import _ from '../../../utils/lodash';
-var userId, classId,subject,token;
+let userId, classId,subject,token;
 
 let chart = null;
 
@@ -137,9 +137,6 @@ function initRadarChart(canvas, width, height, F2, chartData) { // 使用 F2 绘
 
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     subjects: ['语文', '数学', '英语'],
     tabIndex: 0,
@@ -172,7 +169,6 @@ Page({
   },
 
   onLoad: function (options) {
-    
     wx.hideShareMenu();
     userId = options.userId
     token =  options.token
@@ -183,41 +179,28 @@ Page({
       title: `${subject}-学习报告`
     });
 
-    var subjects = this.data.subjects
-    var tabIndex = 0
-
+    let subjects = this.data.subjects
+    let tabIndex = 0
     subjects.forEach((element, index) => {
-
       if (element == subject) {
         tabIndex = index
       }
-
     });
     this.setData({
       tabIndex
     })
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
 
-    } else {
-      this.inti()
-    }
-    
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
 
   inti: function () {
-
-    var user = wx.getStorageSync('userInfo');
-    
+    let user = wx.getStorageSync('userInfo');
     this.setData({
       user
     })
-
     this.getStudySum()
-
-
   },
   
   tab: function (e) {
@@ -234,137 +217,57 @@ Page({
   },
 
   getStudySum: function () {
-    wx.showLoading({
-      title: '加载数据',
-      mask: true
-    })
-    var url = '/student/studyData'
-    var data = {
-      token: app.globalData.token,
-      userId: userId,
-      subject: subject,
-      classId:classId
-    }
     this.setData({
       showChart: false
     })
-    wx.showNavigationBarLoading();
-    wx.request({
-      url: url,
-      method: "GET",
-      data: data,
-      success: (res) => {
-        wx.stopPullDownRefresh();
-        wx.hideLoading()
-        wx.hideNavigationBarLoading();
-        if (res.data.code == 0) {
-          var StudySum = res.data.data;
-
-          var evalList = StudySum.evalList
-          if(evalList.length > 5){
-            evalList.splice(5,evalList.length-5)
-          }
-          var homeworks = StudySum.homeworks
-          if(homeworks.length > 5){
-            homeworks.splice(5,homeworks.length-5)
-          }
-
-          this.setData({
-            StudySum,
-            evalList,
-            homeworks,
-            showChart: true
-          })
-        } else {
-          wx.showModal({
-            title: '温馨提示',
-            content: res.data.msg,
-            showCancel: false,
-            confirmText: '好的',
-            confirmColor: '#3CC51F',
-            success: (result) => {
-              if(result.confirm){
-                // this.back()
-                this.setData({
-                  err:res.data.msg
-                })
-              }
-            },
-            fail: ()=>{},
-            complete: ()=>{}
-          });
-          // wx.showToast({
-          //   title: res.data.msg,
-          //   icon: 'none',
-          //   duration: 2000,
-          //   mask: true
-          // })
-        }
+    app.request({
+      url:'/student/studyData',
+      data:{
+        token: app.globalData.token,
+        userId: userId,
+        subject: subject,
+        classId:classId
       },
-      fail: (res) => {
-        wx.stopPullDownRefresh();
-        wx.hideLoading()
-        wx.hideNavigationBarLoading();
+      loading:true,
+      loadingTitle:'加载数据',
+      barLoading:true
+    }).then(res => {
+      let StudySum = res;
+      let evalList = StudySum.evalList;
+      if(evalList.length > 5){
+        evalList.splice(5,evalList.length-5)
       }
+      let homeworks = StudySum.homeworks
+      if(homeworks.length > 5){
+        homeworks.splice(5,homeworks.length-5)
+      }
+      this.setData({
+        StudySum,
+        evalList,
+        homeworks,
+        showChart: true
+      })
     })
-  },
-  remove: function (e) {
-    wx.showModal({
-      title: '移除学生',
-      content: '是否将该学生移除班级？',
-      showCancel: true,
-      cancelText: '取消',
-      cancelColor: '#000000',
-      confirmText: '确定',
-      confirmColor: '#3CC51F',
-      success: (result) => {
-        if(result.confirm){
-          this.checkStatus(-10,userId)
-          
-        }else{
-        }
-      },
-      fail: ()=>{},
-      complete: ()=>{}
-    });
   },
 
   checkStatus: function (status,userId) {
-    wx.showLoading({
-      title: "正在处理",
-      mask: true
-    });
-    var url = '/class/checkStudent'
-    var data = {
-      token:app.globalData.token,
-      classId: classId,
-      userId:userId,
-      status:status
-    }
-    wx.request({
-      url: url,
-      data: data,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.back()
-
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000,
-            mask: true
-          })
-        }
+    app.request({
+      url:'/class/checkStudent',
+      data:{
+        token:app.globalData.token,
+        classId: classId,
+        userId:userId,
+        status:status
       },
-      fail: (res) => {
-        wx.hideLoading();
-      }
+      loading:true,
+      loadingTitle:'正在处理'
+    }).then(() => {
+      this.back();
     })
   },
+
   back:function(e){
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if(route.length>1){
       wx.navigateBack({
         delta: 1
@@ -383,16 +286,18 @@ Page({
     });
   
   },
+
   viewHomeworkList: function (e) {
     wx.navigateTo({
       url: `homeworkList?token=${token}&userId=${userId}&classId=${classId}&subject=${subject}`
     });
   
   },
+
   call:function(e){
     var phone = e.currentTarget.dataset.phone
     wx.makePhoneCall({
-      phoneNumber: phone //仅为示例，并非真实的电话号码
+      phoneNumber: phone
     })
-  },
+  }
 })

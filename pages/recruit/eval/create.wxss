@@ -1,0 +1,7 @@
+.picker-shape.lg{
+    width:440rpx;
+}
+
+.picker-shape.middle{
+    width:325rpx;
+}

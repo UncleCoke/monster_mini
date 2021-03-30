@@ -1,0 +1,17 @@
+.border-bottom {
+	border-bottom: 1rpx solid rgba(70, 72, 73, 0.1);
+}
+
+.panel {
+	height: 220rpx;
+	background: #F0F5F7;
+	border-radius: 36rpx;
+}
+
+.cu-tag{
+    padding:0 22rpx !important;
+}
+
+.picker-shape{
+	width:325rpx;
+}

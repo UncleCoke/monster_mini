@@ -1,5 +1,5 @@
 const app = getApp()
-var classId
+let classId
 Page({
 
   data: {
@@ -16,15 +16,11 @@ Page({
       index
     })
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
+    app.checkLogin(()=>{
+      this.inti();
+    })
   },
+
   inti() {
     wx.getStorage({
       key: 'topics',
@@ -38,9 +34,8 @@ Page({
     });
   },
 
-
   back: function (e) {
-    var route = getCurrentPages()
+    let route = getCurrentPages()
     if (route.length > 1) {
       wx.navigateBack({
         delta: 1
@@ -50,9 +45,5 @@ Page({
         url: `../classIndex?id=${classId}`
       });
     }
-  
-  },
-
-
-
+  }
 })

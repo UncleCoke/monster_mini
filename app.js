@@ -35,7 +35,7 @@ App({
     productName: globalConfig.productName,
     product: globalConfig.product,
     isIPhoneX: null,
-    verText: '1.0.19',
+    verText: '1.0.20',
     token: '',
     apiUrl: globalConfig.apiUrl,
     fileUrl: globalConfig.fileUrl,
@@ -192,7 +192,7 @@ App({
     method = 'GET',
     loadingTitle = '加载中',
     loading = false,
-    barLoading = false,
+    barLoading = false
   } = {}) {
     if (loading) {
       wx.showLoading({
@@ -203,7 +203,9 @@ App({
     if(barLoading){
       wx.showNavigationBarLoading();
     }
-    data['token'] = this.globalData.token;
+    if(!data['token']){
+      data['token'] = this.globalData.token;
+    }
     return new Promise((resolve, reject) => {
       wx.request({
         url:this.globalData.apiUrl + url,

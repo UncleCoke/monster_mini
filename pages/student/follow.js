@@ -1,77 +1,137 @@
 const app = getApp()
+const formatNumber = n => {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+
+const formatDate = date => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return [year, month, day].map(formatNumber).join('-')
+}
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-    from:['电话','微信','短信'],
-    status:['待跟进','跟进中','已报名','无效用户'],
-    degree:['高','中','低'],
-    formData:{
-      name:'',
-      phone:'',
-      from:'',
-      status:'',
-      degree:'',
-      time:'',
-      msg:''
-    }
+    followBys: ['微信', '电话', '短信', '面聊'],
+    intentions: ['无意向', '低', '中', '高'],
+    formData: {
+      clientName: '',
+      intention: '',
+      remark: '',
+      followBy: '',
+      clientId: '',
+      nextFollowTime: ''
+    },
+    remarks:[
+      '已报名其他机构','没有相关意向，不考虑报名培训班'
+    ]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+
   onLoad: function (options) {
-
+    app.checkLogin(() => {
+      this.setData({
+        [`formData.clientName`]: options.name,
+        [`formData.clientId`]: options.id*1
+      })
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  formInputChange: function (e) {
+    const {
+      type,
+      field
+    } = e.currentTarget.dataset;
+    let value;
+    if (type === 'input') {
+      value = e.detail.value;
+    }else if(type === 'picker'){
+      value = e.currentTarget.dataset.value
+    }
+    if(field === 'intention' && value >0){
+      let nextFollowTime;
+      if(value == 1){
+        nextFollowTime =  formatDate(new Date(new Date().getTime()+3600000*24*7))
+      }else if(value == 2){
+        nextFollowTime =  formatDate(new Date(new Date().getTime()+3600000*24*3))
+      }else if(value == 3){
+        nextFollowTime =  formatDate(new Date(new Date().getTime()+3600000*24*1))
+      }
+      console.log(nextFollowTime)
+      this.setData({
+        [`formData.nextFollowTime`]:nextFollowTime
+      })
+    }
+    this.setData({
+      [`formData.${field}`]: value
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  addFollow:function(){
+    if(this.data.formData.clientName === ''){
+      wx.showToast({
+        title: '请输入学员名称',
+        icon: 'none'
+      });
+      return
+    }
+    if(this.data.formData.followBy === ''){
+      wx.showToast({
+        title: '请选择来源途径',
+        icon: 'none'
+      });
+      return
+    }
+    if(this.data.formData.intention === ''){
+      wx.showToast({
+        title: '请选择意向程度',
+        icon: 'none'
+      });
+      return
+    }
+    if(this.data.formData.nextFollowTime === ''){
+      wx.showToast({
+        title: '请选择下次跟进日期',
+        icon: 'none'
+      });
+      return
+    }
+    if(this.data.formData.remark === ''){
+      wx.showToast({
+        title: '请输入备注',
+        icon: 'none'
+      });
+      return
+    }
+    let data = this.data.formData;
+    data['nextFollowTime'] = data.nextFollowTime + ' 00:00:00'
+    app.request({
+      url:'/client/follow/add',
+      data:this.data.formData,
+      method:'POST',
+      loading:true,
+      loadingTitle:'正在创建'
+    }).then(() => {
+      wx.showModal({
+        content: '新增跟进成功，是否继续',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '#000000',
+        confirmText: '确定',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if(result.confirm){
+            
+          }else{
+            wx.navigateBack({
+              delta: 1
+            });
+          }
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
+    })
   }
 })

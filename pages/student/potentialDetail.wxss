@@ -10,3 +10,10 @@
     background: #F0F5F7;
     border-radius: 36rpx;
 }
+
+.btn-sp{
+	border-radius:20rpx;
+	width:210rpx;
+	height:80rpx;
+	line-height:80rpx;
+}

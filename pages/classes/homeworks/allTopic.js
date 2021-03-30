@@ -1,5 +1,5 @@
 const app = getApp()
-var classId
+let classId
 Page({
 
   data: {
@@ -10,15 +10,11 @@ Page({
   onLoad: function (options) {
     classId = options.classId
     wx.hideShareMenu();
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
+    app.checkLogin(()=>{
       this.inti()
-    }
+    })
   },
+
   inti() {
     wx.getStorage({
       key: 'allTopic',

@@ -45,7 +45,7 @@
         {
           "name": "活动详情",
           "pathName": "pages/recruit/race/detail",
-          "query": "",
+          "query": "id=7",
           "scene": null
         },
         {
@@ -62,7 +62,7 @@
         },
         {
           "name": "新增评测（招生）",
-          "pathName": "pages/evaluates/create",
+          "pathName": "pages/recruit/eval/create",
           "query": "",
           "scene": null
         },
@@ -81,13 +81,13 @@
         {
           "name": "生源信息",
           "pathName": "pages/student/potentialDetail",
-          "query": "",
+          "query": "id=8",
           "scene": null
         },
         {
           "name": "新增跟进",
           "pathName": "pages/student/follow",
-          "query": "",
+          "query": "id=12&name=林有",
           "scene": null
         },
         {

@@ -91,7 +91,7 @@ Page({
       loadingTitle:'正在创建'
     }).then(res => {
       wx.navigateTo({
-        url: `share?id=${res.id}`
+        url: `/pages/recruit/share?id=${res.id}&&recruitType=2`
       });
     })
   },

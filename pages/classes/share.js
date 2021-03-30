@@ -1,15 +1,12 @@
 const app = getApp()
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     myQrCode: '/images/shareQrcode.png'
   },
 
   onLoad: function (options) {
-    var evalId = options.id
+    let evalId = options.id
     this.setData({
       evalId
     })
@@ -17,17 +14,9 @@ Page({
       withShareTicket: true,
       menus: ['shareAppMessage']
     })
-    if (!app.globalData.token) {
-      app.login((res) => {
-        this.inti()
-      })
-
-    } else {
-      this.inti()
-    }
-  },
-  inti() {
-    this.getMyQrCode()
+    app.checkLogin(()=>{
+      this.getMyQrCode()
+    })
   },
 
   onShareAppMessage: function () {
@@ -70,7 +59,6 @@ Page({
       title: '正在下载',
       mask: true
     });
-
     var myQrCode = this.data.myQrCode
     wx.downloadFile({
       url: myQrCode,
@@ -123,8 +111,5 @@ Page({
         url: 'list'
       });
     }
-
   }
-
-
 })

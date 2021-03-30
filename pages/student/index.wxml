@@ -17,12 +17,13 @@
         </view>
     </view>
     <empty wx:if="{{total === 0}}" title="暂无潜在生源"></empty>
-    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp" bindtap="potentialDetail">
-        <view class="flex align-center justify-between margin-bottom-sm">
+    <view wx:for="{{list}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-bottom text-sp"  data-id="{{item.id}}"  bindtap="potentialDetail"> 
+        <view class="flex align-center justify-between">
             <view class="flex align-center">
-                <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
+                <view wx:else class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
                 <view class="padding-left-sm">
-                    <view class="margin-bottom-sm">{{item.nickName}}</view>
+                    <view class="margin-bottom-sm">{{item.name}}</view>
                     <view class="flex align-center">
                         <image src="{{imgUrl}}icon_phone.png" mode="widthFix" style="width:18rpx" />
                         <view class="margin-left-xs colorF-sp">{{item.phone}}</view>
@@ -31,7 +32,6 @@
             </view>
             <image src="{{imgUrl}}icon_call.png" mode="widthFix" style="width:56rpx;" catch:tap="call" data-phone="{{item.phone}}" />
         </view>
-        <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime}}</view>
     </view>
 </view>
 <view class="padding-tb-sm padding-lr-lg" hidden="{{status == 1}}">
@@ -40,21 +40,21 @@
             <text class="text-sp text-bold">当前学生：</text>
             <view class="cu-tag bg-blue light round text-bold">{{total}}人</view>
         </view>
-        <view class="flex align-center" bind:tap="setFind">
+        <!--<view class="flex align-center" bind:tap="setFind">
             <image src="{{imgUrl}}icon_find.png" mode="widthFix" style="width:30rpx;" />
             <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
-        </view>
+        </view>-->
     </view>
     <empty wx:if="{{total === 0}}" title="暂无学生"></empty>
     <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp">
         <view class="flex align-center justify-between margin-bottom-sm">
             <view class="flex align-center">
                 <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
-                <view class="padding-left-sm">{{item.nickName}}</view>
+                <view class="padding-left-sm">{{item.name}}</view>
             </view>
             <view class="cuIcon-right colorT-sp"></view>
         </view>
-        <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime}}</view>
+        <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime?item.lastLoginTime:'暂无'}}</view>
     </view>
 </view>
 <view class="cu-modal drawer-modal justify-end {{isFind?'show':''}}" bindtap="setFind">
@@ -62,38 +62,30 @@
         <scroll-view scroll-y="{{true}}" style="height:100%;">
             <view class="bg-white padding text-custom">
                 <view class="text-bold text-left padding-bottom">按名字搜索</view>
-                <input bindchange="formInputChange" data-field="name" placeholder="请输入名字" placeholder-class="colorF-sp" class="input padding-lr-sm"></input>
+                <input bindchange="formInputChange" data-field="name" placeholder="请输入名字" placeholder-class="colorF-sp" class="input padding-lr-sm" data-type='input' value="{{formData.name}}"></input>
             </view>
             <view class="bg-white padding text-custom margin-top-sm">
                 <view class="text-bold text-left padding-bottom">按手机号搜索</view>
-                <input bindchange="formInputChange" data-field="name" placeholder="请输入手机号码" placeholder-class="colorF-sp" class="input padding-lr-sm"></input>
+                <input bindchange="formInputChange" data-field="phone" placeholder="请输入手机号码" placeholder-class="colorF-sp" class="input padding-lr-sm" data-type='input' value="{{formData.phone}}"></input>
             </view>
             <view class="bg-white padding text-custom margin-top-sm">
-                <view class="text-bold text-left padding-bottom">来源途径</view>
+                <view class="text-bold text-left padding-bottom">来源类型</view>
                 <view class="flex align-center justify-between flex-wrap">
-                    <view class="picker-shape" wx:for="{{from}}" wx:key="*this">{{item}}</view>
-                </view>
-            </view>
-            <view class="bg-white padding text-custom margin-top-sm">
-                <view class="text-bold text-left padding-bottom-sm">当前状态</view>
-                <view class="flex align-center justify-between flex-wrap">
-                    <view class="picker-shape margin-top-sm" wx:for="{{status}}" wx:key="*this">
-                        {{item}}
-                    </view>
+                    <view class="picker-shape margin-bottom-sm {{formData.fromRecruitType == item.type?'hover':''}}" wx:for="{{fromRecruits}}" wx:key="*this" bindtap="formInputChange" data-type='picker' data-value='{{item.type}}' data-field="fromRecruitType">{{item.name}}</view>
                 </view>
             </view>
             <view class="bg-white padding text-custom margin-top-sm">
                 <view class="text-bold text-left padding-bottom">意向程度</view>
                 <view class="flex align-center justify-between flex-wrap">
-                    <view class="picker-shape" wx:for="{{degree}}" wx:key="*this">{{item}}</view>
+                    <view class="picker-shape  margin-bottom-sm  {{formData.intention === item.type?'hover':''}}" wx:for="{{intentions}}" wx:key="*this" data-type='picker' data-value='{{item.type}}' data-field="intention" bindtap="formInputChange">{{item.name}}</view>
                 </view>
             </view>
             <view class="bg-white height-sp text-custom margin-top-sm flex align-center justify-between padding-lr">
                 <view class="text-bold text-left">下次跟进日期</view>
-                <picker mode="date" value="{{formData.date}}" start="2015-09-01" end="2020-09-01" bindchange="DateChange">
+                <picker mode="date" value="{{formData.nextFollowTime}}" bindchange="formInputChange" data-type="input" data-field="nextFollowTime">
                     <view class="flex align-center">
                         <view class="colorF-sp text-custom">
-                            {{formData.date?formData.date:'请选择日期'}}
+                            {{formData.nextFollowTime?formData.nextFollowTime:'请选择日期'}}
                         </view>
                         <text class="cuIcon-right margin-left-sm colorT-sp"></text>
                     </view>
@@ -101,7 +93,8 @@
             </view>
             <view class="cu-bar bg-white tabbar border shop foot">
                 <view class="btn-group">
-                    <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp" bindtap="create">
+                    <button class="cu-btn bg-blue light flex-sub lg margin-tb-sm margin-lr" bindtap="clear">重置</button>
+                    <button class="cu-btn lg bg-blue  margin-tb-sm margin-lr flex-sub" bindtap="setFind">
                         确定
                     </button>
                 </view>
