@@ -1,5 +1,5 @@
 const app = getApp()
-let classId,tid
+let classId,tid,load = false
 Page({
 
   /**
@@ -17,6 +17,12 @@ Page({
     app.checkLogin(() => {
       this.inti();
     })
+  },
+
+  onShow:function(){
+    if(load){
+      this.inti();
+    }
   },
 
   inti(){
@@ -38,6 +44,7 @@ Page({
   },
 
   createEval:function(e){
+    load = true;
     wx.navigateTo({
       url: `/pages/evaluates/create?classId=${classId}`,
       success: (result)=>{

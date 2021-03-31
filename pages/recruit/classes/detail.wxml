@@ -1,0 +1,117 @@
+<view class="bg-white">
+    <view class="padding-top-lg padding-lr-lg">
+        <view class="flex align-center justify-between">
+            <view class="flex align-center">
+                <view wx:if="{{classDetail.imgClassmateUrl}}" class="cu-avatar avatar-radius lg" style="background-image:url({{classDetail.imgClassmateUrl}});"></view>
+                <view wx:else class="cu-avatar avatar-radius lg {{classDetail.level && classDetail.isFollowOrgVip?'bg-gradual-orange':'bg-blue'}}">
+                    {{classDetail.name[0]}}
+                </view>
+                <view class="margin-left-sm flex-sub">
+                    <view class="flex align-center margin-bottom-sm">
+                        <view class="text-sp text-bold margin-right-sm">{{classDetail.name}}</view>
+                        <view class="cu-tag bg-red sm round" wx:if="{{classDetail.level && classDetail.isFollowOrgVip}}" style="width:60rpx;">
+                            VIP
+                        </view>
+                    </view>
+                    <view class="flex align-center">
+                        <view class="colorF-sp padding-right-sm">{{classDetail.grade}}</view>
+                        <view class="solid" wx:if="{{classDetail.orgName}}"></view>
+                        <view wx:if="{{classDetail.orgName}}" class="text-blue padding-left-sm">
+                            {{classDetail.orgName}}
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <image src="{{imgUrl}}icon_set.png" mode="widthFix" style="width:40rpx" bindtap="setClass" />
+        </view>
+        <view class="flex align-center justify-between" style="padding:32rpx 20rpx;">
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-olive light">{{classDetail.openCount}}</view>
+                <view class="text-sm">点击人次</view>
+            </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-greenSecond light">{{clients.length}}</view>
+                <view class="text-sm">获客人数</view>
+            </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-greenThird light">{{classDetail.studentCount}}</view>
+                <view class="text-sm">学生数量</view>
+            </view>
+        </view>
+    </view>
+    <view class="padding-tb padding-lr-lg flex align-center justify-between solid-top">
+        <view class="flex align-center">
+            <image mode="widthFix" src="{{imgUrl}}icon_user.png" style="width:30rpx" />
+            <view class="text-greenSecond margin-left-sm margin-right-lg">
+                我是{{classDetail.teacherId == teacherId?'班主任':'老师'}}
+            </view>
+            <block wx:if="{{classDetail.price>0}}">
+                <image mode="widthFix" src="{{imgUrl}}icon_price.png" style="width:35rpx" />
+                <view style="color:#ffb341" class="margin-left-sm">
+                    收费{{classDetail.price/100}}元
+                </view>
+            </block>
+        </view>
+        <view wx:if="{{classDetail.badge}}" class="cu-tag round bg-red sm">
+            {{classDetail.badge>99?'99+':classDetail.badge}}
+        </view>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot">
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white flex-sub" bindtap="">班级管理</button>
+        <button class="cu-btn lg bg-blue sp margin-right" bind:tap="share">发布招生</button>
+    </view>
+</view>
+<view class="page-sp">
+    <view class="margin-top-sm bg-white padding-tb padding-lr-lg">
+        <view class="flex align-center">
+            <view class="flex-sub  text-center colorF-sp text-sp flex align-center justify-center" wx:for="{{tabs}}" wx:key="*this" bindtap="tabSelect" data-index="{{index}}">
+                <view class="padding-bottom-sm {{activeIndex == index?'hover':''}}" style="width:120rpx;">
+                    {{item}}
+                </view>
+            </view>
+        </view>
+        <view hidden="{{activeIndex == 1}}">
+            <view wx:for="{{clients}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-top text-sp">
+                <view class="flex align-center justify-between">
+                    <view class="flex align-center">
+                        <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
+                        <view wx:else class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
+                        <view class="padding-left-sm">
+                            <view class="margin-bottom-sm">{{item.name}}</view>
+                            <view class="flex align-center">
+                                <view wx:if="{{item.followingTeacherName}}" class="colorF-sp margin-right-sm">
+                                    {{item.followingTeacherName}}
+                                </view>
+                                <view class="text-{{item.status == 0?'gray':item.status == 1?'blue':item.status == -1?'red':'olive'}}">
+                                    {{item.status == 0?'待跟进':item.status == 1?'跟进中':item.status == -1?'无效用户':'已转化'}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <button class="cu-btn bg-blue round sm" bindtap="editClient" data-id="{{item.id}}" wx:if="{{item.status == 0}}">
+                        领用
+                    </button>
+                </view>
+                <view class="text-sm colorT-sp margin-top-sm">加入时间：{{item.created_at}}</view>
+            </view>
+        </view>
+        <view hidden="{{activeIndex == 0}}">
+            <view wx:for="{{studentList}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-top text-sp" data-id="{{item.id}}" data-token="{{item.token}}" data-index="{{index}}" bind:tap="{{item.status>0?'report':(item.status==0?'check':'')}}">
+                <view class="flex align-center justify-between margin-bottom-sm">
+                    <view class="flex align-center">
+                        <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                        <view class="padding-left-sm">
+                            <view class="margin-bottom-sm">{{item.nickName}}</view>
+                            <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime}}</view>
+                        </view>
+                    </view>
+                    <view class="text-green text-xs" wx:if="{{item.status == 0}}">待审核</view>
+                    <view class="text-red text-xs" wx:elif="{{item.status == -2}}">待付费</view>
+                    <view class="cuIcon-right colorT-sp" wx:else></view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

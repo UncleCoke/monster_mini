@@ -1,25 +1,19 @@
 const app = getApp()
-let isRecruit;
+let id;
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     grades:['一年级','二年级','三年级', '四年级', '五年级', '六年级'],
     formData: {
       name: '',
       grade: '',
-      isOpen:1,
-      price:0
+      imgClassmate:''
     },
+    fileUrl:''
   },
 
   onLoad: function (options) {
-    if(options.isRecruit){
-      isRecruit = options.isRecruit*1;
-      console.log(isRecruit);
-    }
+    id = options.id*1;
     app.checkLogin(()=>{
       this.inti();
     })
@@ -33,6 +27,7 @@ Page({
       [`formData.orgId`]:orgId,
       [`formData.orgName`]:orgName,
     })
+    this.getDetail();
   },
 
   formInputChange(e) {
@@ -41,23 +36,29 @@ Page({
       type,
       range
     } = e.currentTarget.dataset
-    console.log(field, type, range, e.detail.value);
+    let value;
     if (type == 'picker') {
-      var value = range[e.currentTarget.dataset.value]
+      value = range[e.currentTarget.dataset.value]
     } else {
-      var value = e.detail.value
-    }
-    if(field == "isOpen"){
-      value = e.detail.value?1:2
+      value = e.detail.value
     }
     this.setData({
       [`formData.${field}`]: value
     })
   },
   
-  create: function () {
+  edit: function () {
     console.log(this.data.formData);
     let formData = this.data.formData
+    if(!formData.imgClassmate){
+      wx.showToast({
+        title: '请上传班级头像',
+        icon: 'error',
+        duration: 1500,
+        mask: false
+      });
+      return
+    }
     if(!formData.name){
       wx.showToast({
         title: '请输入班级名称',
@@ -76,43 +77,19 @@ Page({
       });
       return
     }
-    if(isNaN(formData.price) || formData.price<0){
-      wx.showToast({
-        title: '请输入正确费用',
-        icon: 'error',
-        duration: 1500,
-        mask: false
-      });
-      return
-    }
-    if(formData.price > 99999){
-      wx.showToast({
-        title: '费用不能大于99999',
-        icon: 'none',
-        duration: 1500,
-        mask: false
-      });
-      return
-    }
     let data = formData
-    data.token = app.globalData.token
     data.parentId = app.globalData.parentId
-    data.price *=100
-    if(isRecruit){
-      data['isRecruit'] = isRecruit;
-    }
+    data.id = id;
     app.request({
-      url:'/class/create',
+      url:'/recruit/class/update',
       data,
       loading:true,
       loadingTitle:'正在提交',
       barLoading:true,
       method:'POST'
     }).then(res => {
-      let classmateId = res.classmateId
       this.setData({
-        modalName: 'done',
-        classmateId,
+        modalName: 'done'
       })
     })
   },
@@ -136,9 +113,9 @@ Page({
     }
   },
 
-  enterClass:function(){
+  share:function(){
     wx.redirectTo({
-      url: `classIndex?id=${this.data.classmateId}`,
+      url: `/pages/recruit/share?id=${this.data.classmateId}&recruitType=3`,
       success: (result)=>{
         this.hideModal()
       },
@@ -151,5 +128,61 @@ Page({
     this.setData({
       modalName: null
     })
+  },
+
+  chooseImg:function(){
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      success: (res) => {
+        let path =  res.tempFilePaths[0];
+        wx.uploadFile({
+          url: 'https://fxb2api.uelink.com.cn/teacherapi/public/pc/upload/post?type=imgClassmate',
+          filePath:path,
+          name: 'file',
+          success:(res)=>{
+            let data = JSON.parse(res.data).data;
+            let fileName = data.fileName;
+            let fileUrl = data.fileUrl;
+            this.setData({
+              [`formData.imgClassmate`]:fileName,
+              fileUrl
+            })
+          }
+        })
+      }
+    })
+  },
+
+  getDetail:function(){
+    app.request({
+      url:'/recruit/class/detail',
+      data:{
+        id
+      },
+      barLoading:true
+    }).then(res => {
+      let classDetail = res.class;
+      this.setData({
+        classDetail,
+        formData:{
+          name:classDetail.name,
+          grade:classDetail.grade,
+          imgClassmate:classDetail.imgClassmate
+        },
+        fileUrl:classDetail.imgClassmateUrl
+      })
+    })
+  },
+
+  share:function(){
+    wx.redirectTo({
+      url: `/pages/recruit/share?id=${id}&recruitType=3`,
+      success: (result)=>{
+        this.hideModal()
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
   }
 })

@@ -2,6 +2,7 @@
   "pages": [
     "pages/recruit/index",
     "pages/recruit/share",
+    "pages/recruit/join",
     "pages/recruit/race/index",
     "pages/recruit/race/create",
     "pages/recruit/race/detail",
@@ -12,6 +13,9 @@
     "pages/recruit/eval/detail",
     "pages/recruit/eval/create",
     "pages/recruit/classes/index",
+    "pages/recruit/classes/create",
+    "pages/recruit/classes/edit",
+    "pages/recruit/classes/detail",
     "pages/classes/classIndex",
     "pages/classes/list",
     "pages/classes/create",

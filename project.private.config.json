@@ -39,7 +39,7 @@
         {
           "name": "制作活动",
           "pathName": "pages/recruit/race/product",
-          "query": "id=3",
+          "query": "id=2",
           "scene": null
         },
         {
@@ -67,8 +67,8 @@
           "scene": null
         },
         {
-          "name": "班级招生",
-          "pathName": "pages/classes/create",
+          "name": "创建班级（招生）",
+          "pathName": "pages/recruit/classes/create",
           "query": "",
           "scene": null
         },
@@ -205,15 +205,21 @@
           "scene": null
         },
         {
-          "name": "分享活动",
-          "pathName": "pages/recruit/race/share",
-          "query": "id=2",
+          "name": "页面跳转",
+          "pathName": "pages/recruit/join",
+          "query": "recruitType=2&recruitId=182&eventType=3",
           "scene": null
         },
         {
           "name": "评测报告",
           "pathName": "pages/evaluates/report",
           "query": "id=1603&token=37a7a14ed5154460bf4ecd632d3e5fd8&user=2072",
+          "scene": null
+        },
+        {
+          "name": "招生班级详情",
+          "pathName": "pages/recruit/classes/detail",
+          "query": "id=182",
           "scene": null
         }
       ]

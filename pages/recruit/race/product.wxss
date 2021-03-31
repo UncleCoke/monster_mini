@@ -17,3 +17,7 @@
     color: #0779E4;
     text-align: center;
 }
+
+slider{
+    margin:40rpx 20rpx 40rpx 20rpx;
+}

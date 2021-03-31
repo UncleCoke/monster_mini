@@ -17,7 +17,7 @@
             </block>
         </view>
     </view>
-    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr">
+    <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr" wx:if="{{!classId}}">
         <picker mode="multiSelector" bindchange="MultiChange" value="{{multiIndex}}" range="{{multiArray}}">
             <view class="flex justify-between align-center">
                 <view class="text-sp text-bold">选择教材</view>

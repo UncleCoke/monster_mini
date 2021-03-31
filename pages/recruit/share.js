@@ -6,7 +6,8 @@ const qrCodeWidth = rpx2px(200)
 Page({
 
   data: {
-    posterIndex:0
+    posterIndex:0,
+    posters:[]
   },
 
   onLoad: function (options) {
@@ -14,9 +15,10 @@ Page({
     recruitType = options.recruitType*1;
     wx.hideShareMenu();
     app.checkLogin(() => {
-      this.getPosterList();
       if(recruitType == 2){
         this.getRecruitDetail();
+      }else{
+        this.getPosterList();
       }
     })
   },
@@ -30,7 +32,7 @@ Page({
     if(recruitType == 1){
       title = `${app.globalData.nickName}邀请你参与评测`
       path = `/pages/recruit/join?recruitId=${id}&recruitType=${recruitType}`
-      shareImg = ''
+      shareImg = 'http://img.uelink.com.cn/upload/xykj/share/eval.png'
     }else if(recruitType == 2){
       title = `${app.globalData.nickName}邀请你参与${this.data.eventTitle}活动`
       path = `/pages/recruit/join?recruitId=${id}&eventId=${this.data.eventId}&eventType=${this.data.eventType}&recruitType=${recruitType}`
@@ -38,7 +40,7 @@ Page({
     }else if(recruitType == 3){
       title = `${app.globalData.nickName}邀请你加入班级`
       path = `/pages/recruit/join?recruitId=${id}&recruitType=${recruitType}`
-      shareImg = ''
+      shareImg = 'http://img.uelink.com.cn/upload/xykj/share/inviteStudent.png'
     }
     return {
       title: title,
@@ -80,11 +82,15 @@ Page({
   },
 
   getPosterList: function () {
+    let data= {
+      recruitType
+    }
+    if(recruitType == 2){
+      data['eventId'] = this.data.eventId
+    } 
     app.request({
       url: '/recruit/poster/list',
-      data: {
-        recruitType
-      }
+      data
     }).then(res => {
       this.setData({
         posters: res.posters
@@ -93,6 +99,13 @@ Page({
   },
 
   makePoster: function () {
+    if(this.data.posters.length == 0){
+      wx.showToast({
+        title: '暂无海报',
+        icon: 'none'
+      });
+      return;
+    }
     wx.showLoading({
       title: '正在生成海报',
       mask: true
@@ -266,6 +279,8 @@ Page({
         eventId:res.event.eventId,
         eventType:res.event.eventType,
         eventTitle:res.event.eventTitle
+      },()=>{
+        this.getPosterList();
       })
     })
   },

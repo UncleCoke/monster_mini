@@ -1,11 +1,11 @@
 const app = getApp()
+let page = 1,
+  pageCount, limit = 10;
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-    imgUrl:'http://img.uelink.com.cn/upload/xykj/classes/'
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/classes/',
+    list:[]
   },
 
   onLoad: function (options) {
@@ -13,8 +13,15 @@ Page({
   },
 
   onPullDownRefresh: function () {
+    page = 1;
     this.getClassList()
     wx.stopPullDownRefresh();
+  },
+
+  onReachBottom: function () {
+    if (page <= pageCount) {
+      this.getClassList();
+    }
   },
 
   onShow: function () {
@@ -29,19 +36,20 @@ Page({
       phone:app.globalData.phone,
       showModal:false
     })
+    page = 1;
     this.getClassList()
   },
 
   classDetail:function(e){
     let id = e.currentTarget.dataset.id
     wx.navigateTo({
-      url: `/pages/classes/classIndex?id=${id}`
+      url: `detail?id=${id}`
     });
   },
 
-  createClass:function(e){
+  createClass:function(){
     wx.navigateTo({
-      url: `/pages/classes/create?isRecruit=1`
+      url: `create`
     });
   },
 
@@ -49,14 +57,24 @@ Page({
     app.request({
       url:'/recruit/class/list',
       data:{
-        teacherId: app.globalData.uid
+        page,limit,isRecruit:1
       },
       barLoading:true
     }).then(res => {
-      let classList = res.list
-      let allStudentCount = res.allStudentCount
+      let _list = res.list;
+      let list = []
+      if (page > 1) {
+        list = this.data.list
+      }
+      list = list.concat(_list);
+      if (!pageCount) {
+        pageCount = Math.ceil(res.total / limit)
+      }
+      let total = res.total;
+      page += 1
       this.setData({
-        classList,allStudentCount
+        list,
+        total
       })
     })
   },

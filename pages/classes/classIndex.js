@@ -1,5 +1,5 @@
 const app = getApp()
-let classId
+let classId,load=false
 Page({
 
   /**
@@ -66,6 +66,12 @@ Page({
     app.checkLogin(()=>{
       this.inti();
     })
+  },
+
+  onShow:function(){
+    if(load){
+      this.getClassDetail();
+    }
   },
 
   onPullDownRefresh: function () {
@@ -211,6 +217,7 @@ Page({
     }
 
     if(type == 'page'){
+      load = true;
       wx.navigateTo({
         url: `${url}?id=${this.data.classDetail.id}&tid=${this.data.classDetail.teacherId}&className=${this.data.classDetail.name}`
       });

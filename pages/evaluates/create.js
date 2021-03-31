@@ -2,9 +2,6 @@ const app = getApp()
 let classId
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     subjects: ["数学", "语文", "英语"],
     classes: [{
@@ -129,6 +126,9 @@ Page({
     let term = multiArray[1][multiIndex[1]]
     let ver = multiArray[2][multiIndex[2]]
     let subject = this.data.subjects[this.data.formData.subjectIndex]
+    if(classId){
+      subject = this.data.textbooks[this.data.formData.subjectIndex].subject
+    }
     let textbookList = this.data.textbookList
     console.log(grade, term, ver, subject);
     textbookList.forEach(subjectItem => {
@@ -166,7 +166,9 @@ Page({
         this.getUnit(textbookId)
         this.setData({
           [`formData.textbookId`]: textbookId,
-          [`formData.subject`]: this.data.textbooks[value].subject
+          [`formData.subject`]: this.data.textbooks[value].subject,
+          [`formData.unitIds`]:'',
+          [`formData.units`]:[]
         })
       } else {
         this.setTextbookPickData(value)
@@ -196,7 +198,6 @@ Page({
     })
   },
 
-
   MultiChange(e) {
     this.setData({
       multiIndex: e.detail.value,
@@ -210,16 +211,6 @@ Page({
     let formData = this.data.formData
     if (formData.class.id) {
       formData.classId = formData.class.id
-    }
-    if (formData.evalRange == 2 && !formData.classId) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请选择班级',
-        showCancel: false,
-        confirmText: '我知道了',
-        confirmColor: '#3CC51F'
-      });
-      return
     }
     if (formData.evalRange == 2 && formData.class.studentCount < 1) {
       wx.showModal({
@@ -241,7 +232,6 @@ Page({
       });
       return
     }
-    formData.subject = this.data.subjects[formData.subjectIndex]
     formData.evalType = formData.evalType * 1
     formData.textbook = this.data.multiArray[0][this.data.multiIndex[0]] + this.data.multiArray[1][this.data.multiIndex[1]]
 

@@ -104,8 +104,6 @@ Page({
       });
       return
     }
-    let data = this.data.formData;
-    data['nextFollowTime'] = data.nextFollowTime + ' 00:00:00'
     app.request({
       url:'/client/follow/add',
       data:this.data.formData,

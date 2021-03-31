@@ -1,5 +1,16 @@
 const app = getApp();
 let templateId;
+const formatDate = date => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return [year, month, day].map(formatNumber).join('-')
+}
+
+const formatNumber = n => {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
 Page({
 
   /**
@@ -11,6 +22,7 @@ Page({
   },
 
   onLoad: function (options) {
+    this.setDate();
     templateId = options.id*1;
     app.checkLogin(() => {
       this.getTemplateDetail();
@@ -106,6 +118,8 @@ Page({
     }).then(res => {
       this.setData({
         template: res
+      },()=>{
+        this.setDate();
       })
     })
   },
@@ -128,10 +142,10 @@ Page({
     let nowTime = new Date().getTime();
     let startTime = new Date(template.startTime).getTime();
     let endTime = new Date(template.endTime).getTime();
-    if (startTime < nowTime) {
+    /*if (startTime < nowTime) {
       title = '开始时间不能小于当前时间'
       return title;
-    }
+    }*/
     if (endTime < nowTime) {
       title = '结束时间不能小于当前时间'
       return title;
@@ -152,5 +166,15 @@ Page({
       return title;
     }
     return title
+  },
+
+  //默认时间
+  setDate:function(){
+    let today = new Date();
+    let endDay = new Date(new Date().getTime()+3600000*24*7);
+    this.setData({
+      [`template.startTime`]:`${formatDate(today)} 08:00:00`,
+      [`template.endTime`]:`${formatDate(endDay)} 08:00:00`
+    })
   }
 })

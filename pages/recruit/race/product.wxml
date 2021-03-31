@@ -44,14 +44,18 @@
         <view class="padding-lg flex align-center justify-between">
             <view class="text-sp colorF-sp">排名奖品设置</view>
         </view>
-        <view class="bg-white padding-top padding-bottom-sm padding-lr-lg margin-bottom-sm text-sp" wx:for="{{template.eventAward}}" wx:key="*this" wx:for-index="awardIndex" wx:for-item="award">
+        <view class="bg-white padding-tb padding-lr-lg margin-bottom-sm text-sp" wx:for="{{template.eventAward}}" wx:key="*this" wx:for-index="awardIndex" wx:for-item="award">
             <view class="text-bold margin-bottom-sm">{{award.title}}</view>
             <input placeholder="输入奖品内容" class="height-sp1 text-sp" value="{{award.name}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="name" />
             <block wx:if="{{template.eventType == 2}}">
-                <view class="text-bold margin-bottom-sm  padding-top solid-top margin-top">获奖几率</view>
-                <input placeholder="输入奖品内容" class="height-sp1 text-sp" type="number"  value="{{award.rate}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="rate" />
+                <view class="flex align-center justify-between margin-bottom-sm  padding-top solid-top margin-top">
+                    <view class="text-bold">获奖几率</view>
+                    <view class="text-sp colorF-sp">{{award.rate}}%</view>
+                </view>
+                <slider bindchange="setAward" data-index="{{awardIndex}}" data-field="rate" data-type="input" min="0" max="100"  value="{{award.rate}}" activeColor="#0779E4" block-size="18" />
             </block>
-            <view class="flex align-center justify-center solid-top padding-top margin-top-sm">
+            <view class="flex align-center justify-between solid-top padding-top margin-top-sm">
+                <view class="text-bold">奖品数量</view>
                 <view class="flex align-center">
                     <text class="cuIcon-move text-blue text-xl margin-right-sm text-bold" data-type="reduce" data-index="{{awardIndex}}" bindtap="setAward"></text>
                     <input type="number" class="input" value="{{award.number}}" bindinput="setAward" data-type="input" data-index="{{awardIndex}}" data-field="number" />

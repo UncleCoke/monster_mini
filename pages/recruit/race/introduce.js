@@ -19,7 +19,26 @@ Page({
   },
 
   showTemplate:function(){
-    
+    let eventType = this.data.template.eventType;
+    //答题 17  抽奖 16 组队 12
+    let recruitId = eventType == 1?17:eventType == 2?16:12
+    app.request({
+      url:'/recruit/event/detail',
+      data:{
+        id:recruitId
+      }
+    }).then(res => {
+      let id = res.event.eventId;
+      wx.navigateToMiniProgram({
+        appId:'wxcfe4dc8683b0606f',
+        path:`/packageB/pages/race/${eventType == 1?'index':eventType == 2?'lotteryDraw':'group'}?recruitId=${recruitId}&id=${id}`,
+        extraData:{},
+        envVersion:'release',
+        success: (result)=>{},
+        fail: ()=>{},
+        complete: ()=>{}
+      });
+    })
   },
 
   getTemplateDetail:function(){
@@ -34,5 +53,7 @@ Page({
         template:res
       })
     })
-  }
+  },
+
+  
 })

@@ -1,5 +1,5 @@
 const app = getApp()
-let classId,tid, page, pageCount = 1,pageSize = 20
+let classId,tid, page, pageCount = 1,pageSize = 20,load=false
 Page({
 
   /**
@@ -17,6 +17,12 @@ Page({
     app.checkLogin(()=>{
       this.inti();
     })
+  },
+
+  onShow:function(){
+    if(load){
+      this.inti();
+    }
   },
 
   inti(){
@@ -45,6 +51,7 @@ Page({
   },
 
   createHomework:function(e){
+    load = true;
     wx.navigateTo({
       url: `create?classId=${classId}`
     });

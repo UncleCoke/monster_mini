@@ -34,7 +34,7 @@ Page({
   onShareAppMessage: function () {
     let title = `邀请你做${textbook}${subject}评测`
     let path = `/pages/evaluates/doEval?evalId=${this.data.evalId}`
-    let shareImg = `/images/shaer.eval.png`
+    let shareImg = `http://img.uelink.com.cn/upload/xykj/share/eval.png`
     return {
       title: title,
       path: path,

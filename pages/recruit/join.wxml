@@ -1,1 +1,1 @@
-<image src="{{imgUrl}}{{eventType}}.jpg" bindtap="gotoRace" mode="widthFix" style="width:750rpx;"/>
+<image src="{{imgUrl}}" bindtap="gotoRace" mode="widthFix" style="width:750rpx;"/>

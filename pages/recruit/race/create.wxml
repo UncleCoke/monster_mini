@@ -1,5 +1,5 @@
 <view class="padding-lg">
-    <view class="flex flex-wrap justify-between">
+    <view class="flex flex-wrap justify-between align-start">
         <view class="cu-card case" wx:for="{{list}}" wx:key="name" bindtap="raceIntroduce" id="{{item.id}}">
             <view class="cu-item shadow card">
                 <view class="image">

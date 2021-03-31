@@ -1,5 +1,5 @@
 const app = getApp();
-let id;
+let id,load = false;
 Page({
 
   data: {
@@ -16,6 +16,11 @@ Page({
     })
   },
 
+  onShow:function(){
+    if(load){
+      this.getClientDetail();
+    }
+  },
 
   onPullDownRefresh: function () {
     this.getClientDetail();
@@ -29,6 +34,7 @@ Page({
   },
 
   follow:function(){
+    load = true;
     wx.navigateTo({
       url: `follow?id=${id}&name=${this.data.client.name}`
     });

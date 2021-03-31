@@ -18,14 +18,15 @@ Page({
     ] ,
     intentions:[
       {
+        type:4,name:'无意向'
+      },
+      {
         type:1,name:'低'
       },{
         type:2,name:'中'
       },
       {
         type:3,name:'高'
-      },{
-        type:4,name:'无意向'
       }
     ],
     tabs: [{
@@ -71,8 +72,7 @@ Page({
     this.setData({
       status
     }, () => {
-      page = 1;
-      this.getClientList()
+      this.clear();
     })
   },
 
@@ -123,13 +123,7 @@ Page({
       }
       let total = res.total;
       page += 1
-
-
-      if(this.data.formData.nextFollowTime){
-        let nextFollowTime = this.data.formData.nextFollowTime + ' 00:00:00';
-        list = list.filter(item => item.lastFollow.nextFollowTime == nextFollowTime);
-        total = list.length;
-      }
+      
       this.setData({
         list,
         total
@@ -171,7 +165,9 @@ Page({
       }
     },()=>{
       this.find();
-      this.setFind();
+      if(this.data.isFind == true){
+        this.setFind();
+      }
     })
   }
 })

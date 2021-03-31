@@ -48,7 +48,7 @@ Component({
   properties: {
     value: String,
     dateValue: {
-      type: Date
+      type: String
     }
   },
 

@@ -50,14 +50,14 @@
                     </view>
                     <view class="flex align-center">
                         <block wx:if="{{report.toalScore < report.lastToalScore}}">
-                            <view class="cuIcon-pullup text-olive"></view>
-                            <view class="text-olive">
+                            <view class="cuIcon-pulldown text-red"></view>
+                            <view class="text-red">
                                 {{report.lastToalScore - report.toalScore}}
                             </view>
                         </block>
                         <block wx:if="{{report.toalScore > report.lastToalScore}}">
-                            <view class="cuIcon-pulldown text-red"></view>
-                            <view class="text-red">
+                            <view class="cuIcon-pullup text-olive"></view>
+                            <view class="text-olive">
                                 {{report.toalScore - report.lastToalScore}}
                             </view>
                         </block>
@@ -72,14 +72,14 @@
                     </view>
                     <view class="flex align-center">
                         <block wx:if="{{report.goodRate < report.lastGoodRate}}">
-                            <view class="cuIcon-pullup text-olive"></view>
-                            <view class="text-olive">
+                            <view class="cuIcon-pulldown text-red"></view>
+                            <view class="text-red">
                                 {{report.lastGoodRate - report.goodRate}}
                             </view>
                         </block>
                         <block wx:if="{{report.goodRate > report.lastGoodRate}}">
-                            <view class="cuIcon-pulldown text-red"></view>
-                            <view class="text-red">{{report.goodRate - report.lastGoodRate}}</view>
+                            <view class="cuIcon-pullup text-olive"></view>
+                            <view class="text-olive">{{report.goodRate - report.lastGoodRate}}</view>
                         </block>
                     </view>
                 </view>

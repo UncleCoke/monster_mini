@@ -6,7 +6,7 @@
             <view class="cu-tag bg-blue light round text-bold">{{classList.length}}个</view>
         </view>
         <button wx:if="{{!phone}}" open-type="getUserInfo" bindgetuserinfo="setUserData" class="margin-0 padding-0">
-            <view class="flex align-center" bind:tap="setFind">
+            <view class="flex align-center">
                 <image src="{{imgUrl}}icon_add.png" mode="widthFix" style="width:30rpx;" />
                 <text class="text-blue text-sm text-bold margin-left-sm">创建班级</text>
             </view>

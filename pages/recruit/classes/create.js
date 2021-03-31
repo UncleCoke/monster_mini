@@ -1,25 +1,16 @@
 const app = getApp()
-let isRecruit;
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     grades:['一年级','二年级','三年级', '四年级', '五年级', '六年级'],
     formData: {
       name: '',
       grade: '',
-      isOpen:1,
-      price:0
+      imgClassmate:''
     },
   },
 
   onLoad: function (options) {
-    if(options.isRecruit){
-      isRecruit = options.isRecruit*1;
-      console.log(isRecruit);
-    }
     app.checkLogin(()=>{
       this.inti();
     })
@@ -41,14 +32,11 @@ Page({
       type,
       range
     } = e.currentTarget.dataset
-    console.log(field, type, range, e.detail.value);
+    let value;
     if (type == 'picker') {
-      var value = range[e.currentTarget.dataset.value]
+      value = range[e.currentTarget.dataset.value]
     } else {
-      var value = e.detail.value
-    }
-    if(field == "isOpen"){
-      value = e.detail.value?1:2
+      value = e.detail.value
     }
     this.setData({
       [`formData.${field}`]: value
@@ -58,6 +46,15 @@ Page({
   create: function () {
     console.log(this.data.formData);
     let formData = this.data.formData
+    if(!formData.imgClassmate){
+      wx.showToast({
+        title: '请上传班级头像',
+        icon: 'error',
+        duration: 1500,
+        mask: false
+      });
+      return
+    }
     if(!formData.name){
       wx.showToast({
         title: '请输入班级名称',
@@ -76,33 +73,10 @@ Page({
       });
       return
     }
-    if(isNaN(formData.price) || formData.price<0){
-      wx.showToast({
-        title: '请输入正确费用',
-        icon: 'error',
-        duration: 1500,
-        mask: false
-      });
-      return
-    }
-    if(formData.price > 99999){
-      wx.showToast({
-        title: '费用不能大于99999',
-        icon: 'none',
-        duration: 1500,
-        mask: false
-      });
-      return
-    }
     let data = formData
-    data.token = app.globalData.token
     data.parentId = app.globalData.parentId
-    data.price *=100
-    if(isRecruit){
-      data['isRecruit'] = isRecruit;
-    }
     app.request({
-      url:'/class/create',
+      url:'/recruit/class/create',
       data,
       loading:true,
       loadingTitle:'正在提交',
@@ -136,9 +110,9 @@ Page({
     }
   },
 
-  enterClass:function(){
+  share:function(){
     wx.redirectTo({
-      url: `classIndex?id=${this.data.classmateId}`,
+      url: `/pages/recruit/share?id=${this.data.classmateId}&recruitType=3`,
       success: (result)=>{
         this.hideModal()
       },
@@ -150,6 +124,30 @@ Page({
   hideModal() {
     this.setData({
       modalName: null
+    })
+  },
+
+  chooseImg:function(){
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      success: (res) => {
+        let path =  res.tempFilePaths[0];
+        wx.uploadFile({
+          url: 'https://fxb2api.uelink.com.cn/teacherapi/public/pc/upload/post?type=imgClassmate',
+          filePath:path,
+          name: 'file',
+          success:(res)=>{
+            let data = JSON.parse(res.data).data;
+            let fileName = data.fileName;
+            let fileUrl = data.fileUrl;
+            this.setData({
+              [`formData.imgClassmate`]:fileName,
+              fileUrl
+            })
+          }
+        })
+      }
     })
   }
 })

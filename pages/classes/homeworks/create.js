@@ -114,6 +114,7 @@ Page({
         this.setData({
           [`formData.subject`]: this.data.textbooks[value].subject,
           [`formData.unitId`]: 0,
+          [`formData.unit`]:'',
           [`formData.questionIds`]: []
         })
         try {
