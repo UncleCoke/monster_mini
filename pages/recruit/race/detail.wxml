@@ -20,7 +20,7 @@
         </view>
         <view class="flex align-center justify-around padding-tb-lg">
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-olive light">{{event.userCount}}</view>
+                <view class="content-shape bg-olive light">{{users.length}}</view>
                 <view class="text-sm">参与人数</view>
             </view>
             <view class="flex align-center justify-center flex-direction">
