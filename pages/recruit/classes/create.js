@@ -46,7 +46,7 @@ Page({
   create: function () {
     console.log(this.data.formData);
     let formData = this.data.formData
-    if(!formData.imgClassmate){
+    /*if(!formData.imgClassmate){
       wx.showToast({
         title: '请上传班级头像',
         icon: 'error',
@@ -54,7 +54,7 @@ Page({
         mask: false
       });
       return
-    }
+    }*/
     if(!formData.name){
       wx.showToast({
         title: '请输入班级名称',

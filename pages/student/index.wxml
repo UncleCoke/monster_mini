@@ -1,14 +1,44 @@
 <view class="tabs">
-    <view class="bar bg-white radius-sp flex align-center">
+    <image src="{{imgUrl}}icon_del.png" class="delImg" mode="widthFix" wx:if="{{orgAdmin == 1}}" bindtap="gotoClear" />
+    <view class="bar tabBgColor radius-sp flex align-center">
         <view class="flex-sub text-center text-bold text-sp {{status == item.status?'hover':''}}" wx:for="{{tabs}}" wx:key="status" bindtap="tabChange" data-status="{{item.status}}">
             {{item.title}}
         </view>
     </view>
 </view>
-<view class="padding-tb-sm padding-lr-lg" hidden="{{status == 10}}">
+<view class="padding-tb-sm padding-lr-lg" hidden="{{status != 0}}">
     <view class="padding-tb-lg flex align-center justify-between">
         <view class="flex align-center">
-            <text class="text-sp text-bold">潜在生源：</text>
+            <text class="text-sp text-bold">当前线索：</text>
+            <view class="cu-tag bg-blue light round text-bold">{{total}}人</view>
+        </view>
+    </view>
+    <empty wx:if="{{total === 0}}" title="暂无线索"></empty>
+    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp" data-id="{{item.id}}" bindtap="potentialDetail" data-avatar="{{item.avatarUrl}}">
+        <view class="flex align-center justify-between margin-bottom-sm">
+            <view class="flex align-center">
+                <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                <view class="padding-left-sm">{{item.name}}</view>
+            </view>
+            <view class="flex align-center">
+                <button class="cu-btn bg-blue margin-right-sm round middle" data-id="{{item.id}}" catch:tap="editClient" wx:if="{{orgAdmin != 1}}">
+                    领用
+                </button>
+                <button class="cu-btn bg-blue round middle">查看</button>
+            </view>
+        </view>
+        <view class="flex align-center justify-between">
+            <view class="text-sm colorT-sp">
+                来源：{{item.fromRecruitType == 1?'评测招生':item.fromRecruitType == 2?'活动招生':'班级招生'}} {{item.fromTeacherName?'('+item.fromTeacherName+')':''}}
+            </view>
+            <view class="cu-tag line-gray round">待跟进</view>
+        </view>
+    </view>
+</view>
+<view class="padding-tb-sm padding-lr-lg" hidden="{{status != 1}}">
+    <view class="padding-tb-lg flex align-center justify-between">
+        <view class="flex align-center">
+            <text class="text-sp text-bold">潜在客户：</text>
             <view class="cu-tag bg-blue light round text-bold">{{total}}人</view>
         </view>
         <view class="flex align-center" bind:tap="setFind">
@@ -16,45 +46,54 @@
             <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
         </view>
     </view>
-    <empty wx:if="{{total === 0}}" title="暂无潜在生源"></empty>
-    <view wx:for="{{list}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-bottom text-sp"  data-id="{{item.id}}"  bindtap="potentialDetail"> 
-        <view class="flex align-center justify-between">
+    <empty wx:if="{{total === 0}}" title="暂无潜在客户"></empty>
+    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom  margin-bottom text-sp" data-id="{{item.id}}" bindtap="potentialDetail" data-avatar="{{item.avatarUrl}}">
+        <view class="flex align-center justify-between margin-bottom">
             <view class="flex align-center">
                 <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
                 <view wx:else class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
                 <view class="padding-left-sm">
                     <view class="margin-bottom-sm">{{item.name}}</view>
-                    <view class="flex align-center">
-                        <image src="{{imgUrl}}icon_phone.png" mode="widthFix" style="width:18rpx" />
-                        <view class="margin-left-xs colorF-sp">{{item.phone}}</view>
-                    </view>
+                    <view class="colorF-sp">跟进人：{{item.fromTeacherName}}</view>
                 </view>
             </view>
-            <image src="{{imgUrl}}icon_call.png" mode="widthFix" style="width:56rpx;" catch:tap="call" data-phone="{{item.phone}}" />
+            <view class="flex align-center">
+                <button class="cu-btn bg-blue margin-right-sm round middle" catch:tap="call" data-phone="{{item.phone}}" wx:if="{{orgAdmin != 1}}">
+                    联系
+                </button>
+                <button class="cu-btn bg-blue round middle">查看</button>
+            </view>
+        </view>
+        <view class="flex justify-between align-center">
+            <view class="flex align-center">
+                <image src="{{imgUrl}}icon_phone.png" mode="widthFix" style="width:16rpx"/>
+                <view class="colorT-sp text-df margin-left-xs">{{item.phone}}</view>
+            </view>
+            <view class="cu-tag line-blue round">跟进中</view>
         </view>
     </view>
 </view>
-<view class="padding-tb-sm padding-lr-lg" hidden="{{status == 1}}">
+<view class="padding-tb-sm padding-lr-lg" hidden="{{status != 10}}">
     <view class="padding-tb-lg flex align-center justify-between">
         <view class="flex align-center">
             <text class="text-sp text-bold">当前学生：</text>
             <view class="cu-tag bg-blue light round text-bold">{{total}}人</view>
         </view>
-        <!--<view class="flex align-center" bind:tap="setFind">
-            <image src="{{imgUrl}}icon_find.png" mode="widthFix" style="width:30rpx;" />
-            <text class="text-blue text-sm text-bold margin-left-sm">筛选</text>
-        </view>-->
     </view>
     <empty wx:if="{{total === 0}}" title="暂无学生"></empty>
-    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp">
+    <view wx:for="{{list}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-bottom text-sp" data-id="{{item.id}}" bindtap="potentialDetail" data-avatar="{{item.avatarUrl}}">
         <view class="flex align-center justify-between margin-bottom-sm">
             <view class="flex align-center">
-                <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
+                <view wx:else class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
                 <view class="padding-left-sm">{{item.name}}</view>
             </view>
-            <view class="cuIcon-right colorT-sp"></view>
+            <button class="cu-btn bg-blue round middle">查看</button>
         </view>
-        <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime?item.lastLoginTime:'暂无'}}</view>
+        <view class="flex align-center justify-between">
+            <view class="text-sm colorT-sp">最后登录时间：{{item.lastLoginTime?item.lastLoginTime:'暂无'}}</view>
+            <view class="cu-tag line-olive round">已转化</view>
+        </view>
     </view>
 </view>
 <view class="cu-modal drawer-modal justify-end {{isFind?'show':''}}" bindtap="setFind">
@@ -71,13 +110,17 @@
             <view class="bg-white padding text-custom margin-top-sm">
                 <view class="text-bold text-left padding-bottom">来源类型</view>
                 <view class="flex align-center justify-between flex-wrap">
-                    <view class="picker-shape margin-bottom-sm {{formData.fromRecruitType == item.type?'hover':''}}" wx:for="{{fromRecruits}}" wx:key="*this" bindtap="formInputChange" data-type='picker' data-value='{{item.type}}' data-field="fromRecruitType">{{item.name}}</view>
+                    <view class="picker-shape margin-bottom-sm {{formData.fromRecruitType == item.type?'hover':''}}" wx:for="{{fromRecruits}}" wx:key="*this" bindtap="formInputChange" data-type='picker' data-value='{{item.type}}' data-field="fromRecruitType">
+                        {{item.name}}
+                    </view>
                 </view>
             </view>
             <view class="bg-white padding text-custom margin-top-sm">
                 <view class="text-bold text-left padding-bottom">意向程度</view>
                 <view class="flex align-center justify-between flex-wrap">
-                    <view class="picker-shape  margin-bottom-sm  {{formData.intention === item.type?'hover':''}}" wx:for="{{intentions}}" wx:key="*this" data-type='picker' data-value='{{item.type}}' data-field="intention" bindtap="formInputChange">{{item.name}}</view>
+                    <view class="picker-shape  margin-bottom-sm  {{formData.intention === item.type?'hover':''}}" wx:for="{{intentions}}" wx:key="*this" data-type='picker' data-value='{{item.type}}' data-field="intention" bindtap="formInputChange">
+                        {{item.name}}
+                    </view>
                 </view>
             </view>
             <view class="bg-white height-sp text-custom margin-top-sm flex align-center justify-between padding-lr">
@@ -93,12 +136,36 @@
             </view>
             <view class="cu-bar bg-white tabbar border shop foot">
                 <view class="btn-group">
-                    <button class="cu-btn bg-blue light flex-sub lg margin-tb-sm margin-lr" bindtap="clear">重置</button>
+                    <button class="cu-btn bg-blue light flex-sub lg margin-tb-sm margin-lr" bindtap="clear">
+                        重置
+                    </button>
                     <button class="cu-btn lg bg-blue  margin-tb-sm margin-lr flex-sub" bindtap="setFind">
                         确定
                     </button>
                 </view>
             </view>
         </scroll-view>
+    </view>
+</view>
+<view class="cu-modal {{modalName=='classModal'?'show':''}} padding-tb">
+    <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+            <view class="content text-bold" style="width:calc(100% - 200rpx)">选择班级，查看学情报告</view>
+            <view class="action" bindtap="hideModal">
+                <text class="cuIcon-close text-red"></text>
+            </view>
+        </view>
+        <view class="bg-white">
+            <radio-group class="block">
+                <view class="cu-list menu text-left">
+                    <view class="cu-item" wx:for="{{userClasses}}" wx:key="classId" bindtap="chooseClass" data-class="{{item}}">
+                        <label class="flex justify-between align-center flex-sub">
+                            <view class="flex-sub">{{item.name}}</view>
+                            <radio class="round blue" checked="{{item.checked}}"></radio>
+                        </label>
+                    </view>
+                </view>
+            </radio-group>
+        </view>
     </view>
 </view>

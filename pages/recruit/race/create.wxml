@@ -1,5 +1,5 @@
 <view class="padding-lg">
-    <view class="flex flex-wrap justify-between align-start">
+    <view class="flex justify-between align-start flex-wrap">
         <view class="cu-card case" wx:for="{{list}}" wx:key="name" bindtap="raceIntroduce" id="{{item.id}}">
             <view class="cu-item shadow card">
                 <view class="image">
@@ -10,7 +10,7 @@
                     <view class="flex align-center justify-between">
                         <view class="text-bold text-red text-sp">{{item.price}}元</view>
                         <button class="cu-btn bg-blue sm round">立即创建</button>
-                    </view> 
+                    </view>
                 </view>
             </view>
         </view>

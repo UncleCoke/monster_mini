@@ -1,6 +1,6 @@
 <image src="{{imgUrl}}navigation.png" mode="widthFix" style="width:100%" />
 <view class="padding-sp">
-    <view class="padding-top-sm flex align-center justify-between padding-bottom-xl">
+    <view class="flex align-center justify-between margin-bottom-sm">
         <view class="flex align-center">
             <text class="text-sp text-bold">当前班级：</text>
             <view class="cu-tag bg-blue light round text-bold">{{total}}个</view>
@@ -13,7 +13,7 @@
     <empty wx:if="{{list.length === 0}}" title="暂无班级"></empty>
     <view wx:for="{{list}}" wx:key="id" class="bg-white text-sm panel margin-bottom" data-id="{{item.id}}" bind:tap="classDetail">
         <view class="padding-top-lg padding-lr-lg">
-            <view class="flex align-center justify-between">
+            <view class="flex align-center justify-between margin-bottom-lg">
                 <view class="flex align-center">
                     <view wx:if="{{item.imgClassmate}}" class="cu-avatar radius lg" style="background-image:url({{item.imgClassmate}});"></view>
                     <view wx:else class="cu-avatar radius lg {{item.level && item.isFollowOrgVip?'bg-gradual-orange':'bg-blue'}}">
@@ -37,7 +37,7 @@
                 </view>
                 <view class="cuIcon-right" style="color:#ccc"></view>
             </view>
-            <view class="flex align-center justify-between" style="padding:32rpx 20rpx;">
+            <view class="padding-top-sm padding-bottom-lg solid-bottom flex align-center justify-between">
                 <view class="flex align-center justify-center flex-direction">
                     <view class="content-shape bg-olive light">{{item.openCount}}</view>
                     <view class="text-sm">点击人次</view>

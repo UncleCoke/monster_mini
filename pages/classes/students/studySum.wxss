@@ -1,27 +1,54 @@
-.call [class*="cuIcon-"] {
-	font-size: 48rpx;
-}
-
-.score{
-    margin: 0 auto;
-    width: 100rpx;
-    
-}
-
-
-
-.chart_title {
-    font-size: 28rpx;
-    color: #29b6f6;
-    padding: 10rpx 0;
-}
-
-
 .f2-chart3 {
     width: 650rpx;
     height: 600rpx;
 }
+
 .f2-chart4 {
     width: 650rpx;
     height: 400rpx;
+}
+
+.bar {
+    width: 100%;
+    height: 80rpx;
+    line-height: 80rpx;
+    background-color: #F0F5F7;
+}
+
+.bar .hover {
+    background: #0779E4;
+    color: #fff;
+    border-radius: 20rpx;
+}
+
+.score-box {
+    width: 210rpx;
+    height: 120rpx;
+    border-radius: 8rpx;
+}
+
+.panel {
+    background: #F0F5F7;
+    border-radius: 20rpx;
+    color: #787A7B;
+    font-size: 30rpx;
+    padding: 30rpx;
+    line-height: 50rpx;
+    margin: 30rpx auto;
+}
+
+.colorPanel {
+    width: 320rpx;
+    min-height: 196rpx;
+    border-radius: 20rpx;
+    padding: 30rpx;
+    line-height: 50rpx;
+}
+
+.text-yellow{
+    color:#FFD834 !important;
+}
+
+.cu-progress{
+    height:34rpx !important;
 }

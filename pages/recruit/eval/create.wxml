@@ -19,7 +19,7 @@
     </view>
     <view class="bg-white margin-top-sm padding-top padding-bottom-lg padding-lr">
         <picker mode="multiSelector" bindchange="MultiChange" value="{{multiIndex}}" range="{{multiArray}}">
-            <view class="padding-top-lg" wx:if="{{multiIndex[0]}}">
+            <view class="padding-top-lg" wx:if="{{multiArray[0][multiIndex[0]]}}">
                 <view class="picker-shape lg hover">
                     {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
                 </view>

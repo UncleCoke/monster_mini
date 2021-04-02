@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "回收站",
+  "usingComponents": {},
+  "navigationBarBackgroundColor":"#fff",
+  "enablePullDownRefresh":true
+}

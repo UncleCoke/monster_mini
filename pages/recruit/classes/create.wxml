@@ -1,8 +1,11 @@
 <view class="page-sp">
     <view class="padding-tb-sm padding-lr-lg colorT-sp text-sm">*号为必填项</view>
     <view class="bg-white padding-lr-lg text-sp padding-bottom-lg">
-        <view class="text-bold padding-top padding-bottom-lg">*班级头像</view>
-        <view class="cu-avatar lg round" style="background-image:url({{fileUrl}})" bindtap="chooseImg"></view>
+        <view class="text-bold padding-top padding-bottom-lg">班级头像</view>
+        <view class="cu-avatar lg round" style="background-image:url({{fileUrl}})" wx:if="{{fileUrl}}" bindtap="chooseImg"></view>
+        <view class="cu-avatar lg round" wx:else bindtap="chooseImg">
+            <text class="cuIcon-cameraadd"></text>
+        </view>
         <view class="text-bold padding-top padding-bottom-lg  margin-top solid-top">*班级名称</view>
         <input bindchange="formInputChange" data-field="name" placeholder="请输入班级名称" placeholder-class="colorF-sp" value="{{formData.name}}"></input>
         <view class="text-bold padding-top padding-bottom-sm margin-top solid-top">*所在年级</view>

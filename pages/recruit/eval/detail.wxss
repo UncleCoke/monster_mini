@@ -3,7 +3,7 @@
 }
 
 .panel {
-	height: 220rpx;
+	min-height: 220rpx;
 	background: #F0F5F7;
 	border-radius: 36rpx;
 }
@@ -14,4 +14,10 @@
 
 .picker-shape{
 	width:325rpx;
+}
+
+.tabHover{
+    font-weight:bold;
+    border-bottom:6rpx solid #0779E4;
+    color:#0779E4;
 }

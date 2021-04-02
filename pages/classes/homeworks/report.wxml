@@ -27,166 +27,124 @@
         instead: instead
     };
 </wxs>
-<view style="padding-bottom:150rpx;">
-    <view class="cu-card dynamic">
-        <view class="cu-item shadow">
-            <view class="cu-list menu-avatar">
-                <view class="cu-item">
-                    <view class="cu-avatar round lg" style="background-image:url({{user.imgUserAvatar}});"></view>
-                    <view class="content">
-                        <view>{{user.nickName}}</view>
-                        <view class="text-gray text-sm flex justify-between">{{user.phone}}</view>
-                    </view>
-                    <view class='action flex flex-direction align-center justify-center'>
-
-                        <text
-                            class="cuIcon-evaluate{{report.homework.gotFlower>0?'_fill':''}} text-{{report.homework.gotFlower>0?'pink':'grey'}} margin-right"></text>
-                        <text
-                            class="text-xs margin-right text-{{report.homework.gotFlower>0?'pink':'grey'}} ">{{report.homework.gotFlower}}</text>
+<view class="page-sp">
+    <view class="bg-white padding-lg">
+        <view class="flex align-center justify-between">
+            <view class="flex align-center">
+                <view class="cu-avatar round lg" style="background-image:url({{user.imgUserAvatar}});"></view>
+                <view class="margin-left-sm">
+                    <view class="text-sp">{{user.nickName}}</view>
+                    <view class="colorT-sp text-sm flex justify-between margin-top-sm">
+                        {{user.phone}}
                     </view>
                 </view>
             </view>
         </view>
-        <view class="cu-item shadow">
-            <view class="cu-bar bg-white">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    作业概况
-                </view>
+    </view>
+    <view class="bg-white margin-top-sm padding-lg">
+        <view class="flex align-center">
+            <image src="{{imgUrl}}icon_hw.png" style="width:32rpx" mode="widthFix" />
+            <view class="text-sp text-bold margin-left-sm">作业情况</view>
+        </view>
+        <view class="margin-top-lg flex align-center justify-between">
+            <view class="time-box">
+                <view class="text-xl text-bold text-white">{{report.homework.spendTime}}</view>
+                <view class="margin-top-xs text-sm">我的用时</view>
             </view>
-            <view class="grid col-2 padding">
-                <view class="padding-right-xs flex justify-center">
-                    <view
-                        class="bg-gradual-{{report.homework.score>=60?'green':'red'}} padding round text-center shadow-blur flex flex-direction justify-center"
-                        style="width:180rpx;height:180rpx;">
-                        <view class="text-xl">{{report.homework.score}}分</view>
-                        <view class="margin-top-sm text-sm">得分</view>
-                    </view>
-                </view>
-                <view class="padding-left-xs flex justify-center">
-                    <view
-                        class="bg-gradual-blue padding round text-center shadow-blur flex flex-direction justify-center"
-                        style="width:180rpx;height:180rpx;">
-                        <view class="text-xl">{{report.homework.spendTime}}</view>
-                        <view class="margin-top-sm text-sm">耗时</view>
-                    </view>
-                </view>
+            <view class="time-box" style="background:url('{{evalImgUrl}}report/bg_AllTime .png');background-size:320rpx 160rpx;">
+                <view class="text-xl text-bold text-white">{{report.homework.score}}分</view>
+                <view class="margin-top-xs text-sm">我的得分</view>
             </view>
-
-            <view class="cu-bar bg-white margin-top" wx:if="{{weak>0}}">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    以下知识点有待加强练习
-                </view>
-            </view>
-            <view class="padding-lr bg-white flex flex-wrap">
-                <block wx:for="{{report.knowledgeData}}" wx:key="knowledgeData" wx:if="{{item.tips == '待提高'}}">
-                    <view class="cu-tag sm bg-grey round margin-xs">{{item.title}}</view>
-                </block>
-            </view>
-
-            <view class="cu-bar bg-white margin-top">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    答题记录
-                </view>
-                <view class='action'></view>
-                <!-- <view class="action text-xs">点击可查看答题详情</view> -->
-            </view>
-            <view class="padding-sm flex flex-wrap">
-                <view class="padding-xs" wx:for="{{report.questionList}}" wx:key="topic">
-                    <view class="cu-capsule round" data-index="{{index}}" bind:tap="viewTopic">
-                        <view class="cu-tag bg-{{item.isCorrect?'green':'red'}}">
-                            <text class="cuIcon-{{item.isCorrect?'check':'close'}}"></text>
-                        </view>
-                        <view class="cu-tag line-{{item.isCorrect?'green':'red'}}" style="width:90rpx;">
-                            第{{index+1}}题
-                        </view>
-                    </view>
-                </view>
-            </view>
-
-            <view class="cu-bar bg-white margin-top">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    题目列表
-                </view>
-                <view class='action'>共{{report.questionList.length}}题</view>
-            </view>
-            <block wx:for="{{report.questionList}}" wx:key="topic">
-                <view class="cu-item bg-white margin-bottom" id="t{{index}}">
-                    <view class="margin-top-sm">
-                        <view class="cu-bar bg-white ">
-                            <view class='action  text-darkGray '>
-                                <view class="cu-tag bg-{{item.isCorrect?'green':'red'}} round margin-right">
-                                    第{{index+1}}题</view>
-                                <text class="text-sm">{{item.questionTypeName}}</text>
-                            </view>
-                            <view class="action">
-                                <!-- <view class="cu-capsule radius margin-right-xs">
-                                <view class="cu-tag bg-orange sm">正确率</view>
-                                <view class="cu-tag line-orange sm">80%</view>
-                            </view> -->
-                                <view class="cu-capsule radius">
-                                    <view class="cu-tag bg-brown sm">难度</view>
-                                    <view class="cu-tag line-brown sm">
-                                        <text class="cuIcon-favorfill" wx:for="{{item.difficulty}}"
-                                            wx:key="difficulty"></text>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                        <view class="padding flex flex-wrap justify-start align-center">
-                            <view wx:if="{{item.questionType == 3}}" class="flex-sub topic text-sm padding-sm radius">
-                                <text>{{split.instead(item.title)}}</text>
-                            </view>
-                            <!-- <rich-text wx:else nodes="{{topics[topicIndex].title}}"></rich-text> -->
-                            <rich-text wx:else nodes="{{item.title}}" class="flex-sub topic text-sm padding-sm radius">
-                            </rich-text>
-                        </view>
-                        <view class="padding  flex flex-wrap justify-start align-center ">
-                            <view class="cu-tag bg-white">知识点</view>
-                            <block wx:if="{{item.knowledges.length>0}}">
-                                <view class="bg-brown light radius text-cut margin-right-xs unit text-sm"
-                                    wx:for="{{item.knowledges}}" wx:for-item="knowledge" wx:key="knowledge">
-                                    {{knowledge.title}}
-                                </view>
-                            </block>
-                            <view wx:else class="bg-grey light radius text-cut margin-right-xs unit text-sm">
-                                无
-                            </view>
-                        </view>
-                        <view class="padding  flex flex-wrap justify-start align-center ">
-                            <view class="cu-tag bg-white">学生答案</view>
-                            <view
-                                class="bg-{{item.isCorrect?'green':'red'}} light radius  margin-right-xs padding-xs text-sm"
-                                style="min-width:120rpx;max-width:75%;">
-                                <block wx:if="{{item.questionType == 1}}">
-                                 {{item.myAnswer>-1?topicOptions[item.myAnswer]:'无'}}
-                                </block>
-                                <block wx:else>{{item.myAnswer?item.myAnswer:'无'}}</block>
-                            </view>
-                        </view>
-                        <view class="padding  flex flex-wrap justify-start align-center ">
-                            <view class="cu-tag bg-white">正确答案</view>
-                            <!-- <view class="bg-blue light radius margin-right-xs unit text-sm">
-                        {{item.showAnswer}}
-                    </view> -->
-                            <rich-text nodes="{{item.showAnswer}}"
-                                class="bg-blue light radius margin-right-xs padding-xs text-sm"
-                                style="min-width:100rpx;max-width:75%;"></rich-text>
-
-                        </view>
-                    </view>
+        </view>
+    </view>
+    <view class="bg-white margin-top-sm padding-lg">
+        <view class="flex align-center">
+            <image src="{{imgUrl}}icon_knowledge.png" style="width:32rpx" mode="widthFix" />
+            <view class="text-sp text-bold margin-left-sm">以下知识点有待加强练习</view>
+        </view>
+        <view class="flex flex-wrap padding-bottom-xs">
+            <block wx:for="{{report.knowledgeData}}" wx:key="knowledgeData" wx:if="{{item.tips == '待提高'}}">
+                <view class="cu-tag bg-blue light round margin-lr-xs margin-top">
+                    {{item.title}}
                 </view>
             </block>
         </view>
     </view>
+    <view class="bg-white margin-top-sm padding-lg">
+        <view class="flex align-center margin-bottom-lg">
+            <image src="{{imgUrl}}icon_record.png" style="width:32rpx" mode="widthFix" />
+            <view class="text-sp text-bold margin-left-sm">答题记录</view>
+        </view>
+        <view class="grid col-4">
+            <view class="padding-xs" wx:for="{{report.questionList}}" wx:key="topic">
+                <view class="cu-capsule round" data-index="{{index}}" bind:tap="viewTopic" style="height:64rpx;">
+                    <view class="cu-tag bg-{{item.isCorrect?'olive':'red'}}" style="width:56rpx;height:64rpx;">
+                        <text class="cuIcon-{{item.isCorrect?'check':'close'}}" style="font-size:30rpx;font-weight:bold"></text>
+                    </view>
+                    <view class="cu-tag line-{{item.isCorrect?'olive':'red'}}" style="width:96rpx;height:64rpx;">
+                        第{{index+1}}题
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="padding-lg">
+        <view class="flex align-center margin-bottom-lg">
+            <image src="{{imgUrl}}icon_list.png" style="width:34rpx" mode="widthFix" />
+            <view class="text-sp text-bold margin-left-sm">题目列表</view>
+        </view>
+        <block wx:for="{{report.questionList}}" wx:key="topic">
+            <view class="radius-sp bg-white margin-bottom-lg padding-top padding-lr-lg padding-bottom" id="t{{index}}">
+                <view class="flex align-center margin-bottom-lg">
+                    <view class="cu-tag bg-{{item.isCorrect?'green':'red'}} round margin-right-sm">
+                        第{{index+1}}题
+                    </view>
+                    <text class="text-sm colorF-sp">{{item.questionTypeName}}</text>
+                </view>
+                <view class="padding-sm flex flex-wrap justify-start align-center panel margin-bottom">
+                    <view wx:if="{{item.questionType == 3}}" class="flex-sub topic text-sm colorF-sp">
+                        <text>{{split.instead(item.title)}}</text>
+                    </view>
+                    <rich-text wx:else nodes="{{item.title}}" class="flex-sub topic text-sm colorF-sp"></rich-text>
+                </view>
+                <view class="margin-bottom flex align-center">
+                    <view class="text-sp label">题目难度</view>
+                    <image mode="widthFix" wx:for="{{item.difficulty}}" wx:key="*this" src="{{evalImgUrl}}star_active.png" style="width:28rpx;margin-right:12rpx" />
+                    <image mode="widthFix" wx:for="{{5 - item.difficulty}}" wx:key="*this" src="{{evalImgUrl}}star_default.png" style="width:28rpx;margin-right:12rpx" />
+                </view>
+                <view class="margin-bottom flex align-start">
+                    <view class="text-sp label">知识点</view>
+                    <view class="flex-sub flex flex-wrap align-center">
+                        <block wx:if="{{item.knowledges.length>0}}">
+                            <view class="round cu-tag bg-blue light margin-right-xs margin-bottom-xs;" wx:for="{{item.knowledges}}" wx:for-item="knowledge" wx:key="knowledge" style="margin-left:0;">
+                                {{knowledge.title}}
+                            </view>
+                        </block>
+                        <view wx:else class="round cu-tag bg-blue light">无</view>
+                    </view>
+                </view>
+                <view class="margin-bottom flex align-start">
+                    <view class="text-sp label">学生答案</view>
+                    <view class="bg-{{item.isCorrect?'green':'red'}} light round  cu-tag" style="min-width:136rpx;">
+                        <block wx:if="{{item.questionType == 1}}">
+                            {{item.myAnswer>-1?topicOptions[item.myAnswer]:'无'}}
+                        </block>
+                        <block wx:else>{{item.myAnswer?item.myAnswer:'无'}}</block>
+                    </view>
+                </view>
+                <view class="margin-bottom flex align-start">
+                    <view class="text-sp label">正确答案</view>
+                    <rich-text nodes="{{item.showAnswer}}" class="bg-blue light round  cu-tag" style="min-width:136rpx;"></rich-text>
+                </view>
+            </view>
+        </block>
+    </view>
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
-        <!-- <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="add">写评语</button> -->
+        <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp" bind:tap="back">
+            返回
+        </button>
     </view>
 </view>
 <wxs module="func">

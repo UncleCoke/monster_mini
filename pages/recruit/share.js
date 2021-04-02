@@ -17,9 +17,8 @@ Page({
     app.checkLogin(() => {
       if(recruitType == 2){
         this.getRecruitDetail();
-      }else{
-        this.getPosterList();
       }
+      this.getPosterList();
     })
   },
 
@@ -30,18 +29,19 @@ Page({
   onShareAppMessage: function () {
     let title,path,shareImg;
     if(recruitType == 1){
-      title = `${app.globalData.nickName}邀请你参与评测`
+      title = `【${app.globalData.orgName}】 ${app.globalData.trueName?app.globalData.trueName:app.globalData.nickName}邀请你参与评测`
       path = `/pages/recruit/join?recruitId=${id}&recruitType=${recruitType}`
       shareImg = 'http://img.uelink.com.cn/upload/xykj/share/eval.png'
     }else if(recruitType == 2){
-      title = `${app.globalData.nickName}邀请你参与${this.data.eventTitle}活动`
+      title = `【${app.globalData.orgName}】 ${app.globalData.trueName?app.globalData.trueName:app.globalData.nickName}邀请你参与${this.data.eventTitle}`
       path = `/pages/recruit/join?recruitId=${id}&eventId=${this.data.eventId}&eventType=${this.data.eventType}&recruitType=${recruitType}`
-      shareImg = `http://img.uelink.com.cn/upload/xykj/race/${this.data.eventType}.jpg`
+      shareImg = `http://img.uelink.com.cn/upload/xykj/poster/event${this.data.eventType}.jpg`
     }else if(recruitType == 3){
-      title = `${app.globalData.nickName}邀请你加入班级`
+      title = `【${app.globalData.orgName}】 ${app.globalData.trueName?app.globalData.trueName:app.globalData.nickName}邀请你加入班级`
       path = `/pages/recruit/join?recruitId=${id}&recruitType=${recruitType}`
       shareImg = 'http://img.uelink.com.cn/upload/xykj/share/inviteStudent.png'
     }
+    console.log('sharePath',path);
     return {
       title: title,
       path: path,
@@ -86,7 +86,7 @@ Page({
       recruitType
     }
     if(recruitType == 2){
-      data['eventId'] = this.data.eventId
+      data['eventId'] = id
     } 
     app.request({
       url: '/recruit/poster/list',
@@ -278,9 +278,7 @@ Page({
       this.setData({
         eventId:res.event.eventId,
         eventType:res.event.eventType,
-        eventTitle:res.event.eventTitle
-      },()=>{
-        this.getPosterList();
+        eventTitle:res.event.title
       })
     })
   },

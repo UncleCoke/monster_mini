@@ -32,14 +32,14 @@
                 <view class="label">所属机构</view>
                 <view>{{globalData.orgName?globalData.orgName:'无'}}</view>
             </view>
-            <button wx:if="{{globalData.orgName}}" class="cu-btn sm  round bg-red light" bind:tap="quitOrg">
+            <!--<button wx:if="{{globalData.orgName}}" class="cu-btn sm  round bg-red light" bind:tap="quitOrg">
                 <view class="text-sm">退出</view>
-            </button>
+            </button>-->
         </view>
         <view class="text-sp height-sp solid-bottom flex align-center justify-between">
             <view class="flex align-center">
                 <view class="label">我的收益</view>
-                <view class="text-price">0</view>
+                <view class="text-price">{{totalFee}}元</view>
             </view>
             <button class="cu-btn sm  round bg-blue" bindtap="revenueDetail">
                 <view class="text-sm">详情</view>
@@ -85,7 +85,7 @@
                         <image mode="widthFix" style="width:60rpx;" src="{{imgUrl}}orgDetail.png" />
                         <view class="text-sm margin-top-xs">机构详情</view>
                     </button>
-                    <button class="flex flex-direction align-center justify-center" bindtap="revenueDetail">
+                    <button class="flex flex-direction align-center justify-center" bindtap="revenueDetailByOrg">
                         <image mode="widthFix" style="width:60rpx;" src="{{imgUrl}}revenueDetail.png" />
                         <view class="text-sm margin-top-xs">收益详情</view>
                     </button>
@@ -94,7 +94,7 @@
             <view class="padding-tb padding-lr-lg flex align-center justify-between">
                 <view class="flex align-center">
                     <view>机构收益：</view>
-                    <view class="cu-tag bg-blue light round">0元</view>
+                    <view class="cu-tag bg-blue light round">{{totalFee}}元</view>
                 </view>
                 <view class="flex align-center">
                     <view>VIP剩余：</view>
@@ -104,7 +104,7 @@
         </view>
     </block>
 </view>
-<view class="flex flex-direction align-center justify-center" wx:if="{{!globalData.orgAdmin}}">
+<view class="flex flex-direction align-center justify-center margin-bottom">
     <button class="cu-btn block bg-blue lg radius sp" open-type="getUserInfo" bindgetuserinfo="setUserData">
         {{globalData.nickName?'更新资料':'填写资料'}}
     </button>

@@ -14,7 +14,7 @@
         <view class="padding-lg border-bottom" wx:else>
             <view class="flex align-center justify-between margin-bottom-sm">
                 <view>题目范围</view>
-                <image src="{{imgUrl}}{{isShowAll?'up':'down'}}.png" mode="widthFix" style="width:40rpx" bindtap="setIsShowAll" wx:if="{{eval.units.length >2}}"/>
+                <image src="{{imgUrl}}{{isShowAll?'up':'down'}}.png" mode="widthFix" style="width:40rpx" bindtap="setIsShowAll" wx:if="{{eval.units.length >2}}" />
             </view>
             <view class="flex align-center justify-between flex-wrap">
                 <view class="picker-shape middle hover margin-top-sm" wx:for="{{isShowAll?eval.units:intiUnits}}" wx:for-item="unit" wx:key="unit">
@@ -34,46 +34,76 @@
         </view>
         <view class="flex align-center justify-between" style="padding:40rpx 100rpx">
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-olive light">{{eval.userCount}}</view>
-                <view class="text-sm">打开人数</view>
+                <view class="content-shape bg-olive light">{{eval.openCount}}</view>
+                <view class="text-sm">点击人次</view>
             </view>
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-greenSecond light">{{eval.openCount}}</view>
-                <view class="text-sm">打开次数</view>
+                <view class="content-shape bg-greenSecond light">{{clients.length}}</view>
+                <view class="text-sm">获客人数</view>
             </view>
             <view class="flex align-center justify-center flex-direction">
                 <view class="content-shape bg-greenThird light">{{eval.finishCount}}</view>
-                <view class="text-sm">完成人数</view>
+                <view class="text-sm">评测人数</view>
             </view>
         </view>
     </view>
-    <view class="bg-white text-sp padding-bottom-lg  padding-lr-lg padding-top">
-        <view class="flex align-center padding-bottom-sm">
-            <image src="{{imgUrl}}icon_report.png" style="width:40rpx;" mode="widthFix" />
-            <view class="margin-left-sm text-sp text-bold">评测报告</view>
-        </view>
-        <view class="panel margin-top-sm padding-lg" wx:for="{{users}}" wx:key="userId" data-id="{{item.id}}" data-user="{{item.userId}}" data-index="{{index}}" data-token="{{item.token}}" bind:tap="report">
-            <view class="flex align-center justify-between margin-bottom-sm">
-                <view class="flex align-center">
-                    <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
-                    <view class="padding-left-sm">
-                        <view class="margin-bottom-sm">{{item.nickName}}</view>
-                        <view class="cu-tag bg-{{item.score>=60?'blue':'red'}} light round">
-                            分数: {{item.score}}
-                        </view>
-                        <view class="cu-tag bg-blue light round">耗时: {{item.spendTime}}秒</view>
-                    </view>
+    <view class="margin-top-sm bg-white padding-tb padding-lr-lg">
+        <view class="flex align-center padding-bottom-xs">
+            <view class="flex-sub  text-center colorF-sp text-sp flex align-center justify-center" wx:for="{{tabs}}" wx:key="*this" bindtap="tabSelect" data-index="{{index}}">
+                <view class="padding-bottom-sm {{activeIndex == index?'tabHover':''}}" style="width:120rpx;">
+                    {{item}}
                 </view>
-                <view class="cuIcon-right text-lg" style="color:#ccc"></view>
             </view>
-            <view class="colorT-sp text-sm">最后答题时间：{{item.created_at}}</view>
         </view>
-    </view>
-    <view class="padding flex justify-between align-center solid-top bg-white">
-        <view class='text-gray text-sm'>{{eval.finishCount}}人完成</view>
-        <button class="cu-btn sm bg-blue" data-id="{{eval.id}}" bind:tap="reportList" wx:if="{{eval.finishCount>5}}">
-            查看全部
-        </button>
+        <view hidden="{{activeIndex == 1}}">
+            <empty wx:if="{{clients.length == 0}}" title="暂无数据"></empty>
+            <view wx:for="{{clients}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-top text-sp" data-id="{{item.clientId}}" bindtap="potentialDetail">
+                <view class="flex align-center justify-between">
+                    <view class="flex align-center">
+                        <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
+                        <view wx:else class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
+                        <view class="padding-left-sm">
+                            <view class="margin-bottom-sm">{{item.name}}</view>
+                            <view class="flex align-center">
+                                <view wx:if="{{item.followingTeacherName}}" class="colorF-sp margin-right-sm">
+                                    {{item.followingTeacherName}}
+                                </view>
+                                <view class="text-{{item.status == 0?'gray':item.status == 1?'blue':item.status == -1?'red':'olive'}}">
+                                    {{item.status == 0?'待跟进':item.status == 1?'跟进中':item.status == -1?'无效用户':'已转化'}}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="cuIcon-right text-lg" style="color:#ccc"></view>
+                </view>
+                <view class="text-sm colorT-sp margin-top-sm">加入时间：{{item.created_at}}</view>
+            </view>
+        </view>
+        <view hidden="{{activeIndex == 0}}">
+            <empty wx:if="{{users.length == 0}}" title="暂无数据"></empty>
+            <view class="panel margin-top padding-lg" wx:for="{{users}}" wx:key="userId" data-id="{{item.id}}" data-user="{{item.userId}}" data-index="{{index}}" data-token="{{item.token}}" bind:tap="report">
+                <view class="flex align-center justify-between margin-bottom-sm">
+                    <view class="flex align-center">
+                        <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                        <view class="padding-left-sm">
+                            <view class="margin-bottom-sm">{{item.nickName}}</view>
+                            <view class="cu-tag bg-{{item.score>=60?'blue':'red'}} light round">
+                                分数: {{item.score}}
+                            </view>
+                            <view class="cu-tag bg-blue light round">耗时: {{item.spendTime}}秒</view>
+                        </view>
+                    </view>
+                    <view class="cuIcon-right text-lg" style="color:#ccc"></view>
+                </view>
+                <view class="colorT-sp text-sm">最后答题时间：{{item.created_at}}</view>
+            </view>
+            <view class="padding-top flex justify-between align-center solid-top bg-white margin-top">
+                <view class='text-gray text-sm'>{{eval.finishCount}}人完成</view>
+                <button class="cu-btn sm bg-blue" data-id="{{eval.id}}" bind:tap="reportList" wx:if="{{eval.finishCount>5}}">
+                    查看全部
+                </button>
+            </view>
+        </view>
     </view>
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">

@@ -1,13 +1,10 @@
 const app = getApp()
 import _ from '../../../utils/lodash';
-let userId, classId,subject,token;
+let userId, classId, subject, token;
 
 let chart = null;
 
-function initLineChart(canvas, width, height, F2, chartData) { // 使用 F2 绘制图表
-  // console.log('chartData', chartData);
-
-  // const data = chartData;
+function initLineChart(canvas, width, height, F2, chartData) {
   chart = new F2.Chart({
     el: canvas,
     width,
@@ -22,7 +19,7 @@ function initLineChart(canvas, width, height, F2, chartData) { // 使用 F2 绘�
     },
     score: {
       max: 100,
-      min:0,
+      min: 0,
       tickCount: 4
     }
   });
@@ -35,30 +32,26 @@ function initLineChart(canvas, width, height, F2, chartData) { // 使用 F2 绘�
     }
   })
   chart.area().position('created_at*score')
-  .color("#1890FF")
-  .shape('smooth');
+    .color("#1890FF")
+    .shape('smooth');
   chart.line().position('created_at*score')
-  // .color('l(90) 0:#1890FF 1:#f7f7f7')
-  .shape('smooth');
+    .shape('smooth');
   chart.point().position('created_at*score').style({
     lineWidth: 3,
     stroke: '#0081ff'
   });
-  if(chartData.length<2){
+  if (chartData.length < 2) {
     chart.interval().position('created_at*score').style({
-    lineWidth: 1,
-    radius: [ 1, 1, 0, 0 ]
-     })
-     .size(1);
+        lineWidth: 1,
+        radius: [1, 1, 0, 0]
+      })
+      .size(1);
   }
-  
   chart.render();
   return chart;
 }
 
-function initRadarChart(canvas, width, height, F2, chartData) { // 使用 F2 绘制图表
-  // console.log('chartData', chartData);
-
+function initRadarChart(canvas, width, height, F2, chartData) {
   const data = chartData;
   chart = new F2.Chart({
     el: canvas,
@@ -75,11 +68,9 @@ function initRadarChart(canvas, width, height, F2, chartData) { // 使用 F2 绘
     }
   });
   chart.tooltip({
-    custom: true, // 自定义 tooltip 内容框
+    custom: true,
     alwaysShow: true,
     onShow: function onShow(obj) {
-
-
       const legend = chart.get('legendController').legends.top[0];
       const tooltipItems = obj.items;
       const legendItems = legend.items;
@@ -113,7 +104,7 @@ function initRadarChart(canvas, width, height, F2, chartData) { // 使用 F2 绘
     },
     grid: {
       lineDash: null,
-      type: 'arc' // 弧线网格
+      type: 'arc'
     }
   });
   chart.axis('item', {
@@ -127,9 +118,6 @@ function initRadarChart(canvas, width, height, F2, chartData) { // 使用 F2 绘
       stroke: '#fff',
       lineWidth: 1
     });
-
-  
-
   chart.render();
   return chart;
 }
@@ -140,19 +128,6 @@ Page({
   data: {
     subjects: ['语文', '数学', '英语'],
     tabIndex: 0,
-    style:[{
-      tabColor:'#29b6f6',
-      tabHoverColor:'#0288d1',
-      titleColor:'#29b6f6',
-      listColor:'#0288d1',
-      listBgColor:'#e1f5fe',
-    },{
-      tabColor:'#ffc107',
-      tabHoverColor:'#ffa000',
-      titleColor:'#ffc107',
-      listColor:'#ffa000',
-      listBgColor:'#FFECB3',
-    }],
     optsLine: {
       onInit: initLineChart
     },
@@ -165,14 +140,15 @@ Page({
     bookStudyPer: {
       data: 10
     },
-    showChart: false
+    showChart: false,
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/'
   },
 
   onLoad: function (options) {
     wx.hideShareMenu();
     userId = options.userId
-    token =  options.token
-    classId =  options.classId
+    token = options.token
+    classId = options.classId
     subject = '语文'
 
     wx.setNavigationBarTitle({
@@ -190,7 +166,7 @@ Page({
       tabIndex
     })
 
-    app.checkLogin(()=>{
+    app.checkLogin(() => {
       this.inti();
     })
   },
@@ -202,7 +178,7 @@ Page({
     })
     this.getStudySum()
   },
-  
+
   tab: function (e) {
     let tabIndex = e.currentTarget.dataset.index
     this.setData({
@@ -221,25 +197,25 @@ Page({
       showChart: false
     })
     app.request({
-      url:'/student/studyData',
-      data:{
+      url: '/student/studyData',
+      data: {
         token: app.globalData.token,
         userId: userId,
         subject: subject,
-        classId:classId
+        classId: classId
       },
-      loading:true,
-      loadingTitle:'加载数据',
-      barLoading:true
+      loading: true,
+      loadingTitle: '加载数据',
+      barLoading: true
     }).then(res => {
       let StudySum = res;
       let evalList = StudySum.evalList;
-      if(evalList.length > 5){
-        evalList.splice(5,evalList.length-5)
+      if (evalList.length > 5) {
+        evalList.splice(5, evalList.length - 5)
       }
       let homeworks = StudySum.homeworks
-      if(homeworks.length > 5){
-        homeworks.splice(5,homeworks.length-5)
+      if (homeworks.length > 5) {
+        homeworks.splice(5, homeworks.length - 5)
       }
       this.setData({
         StudySum,
@@ -250,51 +226,51 @@ Page({
     })
   },
 
-  checkStatus: function (status,userId) {
+  checkStatus: function (status, userId) {
     app.request({
-      url:'/class/checkStudent',
-      data:{
-        token:app.globalData.token,
+      url: '/class/checkStudent',
+      data: {
+        token: app.globalData.token,
         classId: classId,
-        userId:userId,
-        status:status
+        userId: userId,
+        status: status
       },
-      loading:true,
-      loadingTitle:'正在处理'
+      loading: true,
+      loadingTitle: '正在处理'
     }).then(() => {
       this.back();
     })
   },
 
-  back:function(e){
+  back: function (e) {
     let route = getCurrentPages()
-    if(route.length>1){
+    if (route.length > 1) {
       wx.navigateBack({
         delta: 1
       });
-    }else{
+    } else {
       wx.switchTab({
         url: '/pages/classes/list'
       });
     }
-    
+
   },
 
   viewEvalList: function (e) {
     wx.navigateTo({
       url: `evalList?token=${token}&userId=${userId}&classId=${classId}&subject=${subject}`
     });
-  
+
   },
 
   viewHomeworkList: function (e) {
     wx.navigateTo({
       url: `homeworkList?token=${token}&userId=${userId}&classId=${classId}&subject=${subject}`
     });
-  
+
   },
 
-  call:function(e){
+  call: function (e) {
     var phone = e.currentTarget.dataset.phone
     wx.makePhoneCall({
       phoneNumber: phone

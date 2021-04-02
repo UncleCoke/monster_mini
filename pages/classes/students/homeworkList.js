@@ -56,32 +56,48 @@ Page({
   },
 
   getHomeworkList:function(_page){
-    app.request({
-      url:'/student/homeworks',
-      data:{
-        token:token,
-        userId:userId,
-        classId:classId,
-        subject:subject,
-        page:_page,
-        pageSize:pageSize
+    let url = 'https://fxb2api.uelink.com.cn/fxbapi/student/homeworkList';
+    let data = {
+      token:token,
+      userId:userId,
+      classmateId:classId,
+      subject:subject,
+      page:_page,
+      pageSize:pageSize
+    }
+    wx.request({
+      url: url,
+      data: data,
+      success: (res) => {
+        if (res.data.code == 0) {
+          let newList = res.data.data.list;
+          let list = []
+          if (page > 1) {
+            list = this.data.list
+          }
+          list = list.concat(newList);
+          let homeworkList = list.filter(item => {
+            return item.subject == subject && item.hasFinished == true
+          })
+          let pageCount = res.data.data.pageCount
+          this.setData({
+            list:homeworkList,
+            pageCount,
+            page: page + 1,
+            recordCount:homeworkList.length
+          })
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000,
+            mask: true
+          })
+        }
       },
-      barLoading:true
-    }).then(res => {
-      var newList = res.list;
-      var list = []
-      if (page > 1) {
-        list = this.data.list
+      fail: (res) => {
+        console.log(res);
       }
-      list = list.concat(newList)
-      pageCount = res.data.data.pageCount
-      page += 1
-      let recordCount = res.data.data.recordCount
-
-      this.setData({
-        list,
-        recordCount
-      })
     })
   },
   

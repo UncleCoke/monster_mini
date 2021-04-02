@@ -29,16 +29,21 @@ Page({
         type:3,name:'高'
       }
     ],
-    tabs: [{
+    tabs: [
+      {
+        status:0,
+        title:'线索池'
+      },
+      {
         status: 1,
-        title: '潜在生源'
+        title: '潜在客户'
       },
       {
         status: 10,
         title: '学生信息'
       }
     ],
-    status: 1,
+    status: 0,
     imgUrl: 'http://img.uelink.com.cn/upload/xykj/student/',
     formData: {
       name: '',
@@ -46,11 +51,17 @@ Page({
       fromRecruitType:'',
       intention:'',
       nextFollowTime: ''
-    }
+    },
+    userClasses:[],
+    userToken:''
   },
 
   onShow: function () {
     app.checkLogin(()=>{
+      this.setData({
+        orgAdmin:app.globalData.orgAdmin
+      })
+      page = 1;
       this.getClientList();
     })
   },
@@ -84,9 +95,9 @@ Page({
   },
 
   potentialDetail: function (e) {
-    let id = e.currentTarget.dataset.id;
+    const {id,avatar} = e.currentTarget.dataset
     wx.navigateTo({
-      url: `potentialDetail?id=${id}`
+      url: `potentialDetail?id=${id}&avatarUrl=${avatar}`
     });
   },
 
@@ -169,5 +180,29 @@ Page({
         this.setFind();
       }
     })
+  },
+
+  editClient:function(e){
+    let id = e.currentTarget.dataset.id;
+    app.request({
+      url:'/client/edit',
+      data:{
+        id,
+        status:1
+      }
+    }).then(res => {
+      wx.showToast({
+        title: '领用成功',
+        icon: 'success'
+      });
+      page = 1;
+      this.getClientList();
+    })
+  },
+
+  gotoClear:function(){
+    wx.navigateTo({
+      url: 'clear'
+    });
   }
 })

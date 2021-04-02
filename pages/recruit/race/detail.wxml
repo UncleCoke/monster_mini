@@ -18,66 +18,101 @@
                 {{event.status == 0?'未开始':(event.status == 1?'进行中':'已结束')}}
             </view>
         </view>
-        <view class="flex align-center justify-around padding-tb-lg">
+        <view class="flex align-center justify-between" style="padding:40rpx 100rpx">
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-olive light">{{users.length}}</view>
-                <view class="text-sm">参与人数</view>
+                <view class="content-shape bg-olive light">{{event.openCount}}</view>
+                <view class="text-sm">点击人次</view>
             </view>
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-greenSecond light">{{event.openCount}}</view>
-                <view class="text-sm">点击次数</view>
+                <view class="content-shape bg-greenSecond light">{{clients.length}}</view>
+                <view class="text-sm">获客人数</view>
+            </view>
+            <view class="flex align-center justify-center flex-direction">
+                <view class="content-shape bg-greenThird light">{{users.length}}</view>
+                <view class="text-sm">参与人数</view>
             </view>
         </view>
     </view>
-    <view class="bg-white text-sp padding-bottom-lg  padding-lr-lg padding-top">
-        <view class="flex align-center padding-bottom-sm">
-            <image src="{{imgUrl}}eval/icon_report.png" style="width:40rpx;" mode="widthFix" />
-            <view class="margin-left-sm text-sp text-bold">活动参与情况</view>
+    <view class="margin-top-sm bg-white padding-tb padding-lr-lg">
+        <view class="flex align-center padding-bottom-xs">
+            <view class="flex-sub  text-center colorF-sp text-sp flex align-center justify-center" wx:for="{{tabs}}" wx:key="*this" bindtap="tabSelect" data-index="{{index}}">
+                <view class="padding-bottom-sm {{activeIndex == index?'tabHover':''}}" style="width:120rpx;">
+                    {{item}}
+                </view>
+            </view>
         </view>
-        <block wx:if="{{event.eventType == 3}}">
-            <view class="panel margin-top-sm padding-lg" wx:for="{{teams}}" wx:key="userId" bindtap="unitDetail" data-user="{{item}}">
-                <view class="flex align-center justify-between margin-bottom-sm">
+        <view hidden="{{activeIndex == 1}}">
+            <empty wx:if="{{clients.length == 0}}" title="暂无数据"></empty>
+            <view wx:for="{{clients}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-top text-sp" data-id="{{item.clientId}}" bindtap="potentialDetail">
+                <view class="flex align-center justify-between">
                     <view class="flex align-center">
-                        <view class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
+                        <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
+                        <view wx:else class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
                         <view class="padding-left-sm">
                             <view class="margin-bottom-sm">{{item.name}}</view>
-                            <view class="cu-tag bg-{{item.score>=60?'blue':'red'}} light round">
-                                分数: {{item.score}}
+                            <view class="flex align-center">
+                                <view wx:if="{{item.followingTeacherName}}" class="colorF-sp margin-right-sm">
+                                    {{item.followingTeacherName}}
+                                </view>
+                                <view class="text-{{item.status == 0?'gray':item.status == 1?'blue':item.status == -1?'red':'olive'}}">
+                                    {{item.status == 0?'待跟进':item.status == 1?'跟进中':item.status == -1?'无效用户':'已转化'}}
+                                </view>
                             </view>
                         </view>
                     </view>
                     <view class="cuIcon-right text-lg" style="color:#ccc"></view>
                 </view>
+                <view class="text-sm colorT-sp margin-top-sm">加入时间：{{item.created_at}}</view>
             </view>
-        </block>
-        <block wx:else>
-            <view class="panel margin-top-sm padding-lg" wx:for="{{users}}" wx:key="userId" bindtap="{{event.eventType != 1?'unitDetail':''}}" data-user="{{item}}">
-                <view class="flex align-center justify-between margin-bottom-sm">
-                    <view class="flex align-center">
-                        <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
-                        <view class="padding-left-sm">
-                            <view class="margin-bottom-sm">{{item.nickName}}</view>
-                            <block wx:if="{{event.eventType !== 2}}">
+        </view>
+        <view hidden="{{activeIndex == 0}}">
+            <block wx:if="{{event.eventType == 3}}">
+                <empty wx:if="{{teams.length == 0}}" title="暂无数据"></empty>
+                <view class="panel margin-top-sm padding-lg" wx:for="{{teams}}" wx:key="userId" bindtap="unitDetail" data-user="{{item}}">
+                    <view class="flex align-center justify-between">
+                        <view class="flex align-center">
+                            <view class="cu-avatar round lg bg-blue">{{item.name[0]}}</view>
+                            <view class="padding-left-sm">
+                                <view class="margin-bottom-sm">{{item.name}}</view>
                                 <view class="cu-tag bg-{{item.score>=60?'blue':'red'}} light round">
                                     分数: {{item.score}}
                                 </view>
-                            </block>
-                            <block wx:else>
-                                <view class="cu-tag bg-red light round">
-                                    抽奖次数: {{item.records.length}}
-                                </view>
-                            </block>
+                            </view>
                         </view>
+                        <view class="cuIcon-right text-lg" style="color:#ccc"></view>
                     </view>
-                    <view class="cuIcon-right text-lg" style="color:#ccc" wx:if="{{event.eventType != 1}}"></view>
                 </view>
-            </view>
-        </block>
+            </block>
+            <block wx:else>
+                <empty wx:if="{{users.length == 0}}" title="暂无数据"></empty>
+                <view class="panel margin-top-sm padding-lg" wx:for="{{users}}" wx:key="userId" bindtap="{{event.eventType != 1?'unitDetail':''}}" data-user="{{item}}">
+                    <view class="flex align-center justify-between">
+                        <view class="flex align-center">
+                            <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});"></view>
+                            <view class="padding-left-sm">
+                                <view class="margin-bottom-sm">{{item.nickName}}</view>
+                                <block wx:if="{{event.eventType !== 2}}">
+                                    <view class="cu-tag bg-{{item.score>=60?'blue':'red'}} light round">
+                                        分数: {{item.score}}
+                                    </view>
+                                </block>
+                                <block wx:else>
+                                    <view class="cu-tag bg-red light round">
+                                        抽奖次数: {{item.records.length}}
+                                    </view>
+                                </block>
+                            </view>
+                        </view>
+                        <view class="cuIcon-right text-lg" style="color:#ccc" wx:if="{{event.eventType != 1}}"></view>
+                    </view>
+                </view>
+            </block>
+        </view>
     </view>
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn lg bg-white flex-sub">返回</button>
+        <button class="cu-btn lg bg-white flex-sub" bindtap="back">返回</button>
         <button class="cu-btn lg bg-blue sp margin-right" bindtap="share">分享活动</button>
     </view>
 </view>

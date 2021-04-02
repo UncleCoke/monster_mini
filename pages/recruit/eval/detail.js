@@ -9,7 +9,9 @@ Page({
     eval: {},
     topics: [],
     imgUrl:'http://img.uelink.com.cn/upload/xykj/eval/',
-    isShowAll:false
+    isShowAll:false,
+    tabs:['获客记录','评测报告'],
+    activeIndex:0,
   },
 
   onLoad: function (options) {
@@ -83,10 +85,12 @@ Page({
       let evalData = res.eval
       let intiUnits = evalData.units.slice(0,2);
       let users = res.users
+      let clients = res.clients;
       this.setData({
         eval: evalData,
         users,
-        intiUnits
+        intiUnits,
+        clients
       })
     })
   },
@@ -96,5 +100,19 @@ Page({
     this.setData({
       isShowAll:!isShowAll
     })
+  },
+
+  tabSelect:function(e){
+    let activeIndex = e.currentTarget.dataset.index;
+    this.setData({
+      activeIndex
+    })
+  },
+
+  potentialDetail:function(e){
+    let {id} = e.currentTarget.dataset;
+    wx.navigateTo({
+      url: `/pages/student/potentialDetail?id=${id}`
+    });
   }
 })

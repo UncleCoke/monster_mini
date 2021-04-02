@@ -3,10 +3,18 @@ page{
 }
 
 .tabs {
+    position:relative;
     padding: 180rpx 40rpx 40rpx 40rpx;
     height: 300rpx;
     background: url(http://img.uelink.com.cn/upload/xykj/student/navigation.png);
     background-size: 100% 300rpx;
+}
+
+.delImg{
+    position:absolute;
+    top:20rpx;
+    right:40rpx;
+    width:56rpx;
 }
 
 .tabs .bar {
@@ -22,7 +30,6 @@ page{
 }
 
 .panel {
-    max-height: 220rpx;
     background: #F0F5F7;
     border-radius: 36rpx;
 }
@@ -43,4 +50,15 @@ page{
 .picker-shape {
     width:190rpx;
     font-size:26rpx;
+}
+
+.tabBgColor{
+    background-color:#F0F5F7;
+}
+
+.cu-btn.middle{
+    height:56rpx;
+    line-height:56rpx;
+    width:100rpx;
+    padding:0;
 }

@@ -1,153 +1,138 @@
-<view style="padding-bottom:150rpx;">
-    <view class="cu-card dynamic">
-        <view class="cu-item shadow">
-            <view class="cu-list menu-avatar">
-                <view class="cu-item">
-                   <view wx:if="{{user.avatarUrl}}" class="cu-avatar round lg" style="background-image:url({{user.avatarUrl}});"></view>
-                <view wx:else class="cu-avatar round lg {{user.level?'bg-gradual-orange':'bg-blue'}}">
-                    {{user.nickName[0]}}
-                </view>
-                    <view class="content">
-                        <view>{{user.nickName}}</view>
-                        <view class="text-gray text-sm flex justify-between">{{user.phone}}</view>
-                    </view>
-                    <view class='action call' wx:if="{{user.phone}}" data-phone="{{user.phone}}" bind:tap="call">
-                        <text class="cuIcon-phone text-green margin-right "></text>
+<view class="page-sp">
+    <view class="padding-lg bg-white">
+        <view class="flex align-center justify-between">
+            <view class="flex align-center">
+                <view class="cu-avatar round lg" style="background-image:url({{user.avatarUrl}});" wx:if="{{user.avatarUrl}}"></view>
+                <view wx:else class="cu-avatar round lg bg-blue">{{user.nickName[0]}}</view>
+                <view class="padding-left-sm">
+                    <view class="margin-bottom-sm">{{user.nickName}}</view>
+                    <view class="flex align-center">
+                        <image src="{{imgUrl}}student/icon_phone.png" mode="widthFix" style="width:18rpx" />
+                        <view class="margin-left-xs colorF-sp">{{user.phone}}</view>
                     </view>
                 </view>
             </view>
+            <image src="{{imgUrl}}student/icon_call.png" mode="widthFix" style="width:56rpx;" catch:tap="call" data-phone="{{user.phone}}" />
         </view>
-        <view class="flex margin bg-white radius  justify-around shadow" style="width:690rpx;">
-            <view wx:for="{{subjects}}" wx:key="subject" class="padding-sm padding-lr-xl margin round bg-orange text-white {{tabIndex==index?'':'light'}}" data-index="{{index}}" bindtap="tab">
+        <view class="bar radius-sp flex align-center margin-top-lg">
+            <view class="flex-sub text-center text-bold text-sp {{tabIndex==index?'hover':''}}" wx:for="{{subjects}}" wx:key="status" data-index="{{index}}" bindtap="tab">
                 {{item}}
             </view>
         </view>
-        <view class="cu-item shadow" wx:if="{{err}}">
-            <view class='padding text-red text-center'>
-                    {{err}}
-                </view>
-        </view>
-        <block wx:else>
-        
-        
-        <view class="cu-item shadow">
-            <view class="cu-bar bg-white">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    学情概况
-                </view>
+    </view>
+    <view class="cu-item shadow" wx:if="{{err}}">
+        <view class='padding text-red text-center'>{{err}}</view>
+    </view>
+    <block wx:else>
+        <view class="bg-white margin-top-sm padding-lg">
+            <view class="flex align-center margin-bottom-lg">
+                <image src="{{imgUrl}}eval/report/icon_time.png" style="width:32rpx" mode="widthFix" />
+                <view class="text-sp text-bold margin-left-sm">学情概况</view>
             </view>
-            <view class="text-center margin-xl flex justify-around align-center">
-                <view class="cu-avatar round lg bg-cyan shadow-blur "><text class="text-lg">{{StudySum.days}}天</text></view>
-                <view class="cu-avatar round xl bg-blue shadow-blur "><text class="text-lg">{{StudySum.questionCount}}题</text></view>
-                <view class="cu-avatar round lg bg-{{StudySum.accuracyRate>=60?'green':'red'}} shadow-blur "><text class="text-lg">{{StudySum.accuracyRate}}%</text></view>
-            </view>
-            <view class="bg-purple margin padding text-gray light radius text-sm solid-bottom" style="line-height: 2">
-                <text class="text-mauve padding-xs">{{user.nickName}}</text>同学加入班级已经
-                <text class="text-white bg-cyan  margin-xs round text-lg padding-xs">{{StudySum.days}}</text>
-                天！在这期间，总共做答
-                <text class="text-white bg-blue  margin-xs round text-lg padding-xs">{{StudySum.questionCount}}</text>
-                道题，答题正确率
-                <text class="text-white bg-{{StudySum.accuracyRate>=60?'green':'red'}}  margin-xs round padding-xs">{{StudySum.accuracyRate}}%</text>。
-            </view>
-            <view class="grid col-2 padding-left padding-right">
-                <view class="padding-right-xs" bind:tap="viewHomeworkList">
-                    <view class="bg-gradual-{{StudySum.userHomeworkAvg>59?'green':'orange'}} padding radius text-center shadow-blur">
-                        <view class="text-lg">完成了<text class="text-{{StudySum.userHomeworkAvg>59?'yellow':'orange'}} text-xl padding-xs">{{StudySum.homeworks.length}}</text>次作业</view>
-                        <view class="margin-top-sm text-sm">平均分<text class="text-{{StudySum.userHomeworkAvg>59?'yellow':'orange'}} padding-xs">{{StudySum.userHomeworkAvg}}</text>分</view>
-                        <view class="margin-top-sm text-sm">超过了<text class="text-{{StudySum.userHomeworkAvg>59?'yellow':'orange'}} padding-xs">{{100-(StudySum.moreThan?StudySum.moreThan:0)}}%</text>的同学</view>
-                    </view>
+            <view class="flex align-center justify-between margin-top-sm">
+                <view class="flex align-center justify-center text-xl score-box bg-blue">
+                    {{StudySum.days}}天
                 </view>
-                <view class="padding-left-xs" bind:tap="viewEvalList">
-                    <view class="bg-gradual-blue padding radius text-center shadow-blur">
-                        <view class="text-lg">进行了<text class="text-yellow text-xl padding-xs">{{StudySum.evalList.length}}</text>次测评</view>
-                        <block wx:if="{{StudySum.evalList.length<1}}">
-                            <view class="margin-top-sm text-sm" >建议多做评测</view>
-                            <view class="margin-top-sm text-sm" >找出复习问题</view>
-                        </block>
-                        <block wx:elif="{{StudySum.evalList.length<2}}">
-                            <view class="margin-top-sm text-sm">最近一次获得<text class="text-yellow padding-xs">{{StudySum.evalList[0].score}}</text>分</view>
-                            <view class="margin-top-sm text-sm">多做评测,找出问题</view>
-                        </block>
-                        <block wx:else>
-                            <view class="margin-top-sm text-sm" >最近一次获得<text class="text-yellow padding-xs">{{StudySum.evalList[0].score}}</text>分</view>
-                            <view class="margin-top-sm text-sm">{{StudySum.evalList[0].score - StudySum.evalList[1].score>0?'进步明显，继续加油':'退步了哦，多加练习'}}</view>
-                        </block>
-                    </view>
+                <view class="flex align-center justify-center text-xl score-box bg-olive">
+                    {{StudySum.questionCount}}题
+                </view>
+                <view class="flex align-center justify-center text-xl score-box bg-greenSecond">
+                    {{StudySum.accuracyRate}}%
                 </view>
             </view>
-
-            <view class="padding text-gray text-sm" style="line-height: 2">
-                除此之外，<text class="text-blue padding-xs">{{user.nickName}}</text>同学在同步复习中，完成了
-                <text class="text-blue text-lg padding-xs">{{StudySum.praticseTimes}}</text>
-                次课时练习<text wx:if="{{StudySum.testTimes}}">，以及<text class="text-pink text-lg padding-xs">{{StudySum.testTimes}}</text>次单元测验。</text>
+            <view class="panel">
+                <text class="text-blue padding-xs text-bold">{{user.nickName}}</text>同学加入班级已经<text class="text-white bg-blue margin-xs round text-lg padding-xs">{{StudySum.days}}</text>天！在这期间，总共做答
+                <text class="text-white bg-olive  margin-xs round text-lg padding-xs">{{StudySum.questionCount}}</text>
+                道题，答题正确率<text class="text-white bg-{{StudySum.accuracyRate>=60?'greenSecond':'red'}}  margin-xs round padding-xs">{{StudySum.accuracyRate}}%</text>。
             </view>
-
-            <view class="padding-lr bg-white">
-                
-                <view class="flex align-center margin-bottom-sm" >
-                    <view class="text-sm" style="width:180rpx">练习平均分</view>
-                    <view class="cu-progress round  striped active">
-                        <view class="bg-{{StudySum.praticeAvgScore>=60?'green':'red'}}" style="width:{{StudySum.praticeAvgScore<10?10:StudySum.praticeAvgScore}}%;">
-                            {{StudySum.praticeAvgScore}}分
+            <view class="flex align-center justify-between margin-bottom-lg">
+                <view class="colorPanel bg-{{StudySum.userHomeworkAvg>59?'olive':'orange'}}" bind:tap="viewHomeworkList">
+                    <view class="text-lg">完成了<text class="text-{{StudySum.userHomeworkAvg>59?'yellow':'orange'}} text-xl padding-xs">{{StudySum.homeworks.length}}</text>次作业</view>
+                    <view>
+                        <view class="margin-top-sm text-sm">
+                            平均分<text class="text-{{StudySum.userHomeworkAvg>59?'yellow':'orange'}} padding-xs">{{StudySum.userHomeworkAvg}}</text>分
+                        </view>
+                        <view class="margin-top-sm text-sm">
+                            超过了<text class="text-{{StudySum.userHomeworkAvg>59?'yellow':'orange'}} padding-xs">{{100-(StudySum.moreThan?StudySum.moreThan:0)}}%</text>的同学
                         </view>
                     </view>
+                </view>    
+                <view class="colorPanel bg-greenSecond" bind:tap="viewEvalList">
+                    <view class="text-lg">进行了<text class="text-yellow text-xl padding-xs">{{StudySum.evalList.length}}</text>次测评</view>
+                    <block wx:if="{{StudySum.evalList.length<1}}">
+                        <view class="margin-top-sm text-sm">建议多做评测</view>
+                        <view class="margin-top-sm text-sm">找出复习问题</view>
+                    </block>
+                    <block wx:elif="{{StudySum.evalList.length<2}}">
+                        <view class="margin-top-sm text-sm">最近一次获得<text class="text-yellow padding-xs">{{StudySum.evalList[0].score}}</text>分</view>
+                        <view class="margin-top-sm text-sm">多做评测,找出问题</view>
+                    </block>
+                    <block wx:else>
+                        <view class="margin-top-sm text-sm">最近一次获得<text class="text-yellow padding-xs">{{StudySum.evalList[0].score}}</text>分</view>
+                        <view class="margin-top-sm text-sm">{{StudySum.evalList[0].score - StudySum.evalList[1].score>0?'进步明显，继续加油':'退步了哦，多加练习'}}</view>
+                    </block>
                 </view>
-                <view class="flex align-center margin-bottom-sm" >
-                    <view class="text-sm" style="width:180rpx">测验平均分</view>
-                    <view class="cu-progress round  striped active">
-                        <view class="bg-{{StudySum.testAvgScore>=60?'green':'red'}}" style="width:{{StudySum.testAvgScore<10?10:StudySum.testAvgScore}}%;">
-                            {{StudySum.testAvgScore}}分
-                        </view>
+            </view>
+            <view class="margin-top-sm text-sp" style="color:#787A7B;line-height:50rpx;">
+                除此之外，<text class="text-blue padding-xs text-bold">{{user.nickName}}</text>同学在同步复习中，完成了<text class="text-blue text-lg padding-xs text-bold">{{StudySum.praticseTimes}}</text>次课时练习
+                <text wx:if="{{StudySum.testTimes}}">，以及<text class="text-blue text-lg padding-xs text-bold">{{StudySum.testTimes}}</text>次单元测验。</text>
+            </view>
+            <view class="flex align-center margin-top-lg">
+                <view class="text-sm text-bold" style="min-width:160rpx">练习平均分</view>
+                <view class="cu-progress round  striped active">
+                    <view class="bg-{{StudySum.praticeAvgScore>=60?'olive':'red'}}" style="width:{{StudySum.praticeAvgScore<10?10:StudySum.praticeAvgScore}}%;">
+                        {{StudySum.praticeAvgScore}}分
                     </view>
                 </view>
-                <view class="flex align-center margin-bottom-sm">
-                    <view class="text-sm" style="width:180rpx">课时覆盖率</view>
-                    <view class="cu-progress round  striped active">
-                        <view class="bg-{{report.myScore.score>=60?'green':'red'}}" style="width:{{StudySum.bookStudyPer<10?10:StudySum.bookStudyPer}}%;">
-                            {{StudySum.bookStudyPer}}%
-                        </view>
+            </view>
+            <view class="flex align-center margin-top-lg">
+                <view class="text-sm text-bold" style="min-width:160rpx">测验平均分</view>
+                <view class="cu-progress round  striped active">
+                    <view class="bg-{{StudySum.testAvgScore>=60?'olive':'red'}}" style="width:{{StudySum.testAvgScore<10?10:StudySum.testAvgScore}}%;">
+                        {{StudySum.testAvgScore}}分
                     </view>
                 </view>
-
-                <view class="flex align-center margin-bottom-sm">
-                    <view class="text-sm" style="width:140rpx"></view>
-                    <view class="text-xs">单元测验分数超过60分的单元占比</view>
+            </view>
+            <view class="flex align-center margin-top-lg">
+                <view class="text-sm text-bold" style="min-width:160rpx">课时覆盖率</view>
+                <view class="cu-progress round  striped active">
+                    <view class="bg-{{report.myScore.score>=60?'olive':'red'}}" style="width:{{StudySum.bookStudyPer<10?10:StudySum.bookStudyPer}}%;">
+                        {{StudySum.bookStudyPer}}%
+                    </view>
                 </view>
+            </view>
+            <view class="flex align-center margin-top-sm">
+                <view class="text-sm" style="width:160rpx;height:32rpx;"></view>
+                <view class="text-sm" style="color:#787A7B">*单元测验分数超过60分的单元占比</view>
             </view>
         </view>
-        <block wx:if="{{showChart}}">
-        
-
-        <view class="cu-item shadow">
-            <view class="cu-bar">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    知识点掌握情况
-                </view>
+        <view class="bg-white margin-top-sm padding-lg">
+            <view class="flex align-center margin-bottom-lg">
+                <image src="{{imgUrl}}eval/report/icon_knowledge.png" style="width:32rpx" mode="widthFix" />
+                <view class="text-sp text-bold margin-left-sm">知识点掌握情况</view>
             </view>
-            <view class="padding bg-white flex flex-wrap">
+            <view class="flex flex-wrap">
                 <block wx:for="{{StudySum.weakKnowledges}}" wx:key="knowledgeData">
-                    <view class="cu-tag lg bg-{{item.per<0.2?'red':(item.per<0.4?'orange':(item.per<0.6?'yellow':(item.per<0.8?'olive':'green')))}} round margin-xs">{{item.knowledgeTitle}}</view>
+                    <view class="cu-tag lg bg-{{item.per<0.2?'red':(item.per<0.4?'orange':(item.per<0.6?'yellow':(item.per<0.8?'olive':'green')))}} round margin-xs">
+                        {{item.knowledgeTitle}}
+                    </view>
                 </block>
             </view>
         </view>
-        
-
-        <view class="cu-item shadow" wx:if="{{evalList.length>0}}">
-            <view class="cu-bar bg-white" wx:if="{{StudySum.evalList.length>5}}">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    最近5次评测记录
+        <view class="bg-white margin-top-sm padding-lg" wx:if="{{evalList.length>0}}">
+            <view class="flex align-center justify-between margin-bottom-lg">
+                <view class="flex align-center">
+                    <image src="{{imgUrl}}eval/report/icon_record.png" style="width:32rpx" mode="widthFix" />
+                    <view class="text-sp text-bold margin-left-sm">
+                        {{StudySum.evalList.length > 5?'最近5次评测记录':'评测记录'}}
+                    </view>
                 </view>
-                <view class="action text-xs" bind:tap="viewEvalList">查看全部</view>
-            </view>
-            <view class="cu-bar bg-white">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    评测记录
+                <view bind:tap="viewEvalList" wx:if="{{StudySum.evalList.length > 5}}" class="text-sm colorT-sp">
+                    查看全部
                 </view>
-                <view class="action text-xs" bind:tap="viewEvalList">总共{{evalList.length}}次</view>
+                <view wx:else bind:tap="viewEvalList" class="text-sm colorT-sp">
+                    总共{{evalList.length}}次
+                </view>
             </view>
             <view>
                 <view class="f2-chart4">
@@ -155,20 +140,20 @@
                 </view>
             </view>
         </view>
-        <view class="cu-item shadow" wx:if="{{homeworks.length>0}}">
-            <view class="cu-bar bg-white" wx:if="{{StudySum.homeworks.length>5}}">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    最近5次作业记录
+        <view class="bg-white margin-top-sm padding-lg" wx:if="{{homeworks.length>0}}">
+            <view class="flex align-center justify-between margin-bottom-lg">
+                <view class="flex align-center">
+                    <image src="{{imgUrl}}eval/report/icon_record.png" style="width:32rpx" mode="widthFix" />
+                    <view class="text-sp text-bold margin-left-sm">
+                        {{StudySum.homeworks.length > 5?'最近5次作业记录':'作业记录'}}
+                    </view>
                 </view>
-                <view class="action text-xs" bind:tap="viewHomeworkList">查看全部</view>
-            </view>
-            <view class="cu-bar bg-white">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    作业记录
+                <view bind:tap="viewHomeworkList" wx:if="{{StudySum.homeworks.length > 5}}" class="text-sm colorT-sp">
+                    查看全部
                 </view>
-                <view class="action text-xs" bind:tap="viewHomeworkList">总共{{homeworks.length}}次</view>
+                <view wx:else bind:tap="viewHomeworkList" class="text-sm colorT-sp">
+                    总共{{homeworks.length}}次
+                </view>
             </view>
             <view>
                 <view class="f2-chart4">
@@ -176,47 +161,41 @@
                 </view>
             </view>
         </view>
-        <view class="cu-item shadow">
-            <view class="cu-bar bg-white">
-                <view class='action'>
-                    <text class='cuIcon-titles text-orange '></text>
-                    单元掌握水平
-                </view>
+        <view class="bg-white margin-top-sm padding-lg">
+            <view class="flex align-center margin-bottom-lg">
+                <image src="{{imgUrl}}eval/report/icon_ability.png" style="width:32rpx" mode="widthFix" />
+                <view class="text-sp text-bold margin-left-sm">单元掌握水平</view>
             </view>
-            <view class="panel-bd tips" wx:if="{{StudySum.unitsPassPer.length == 0}}">暂无记录</view>
-            <view class="panel-bd" wx:else style="padding:0rpx;">
-                <view class="padding bg-white">
-                    <block wx:for="{{StudySum.unitsPassPer}}" wx:key="unitsPassPer">
-                        <view class="flex align-center justify-between margin-bottom-sm">
-                            <view class="text-sm">{{item.name}}</view>
-                            <view class="text-xs text-grey padding-xs margin-left-sm text-right" style="width:300rpx">
-                                测验次数：{{item.examTimes?item.examTimes:0}}次 / 平均分：{{item.accuracyRate}}
-                            </view>
+            <view wx:for="{{StudySum.unitsPassPer}}" wx:key="unitsPassPer" class="margin-bottom-lg">
+                <view class="flex align-center justify-between margin-bottom-sm padding-top-sm">
+                    <view class="text-sm">{{item.name}}</view>
+                    <view class="text-sm colorF-sp text-center" style="width:400rpx">
+                        测验次数：{{item.examTimes?item.examTimes:0}}次 / 平均分：{{item.accuracyRate}}
+                    </view>
+                </view>
+                <view class="flex align-center">
+                    <view class="cu-progress round striped active">
+                        <view class="bg-{{item.accuracyRate>=60?'green':'red'}}" style="width:{{item.accuracyRate<10?10:item.accuracyRate}}%;">
+                            {{item.accuracyRate}}
                         </view>
-                        <view class="flex align-center padding-bottom margin-bottom solid-bottom">
-                            <view class="cu-progress round striped active">
-                                <view class="bg-{{item.accuracyRate>=60?'green':'red'}}" style="width:{{item.accuracyRate<10?10:item.accuracyRate}}%;">
-                                    {{item.accuracyRate}}
-                                </view>
-                            </view>
-                            <view class="text-xs bg-{{item.accuracyRate>=60?'green':'red'}} padding-xs margin-left-sm text-center radius light" style="width:100rpx">
-                                {{item.accuracyRate>=60?'良好':'待提高'}}
-                            </view>
-                        </view>
-                    </block>
+                    </view>
+                    <view class="text-xs bg-{{item.accuracyRate>=60?'green':'red'}} text-center round light margin-left-sm cu-tag" style="width:100rpx;height:34rpx;line-height:34rpx;">
+                        {{item.accuracyRate>=60?'良好':'待提高'}}
+                    </view>
                 </view>
             </view>
         </view>
-        </block>
-        </block>
-    </view>
-    <view class="padding-lr">
-        <button class="cu-btn block bg-red margin-tb-sm lg round" bind:tap="remove">移出班级</button>
-    </view>
+        <view class="padding-tb-lg flex align-center justify-center">
+            <button class="cu-btn block bg-red lg round" bind:tap="remove" style="width:335rpx;">
+                移出班级
+            </button>
+        </view>
+    </block>
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn bg-white round submit margin-xs" bind:tap="back">返回</button>
-        <!-- <button class="cu-btn bg-blue light round submit margin-xs" bind:tap="add">写评语</button> -->
+        <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp" bind:tap="back">
+            返回
+        </button>
     </view>
 </view>

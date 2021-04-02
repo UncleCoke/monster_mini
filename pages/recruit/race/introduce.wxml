@@ -3,7 +3,7 @@
     <view class="text-black text-xxl padding-bottom-sm text-bold">{{template.title}}</view>
     <view class="flex align-center text-xl text-black padding-top-lg margin-bottom-sm">
         <view class="title-shape"></view>
-        <view class="text-bold">活动介绍</view>
+        <view class="text-bold">活动说明</view>
     </view>
     <view class="text-sp colorF-sp lineHeight-sp padding-bottom-sm" wx:if="{{!template.eventIntro}}">
         无相关介绍

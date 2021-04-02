@@ -2,7 +2,8 @@ const app = getApp()
 Page({
 
   data: {
-    imgUrl:'http://img.uelink.com.cn/upload/xykj/my/'
+    imgUrl:'http://img.uelink.com.cn/upload/xykj/my/',
+    totalFee:0
   },
 
   onLoad: function (options) {
@@ -34,6 +35,8 @@ Page({
     this.setData({
       globalData: app.globalData.userInfo,
       showModal: false,
+    },()=>{
+      this.getInCome();
     })
   },
 
@@ -84,12 +87,6 @@ Page({
     });
   },
 
-  revenueDetail:function(){
-    wx.navigateTo({
-      url: 'revenue'
-    });
-  },
-
   orgDetail:function(){
     wx.navigateTo({
       url: `/pages/org/detail?id=${this.data.globalData.org.id}`
@@ -98,8 +95,36 @@ Page({
 
   revenueDetail:function(){
     wx.navigateTo({
-      url: `/pages/org/revenue?id=${this.data.globalData.org.id}`
+      url: `/pages/my/revenue`
     });
+  },
+
+  revenueDetailByOrg:function(){
+    wx.navigateTo({
+      url: `/pages/org/revenue`
+    });
+  },
+
+  getInCome:function(){
+    let url = '/income/teacher',data = {};
+    if(app.globalData.orgAdmin == 1){
+      url = '/income/org';
+      data = {
+        orgId:app.globalData.orgId
+      }
+    }
+    app.request({
+      url,data
+    }).then(res => {
+      let orderList = res.orderList;
+      let totalFee = 0;
+      orderList.forEach(item => {
+        totalFee = totalFee + item.totalFee;
+      })
+      this.setData({
+        totalFee
+      })
+    })
   }
 
 })

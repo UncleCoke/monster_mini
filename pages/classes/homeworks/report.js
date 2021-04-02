@@ -4,6 +4,8 @@ Page({
 
   data: {
     topicOptions:["A","B","C","D","E","F","G","H","I"],
+    imgUrl: 'http://img.uelink.com.cn/upload/xykj/classes/',
+    evalImgUrl:'http://img.uelink.com.cn/upload/xykj/eval/'
   },
 
   onLoad: function (options) {

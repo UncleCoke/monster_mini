@@ -1,6 +1,6 @@
 <view class="bg-white">
     <view class="padding-top-lg padding-lr-lg">
-        <view class="flex align-center justify-between">
+        <view class="flex align-center justify-between margin-bottom">
             <view class="flex align-center">
                 <view wx:if="{{classDetail.imgClassmateUrl}}" class="cu-avatar avatar-radius lg" style="background-image:url({{classDetail.imgClassmateUrl}});"></view>
                 <view wx:else class="cu-avatar avatar-radius lg {{classDetail.level && classDetail.isFollowOrgVip?'bg-gradual-orange':'bg-blue'}}">
@@ -59,7 +59,7 @@
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">
     <view class="btn-group">
-        <button class="cu-btn lg bg-white flex-sub" bindtap="">班级管理</button>
+        <button class="cu-btn lg bg-white flex-sub" bindtap="gotoClassDetail">班级管理</button>
         <button class="cu-btn lg bg-blue sp margin-right" bind:tap="share">发布招生</button>
     </view>
 </view>
@@ -73,7 +73,8 @@
             </view>
         </view>
         <view hidden="{{activeIndex == 1}}">
-            <view wx:for="{{clients}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-top text-sp">
+            <empty wx:if="{{clients.length == 0}}" title="暂无数据"></empty>
+            <view wx:for="{{clients}}" wx:key="userId" class="panel padding-tb-lg padding-lr-lg  margin-top text-sp" data-id="{{item.clientId}}" bindtap="potentialDetail">
                 <view class="flex align-center justify-between">
                     <view class="flex align-center">
                         <view class="cu-avatar round lg" style="background-image:url({{item.avatarUrl}});" wx:if="{{item.avatarUrl}}"></view>
@@ -90,14 +91,13 @@
                             </view>
                         </view>
                     </view>
-                    <button class="cu-btn bg-blue round sm" bindtap="editClient" data-id="{{item.id}}" wx:if="{{item.status == 0}}">
-                        领用
-                    </button>
+                    <view class="cuIcon-right text-lg" style="color:#ccc"></view>
                 </view>
                 <view class="text-sm colorT-sp margin-top-sm">加入时间：{{item.created_at}}</view>
             </view>
         </view>
         <view hidden="{{activeIndex == 0}}">
+            <empty wx:if="{{studentList.length == 0}}" title="暂无数据"></empty>
             <view wx:for="{{studentList}}" wx:key="userId" class="panel padding-top-lg padding-lr-lg padding-bottom margin-top text-sp" data-id="{{item.id}}" data-token="{{item.token}}" data-index="{{index}}" bind:tap="{{item.status>0?'report':(item.status==0?'check':'')}}">
                 <view class="flex align-center justify-between margin-bottom-sm">
                     <view class="flex align-center">

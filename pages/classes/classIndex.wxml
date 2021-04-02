@@ -10,7 +10,7 @@
     <view class="padding-top-lg padding-lr-lg">
         <view class="flex align-center justify-between">
             <view class="flex align-center">
-                <view wx:if="{{classDetail.classLogo}}" class="cu-avatar avatar-radius lg" style="background-image:url({{classDetail.classLogo}});"></view>
+                <view wx:if="{{classDetail.imgClassmate}}" class="cu-avatar avatar-radius lg" style="background-image:url({{classDetail.imgClassmate}});"></view>
                 <view wx:else class="cu-avatar avatar-radius lg {{classDetail.level && classDetail.isFollowOrgVip?'bg-gradual-orange':'bg-blue'}}">
                     {{classDetail.name[0]}}
                 </view>

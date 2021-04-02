@@ -150,5 +150,18 @@ Page({
     }).then(res => {
       this.inti();
     })
+  },
+
+  gotoClassDetail:function(){
+    wx.navigateTo({
+      url: `/pages/classes/classIndex?id=${classId}`
+    });
+  },
+
+  potentialDetail:function(e){
+    let {id} = e.currentTarget.dataset;
+    wx.navigateTo({
+      url: `/pages/student/potentialDetail?id=${id}`
+    });
   }
 })

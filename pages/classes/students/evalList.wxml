@@ -22,7 +22,6 @@
             <text class='cuIcon-newshotfill margin-right-xs'></text>
             共{{recordCount}}份评测
         </view>
-        <!-- <view >筛选</view> -->
     </view>
 </view>
 <view style="padding-bottom:150rpx">
@@ -34,20 +33,21 @@
                         <text class="text-black margin-right-xs">{{item.subject}}</text>
                         {{item.textbook?item.textbook:''}} {{item.evalType==0?'单元评测':(item.evalType==2?'期末测评':'期中测评')}}
                     </view>
-                    <!-- <view class='action  text-gray text-sm'>{{item.topicsCount}}题</view> -->
                 </view>
-                <view class="padding padding-bottom-xs flex flex-wrap justify-start align-top" wx:if="{{item.evalType==0}}">
+                <view class="padding padding-bottom-xs flex flex-wrap justify-start align-top">
                     <view class="cu-tag bg-white {{item.evalType==0?'margin-top-xs':''}}">
                         题目范围
                     </view>
-                    <view class="basis-xl flex flex-wrap justify-start align-center">
-                        <view class="bg-blue light radius text-cut margin-right-xs unit text-sm" wx:for="{{item.units}}" wx:for-item="unit" wx:key="unit">
+                    <view wx:if="{{item.evalType==0}}" class="flex flex-wrap justify-start align-center flex-sub">
+                        <view class="bg-blue light radius cu-tag margin-right-xs margin-bottom-xs" wx:for="{{item.units}}" wx:for-item="unit" wx:key="unit" style="margin-left:0">
                             {{unit}}
                         </view>
                     </view>
-                    <!-- <view class="cu-tag bg-purple light radius" wx:else>{{item.evalType==2?'期末测评':'期中测评'}}</view> -->
+                    <view class="cu-tag bg-purple light radius" wx:else>
+                        {{item.evalType==2?'期末测评':'期中测评'}}
+                    </view>
                 </view>
-                <view class="padding  solid-bottom">
+                <!-- <view class="padding  solid-bottom">
                     <view class="cu-capsule round margin-left-xs">
                         <view class="cu-tag bg-{{item.score>=60?'green':'red'}} lg">得分</view>
                         <view class="cu-tag line-{{item.score>=60?'green':'red'}} lg">
@@ -58,7 +58,7 @@
                         <view class="cu-tag bg-olive lg">耗时</view>
                         <view class="cu-tag line-olive lg">{{func.showTime(item.spendTime)}}</view>
                     </view>
-                </view>
+                </view> -->
                 <view class="padding flex justify-between align-center bg-white">
                     <view class='text-gray text-sm'>{{item.created_at}}</view>
                     <button class="cu-btn sm line-blue" id="{{item.id}}" bind:tap="evalDetail">

@@ -39,13 +39,13 @@
         {
           "name": "制作活动",
           "pathName": "pages/recruit/race/product",
-          "query": "id=2",
+          "query": "id=1",
           "scene": null
         },
         {
           "name": "活动详情",
           "pathName": "pages/recruit/race/detail",
-          "query": "id=7",
+          "query": "id=25",
           "scene": null
         },
         {
@@ -57,7 +57,7 @@
         {
           "name": "评测详情",
           "pathName": "pages/evaluates/detail",
-          "query": "id=132",
+          "query": "id=159",
           "scene": null
         },
         {
@@ -81,7 +81,7 @@
         {
           "name": "生源信息",
           "pathName": "pages/student/potentialDetail",
-          "query": "id=8",
+          "query": "id=107",
           "scene": null
         },
         {
@@ -123,7 +123,7 @@
         {
           "name": "学生列表",
           "pathName": "pages/classes/students/list",
-          "query": "id=175&tid=1002",
+          "query": "id=66&tid=1002",
           "scene": null
         },
         {
@@ -207,7 +207,7 @@
         {
           "name": "页面跳转",
           "pathName": "pages/recruit/join",
-          "query": "recruitType=2&recruitId=182&eventType=3",
+          "query": "recruitType=2&recruitId=182&eventType=1",
           "scene": null
         },
         {
@@ -220,6 +220,12 @@
           "name": "招生班级详情",
           "pathName": "pages/recruit/classes/detail",
           "query": "id=182",
+          "scene": null
+        },
+        {
+          "name": "回收站",
+          "pathName": "pages/student/clear",
+          "query": "",
           "scene": null
         }
       ]

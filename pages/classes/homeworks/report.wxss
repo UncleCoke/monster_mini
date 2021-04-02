@@ -1,9 +1,22 @@
-.call [class*="cuIcon-"] {
-	font-size: 48rpx;
+.time-box{
+    width:320rpx;
+    height:160rpx;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:rgba(255, 255, 255, 0.5);
+    background:url('http://img.uelink.com.cn/upload/xykj/eval/report/bg_myTime.png');
+    background-size:320rpx 160rpx;
 }
 
-.score{
-    margin: 0 auto;
-    width: 100rpx;
-    
+.panel {
+    background: #F0F5F7;
+    border: 1rpx dashed #0779E4;
+    border-radius:20rpx;
+}
+
+.label{
+    width:160rpx;
+    text-align:left;
 }

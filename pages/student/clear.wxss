@@ -1,0 +1,9 @@
+page{
+    background-color:#fff;
+}
+
+.panel{
+    max-height: 220rpx;
+    background: #F0F5F7;
+    border-radius: 36rpx;
+}

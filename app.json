@@ -44,6 +44,7 @@
     "pages/student/index",
     "pages/student/potentialDetail",
     "pages/student/follow",
+    "pages/student/clear",
     "pages/my/index",
     "pages/my/revenue",
     "pages/evaluates/create",

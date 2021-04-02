@@ -15,16 +15,16 @@
         </view>
         <view class="padding-top-sm padding-bottom-lg solid-bottom flex align-center justify-between">
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-olive light">{{item.userCount}}</view>
-                <view class="text-sm">打开人数</view>
+                <view class="content-shape bg-olive light">{{item.openCount}}</view>
+                <view class="text-sm">点击人次</view>
             </view>
             <view class="flex align-center justify-center flex-direction">
-                <view class="content-shape bg-greenSecond light">{{item.openCount}}</view>
-                <view class="text-sm">打开次数</view>
+                <view class="content-shape bg-greenSecond light">{{item.clientCount}}</view>
+                <view class="text-sm">获客人数</view>
             </view>
             <view class="flex align-center justify-center flex-direction">
                 <view class="content-shape bg-greenThird light">{{item.finishCount}}</view>
-                <view class="text-sm">完成人数</view>
+                <view class="text-sm">评测人数</view>
             </view>
         </view>
         <view class="padding-tb flex align-center justify-between">

@@ -37,7 +37,7 @@
         </view>
         <view class="bg-white padding-top padding-bottom-sm padding-lr-lg margin-bottom-sm text-sp">
             <view class="text-bold margin-bottom-sm">活动说明</view>
-            <view class="text-sp colorF-sp lineHeight-sp">{{'暂无'}}</view>
+            <view class="text-sp colorF-sp lineHeight-sp">{{template.eventIntro}}</view>
         </view>
     </block>
     <block wx:else>
@@ -52,7 +52,7 @@
                     <view class="text-bold">获奖几率</view>
                     <view class="text-sp colorF-sp">{{award.rate}}%</view>
                 </view>
-                <slider bindchange="setAward" data-index="{{awardIndex}}" data-field="rate" data-type="input" min="0" max="100"  value="{{award.rate}}" activeColor="#0779E4" block-size="18" />
+                <slider bindchange="setAward" data-index="{{awardIndex}}" data-field="rate" data-type="input" min="0" max="100" value="{{award.rate}}" activeColor="#0779E4" block-size="18" />
             </block>
             <view class="flex align-center justify-between solid-top padding-top margin-top-sm">
                 <view class="text-bold">奖品数量</view>
@@ -63,12 +63,25 @@
                 </view>
             </view>
         </view>
+        <view class="bg-white padding-tb padding-lr-lg margin-bottom-sm text-sp">
+            <view class="text-bold margin-bottom">奖品领取联系方式（微信二维码）</view>
+            <view class="cu-avatar radius lg" style="background-image:url({{contactUrl}})" wx:if="{{contactUrl}}" bindtap="chooseImg"></view>
+            <view wx:else class="cu-avatar radius lg" bindtap="chooseImg">
+                <text class="cuIcon-cameraadd"></text>
+            </view>
+        </view>
     </block>
 </view>
-<view class="cu-bar bg-white tabbar border shop foot">
+<view class="cu-bar bg-white tabbar border shop foot" wx:if="{{activeTab == 0}}">
     <view class="btn-group">
         <button class="cu-btn lg bg-blue submit margin-tb-sm margin-lr sp" bindtap="product">
-            发布活动
+            下一步
         </button>
+    </view>
+</view>
+<view class="cu-bar bg-white tabbar border shop foot" wx:else>
+    <view class="btn-group">
+        <button class="cu-btn lg bg-white flex-sub" bindtap="lastTab">上一步</button>
+        <button class="cu-btn lg bg-blue sp margin-right" bindtap="product">发布活动</button>
     </view>
 </view>

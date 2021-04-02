@@ -5,7 +5,7 @@ Page({
 
   data: {
     list: [],
-    loadMore: true,
+    loadMore: false,
     recordCount:0,
 
   },
@@ -31,20 +31,20 @@ Page({
     this.setData({
       user
     })
-    this.getHomeworkList(page)
+    this.getEvalList();
   },
 
   onPullDownRefresh: function () {
     page = 1
-    this.getHomeworkList(page)
+    this.getEvalList();
     wx.stopPullDownRefresh();
   },
 
-  onReachBottom: function () {
+  /*onReachBottom: function () {
     if (page <= pageCount) {
       this.getHomeworkList(page)
     }
-  },
+  },*/
 
   evalReport:function(e){
     let id = e.currentTarget.id
@@ -53,7 +53,48 @@ Page({
     });
   },
 
-  getHomeworkList:function(_page){
+  getEvalList: function () {
+    let url = 'https://fxb2api.uelink.com.cn/fxbapi/classmate/evalList';
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    });
+    let data = {
+      classId:classId,
+      userId:userId,
+      token:token
+    }
+    wx.request({
+      url: url,
+      data: data,
+      success: (res) => {
+        if (res.data.code == 0) {
+          let list = res.data.data.list;
+          let evalList = list.filter(item => {
+            return item.subject == subject && item.hasDone !== 0
+          })
+          this.setData({
+            list:evalList,
+            recordCount:evalList.length
+          }, () => {
+            wx.hideLoading();
+          })
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000,
+            mask: true
+          })
+        }
+      },
+      fail: (res) => {
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /*getHomeworkList:function(_page){
     app.request({
       url:'/student/evalList',
       data:{
@@ -83,7 +124,7 @@ Page({
         recordCount
       })
     })
-  },
+  },*/
   
   back:function(e){
     let route = getCurrentPages()
