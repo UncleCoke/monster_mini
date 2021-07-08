@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "班级详情",
-  "usingComponents": {},
-  "navigationBarBackgroundColor":"#fff",
-  "enablePullDownRefresh":true,
-  "navigationBarTextStyle":"black"
-}

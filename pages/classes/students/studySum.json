@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "ff-canvas": "@antv/f2-canvas"
-  },
-  "navigationBarTitleText": "学习报告",
-  "enablePullDownRefresh":true
-}

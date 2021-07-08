@@ -1,6 +1,0 @@
-.picker-shape{
-    width:280rpx;
-    height:44rpx;
-    line-height:44rpx;
-    font-size:24rpx;
-}

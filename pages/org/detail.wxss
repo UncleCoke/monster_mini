@@ -1,8 +1,0 @@
-.panel {
-	height: 220rpx;
-	background: #F0F5F7;
-}
-
-.cu-tag{
-	padding:0 28rpx;
-}

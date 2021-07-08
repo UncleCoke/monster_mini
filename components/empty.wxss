@@ -4,15 +4,19 @@
     align-items: center;
     justify-content: center;
     padding: 40rpx 0;
+    background:#fff;
+    border-radius:16rpx;
+    margin-bottom:20rpx;
 }
 
 .empty_img {
-    width:380rpx;
+    width: 200rpx;
+    height: 200rpx;
 }
 
 .empty_title {
     margin-top: 32rpx;
-    color: #0779E4;
-    font-size: 30rpx;
+    color: #969799;
+    font-size: 28rpx;
     line-height: 40rpx;
 }

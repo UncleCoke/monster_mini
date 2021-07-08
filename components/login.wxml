@@ -1,0 +1,13 @@
+<view class="cu-modal {{showModal?'show':''}}">
+    <view class="cu-dialog">
+        <view class="bg-blue flex flex-direction align-center padding-tb padding-lr-lg">
+            <view class="text-bold text-lg">登录提示</view>
+        </view>
+        <view class="padding-xl bg-white text-lg text-grey">为保证功能的正常使用，请先登录</view>
+        <view class="cu-bar bg-white padding-lg flex align-center justify-between">
+            <button class="bg-white cu-btn light round flex-sub lg margin-right" bindtap="hideModal">暂不登录</button>
+            <button class="bg-blue cu-btn round flex-sub lg" wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile">立即登录</button>
+            <button class="bg-blue cu-btn round flex-sub lg" wx:else open-type="getUserInfo" bindgetuserinfo="userLogin">立即登录</button>
+        </view>
+    </view>
+</view>

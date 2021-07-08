@@ -1,1 +1,0 @@
-<image src="{{imgUrl}}eval.png" bindtap="gotoEval" mode="widthFix" style="width:750rpx;"/>

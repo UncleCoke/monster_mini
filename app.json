@@ -1,118 +1,16 @@
 {
   "pages": [
-    "pages/recruit/index",
-    "pages/recruit/share",
-    "pages/recruit/join",
-    "pages/recruit/race/index",
-    "pages/recruit/race/create",
-    "pages/recruit/race/detail",
-    "pages/recruit/race/unitDetail",
-    "pages/recruit/race/introduce",
-    "pages/recruit/race/product",
-    "pages/recruit/eval/index",
-    "pages/recruit/eval/detail",
-    "pages/recruit/eval/create",
-    "pages/recruit/classes/index",
-    "pages/recruit/classes/create",
-    "pages/recruit/classes/edit",
-    "pages/recruit/classes/detail",
-    "pages/classes/classIndex",
-    "pages/classes/list",
-    "pages/classes/create",
-    "pages/classes/setTextbook",
-    "pages/classes/setting",
-    "pages/classes/evalList",
-    "pages/classes/share",
-    "pages/classes/teachers/list",
-    "pages/classes/students/list",
-    "pages/classes/students/studySum",
-    "pages/classes/students/homeworkList",
-    "pages/classes/students/evalList",
-    "pages/classes/students/group",
-    "pages/classes/homeworks/list",
-    "pages/classes/homeworks/create",
-    "pages/classes/homeworks/preview",
-    "pages/classes/homeworks/detail",
-    "pages/classes/homeworks/topics",
-    "pages/classes/homeworks/report",
-    "pages/classes/homeworks/doHomework",
-    "pages/classes/homeworks/pickTopic",
-    "pages/classes/homeworks/allTopic",
-    "pages/classes/appraisal/index",
-    "pages/classes/appraisal/report",
-    "pages/classes/appraisal/detail",
-    "pages/student/index",
-    "pages/student/potentialDetail",
-    "pages/student/follow",
-    "pages/student/clear",
-    "pages/my/index",
-    "pages/my/revenue",
-    "pages/evaluates/create",
-    "pages/evaluates/preview",
-    "pages/evaluates/share",
-    "pages/evaluates/detail",
-    "pages/evaluates/report",
-    "pages/evaluates/reportList",
-    "pages/evaluates/topics",
-    "pages/evaluates/doEval",
-    "pages/org/list",
-    "pages/org/detail",
-    "pages/org/create",
-    "pages/org/edit",
-    "pages/org/revenue",
-    "pages/org/classRevenue"
+    "pages/index/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "backgroundColor": "#fff",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "小优复习-老师端",
-    "navigationStyle": "default",
+    "navigationBarTitleText": "monster",
     "navigationBarTextStyle": "black"
   },
-  "tabBar": {
-    "color":"#A0A0A0",
-    "selectedColor": "#0779E4",
-    "borderStyle": "white",
-    "list": [
-      {
-        "selectedIconPath": "images/tabbar/recruit_active.png",
-        "iconPath": "images/tabbar/recruit.png",
-        "pagePath": "pages/recruit/index",
-        "text": "招生工具"
-      },
-      {
-        "selectedIconPath": "images/tabbar/student_active.png",
-        "iconPath": "images/tabbar/student.png",
-        "pagePath": "pages/student/index",
-        "text": "学员"
-      },
-      {
-        "selectedIconPath": "images/tabbar/class_active.png",
-        "iconPath": "images/tabbar/class.png",
-        "pagePath": "pages/classes/list",
-        "text": "班级"
-      },
-      {
-        "selectedIconPath": "images/tabbar/my_active.png",
-        "iconPath": "images/tabbar/my.png",
-        "pagePath": "pages/my/index",
-        "text": "我的"
-      }
-    ]
-  },
-  "networkTimeout": {
-    "request": 10000,
-    "connectSocket": 10000,
-    "uploadFile": 10000,
-    "downloadFile": 10000
-  },
-  "sitemapLocation": "sitemap.json",
+  "debug": true,
   "usingComponents": {
-    "cu-custom": "components/cu-custom",
-    "empty": "components/empty",
-    "date-time-picker":"components/date-time-picker",
-    "get-phone": "components/get-phone"
+    "empty":"components/empty"
   },
-  "debug": true
+  "sitemapLocation": "sitemap.json"
 }

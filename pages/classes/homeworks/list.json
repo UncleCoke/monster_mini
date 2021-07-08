@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "作业列表",
-  "usingComponents": {},
-  "enablePullDownRefresh":true,
-  "onReachBottomDistance":50,
-  "navigationBarBackgroundColor":"#f8f8f8"
-
-}

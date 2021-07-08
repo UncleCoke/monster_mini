@@ -4,52 +4,47 @@
     "ignore": []
   },
   "setting": {
+    "bundle": false,
+    "userConfirmedBundleSwitch": false,
     "urlCheck": true,
+    "scopeDataCheck": false,
+    "coverView": true,
     "es6": true,
-    "enhance": false,
     "postcss": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
     "preloadBackgroundData": false,
     "minified": true,
-    "newFeature": false,
-    "coverView": true,
-    "nodeModules": false,
     "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
+    "newFeature": false,
     "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
     "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
+    "useIsolateContext": true,
+    "nodeModules": false,
+    "enhance": true,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
-    "enableEngineNative": false,
-    "bundle": false,
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "userConfirmedBundleSwitch": false,
+    "showShadowRootInWxmlPanel": true,
     "packNpmManually": false,
+    "enableEngineNative": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true
+    "minifyWXSS": true,
+    "showES6CompileOption": false
   },
   "compileType": "miniprogram",
-  "libVersion": "2.14.1",
-  "appid": "wx923ee90b4547682d",
-  "projectname": "%E5%B0%8F%E4%BC%98%E7%A7%91%E6%95%99",
+  "libVersion": "2.18.0",
+  "appid": "wxe676f38332d7afde",
+  "projectname": "monster-mini",
   "debugOptions": {
     "hidedInDevtools": []
   },
   "scripts": {},
+  "staticServerOptions": {
+    "baseURL": "",
+    "servePath": ""
+  },
   "isGameTourist": false,
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "list": []

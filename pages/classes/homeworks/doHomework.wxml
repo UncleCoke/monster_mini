@@ -1,1 +1,0 @@
-<image src="{{imgUrl}}{{mode=='warn'?'homework2':'homework1'}}.jpg" bindtap="gotoHomework" mode="widthFix" style="width:750rpx;"/>'

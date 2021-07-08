@@ -1,129 +1,15 @@
-@import 'colorUI/icon.wxss';
-@import 'colorUI/main.wxss';
-@import 'colorUI/animation.wxss';
+@import 'ui/main.wxss';
+@import 'ui/icon.wxss';
+@import 'ui/animation.wxss';
 
-page {
-    background-color: #f8f8f8;
-    color: #464849;
-}
-
-button::after {
-    border: 0;
-}
-
+/* 避免页面切换图片模糊闪现 */
 image {
-    height: auto
+  height: auto;
+  vertical-align: middle;
 }
 
-/*常用样式-sp*/
-.page-sp {
-    padding-bottom: 160rpx;
-}
-
-.padding-sp {
-    padding: 40rpx 40rpx 160rpx 40rpx;
-}
-
-.cu-btn.sp {
-    border-radius: 20rpx;
-    font-size: 30rpx;
-    width: 420rpx !important;
-}
-
-.text-sp {
-    font-size: 30rpx;
-}
-
-.colorF-sp {
-    color: rgba(0, 0, 0, 0.5)
-}
-
-.colorT-sp {
-    color: rgba(0, 0, 0, 0.3);
-}
-
-.height-sp {
-    height: 100rpx;
-    line-height: 100rpx;
-}
-
-.radius-sp {
-    border-radius: 20rpx;
-}
-
-.lineHeight-sp {
-    line-height: 50rpx;
-}
-
-/*shape*/
-.picker-shape {
-    width: 210rpx;
-    height: 64rpx;
-    line-height: 64rpx;
-    text-align: center;
-    background: #F0F5F7;
-    border: 2rpx solid rgba(0, 0, 0, 0);
-    border-radius: 36rpx;
-    font-size: 30rpx;
-    padding: 0 30rpx;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap
-}
-
-.picker-shape.hover {
-    background-color: rgba(7, 121, 228, 0.1);
-    color: #0779E4;
-}
-
-
-.title-shape {
-    width: 20rpx;
-    height: 20rpx;
-    background: #0779E4;
-    border-radius: 50%;
-    margin-right: 20rpx;
-}
-
-.content-shape {
-    width: 140rpx;
-    height: 64rpx;
-    line-height: 64rpx;
-    text-align: center;
-    font-size: 36rpx;
-    font-weight: bold;
-    border-radius: 40rpx;
-    margin-bottom: 10rpx;
-}
-
-
-/*color*/
-.text-greenSecond,
-.line-greenSecond {
-    color: #2AD5BE;
-}
-
-.bg-greenSecond {
-    background-color: #2AD5BE;
-    color: #fff;
-}
-
-.bg-greenSecond.light {
-    color: #2AD5BE;
-    background-color: rgba(42, 213, 190, 0.2);
-}
-
-.text-greenThird,
-.line-greenThird {
-    color: #A0DF4A;
-}
-
-.bg-greenThird {
-    background-color: #A0DF4A;
-    color: #fff;
-}
-
-.bg-greenThird.light {
-    color: #A0DF4A;
-    background-color: rgba(160, 223, 74, 0.2);
+/* 不显示按钮默认的上下线 */
+button:after {
+  border: none;
+  outline: none;
 }

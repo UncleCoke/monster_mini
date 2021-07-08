@@ -1,5 +1,0 @@
-@import '/pages/evaluates/share.wxss';
-
-page {
-    background-color: #f8f8f8;
-}
